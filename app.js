@@ -1120,8 +1120,6 @@ function saveEntry(){
   sess.endTime=new Date().toISOString();
   const idx=sess.entries.findIndex(e=>e.exercise===curEx);if(idx>=0)sess.entries[idx]=entry;else sess.entries.push(entry);
   ps('gym_sessions',db.sessions);document.getElementById('overlay').classList.remove('open');renderHoy();renderHeader();
-  // Start rest timer for weight exercises
-  if(curType!=='cardio'){startRestTimer(db.profile.restTimerSeconds||90);}
   toast('Guardado ✓');
 }
 function deleteEntry(){
