@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0d0d0d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>GYM</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <div class="hdr">
+    <div>
+      <div class="hdr-eyebrow">ENTRENAMIENTO HOY</div>
+      <div class="hdr-day" id="hdr-day">—</div>
+      <div class="hdr-date" id="hdr-date">—</div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-badge" id="hdr-badge">—</div>
+      <div class="hdr-timer" id="hdr-timer" style="display:none"><span class="hdr-timer-dot"></span>0:00</div>
+    </div>
+  </div>
+  <div class="streaks-bar">
+    <div class="streak-badge streak-fire" id="streak-constancia" style="display:none">
+      <span class="streak-emoji">🔥</span>
+      <div class="streak-info"><span class="streak-num" id="streak-c-n">0</span><span class="streak-lbl">Constancia</span></div>
+    </div>
+    <div class="streak-badge streak-bolt" id="streak-progreso" style="display:none">
+      <span class="streak-emoji">⚡</span>
+      <div class="streak-info"><span class="streak-num" id="streak-p-n">0</span><span class="streak-lbl">Progreso</span></div>
+    </div>
+  </div>
+
+  <div class="scroll" id="scroll">
+
+    <!-- HOY -->
+    <div class="view active" id="view-hoy">
+      <div class="slbl">EJERCICIOS</div>
+      <div id="hoy-content"></div>
+    </div>
+
+    <!-- HISTORIAL -->
+    <div class="view" id="view-hist">
+      <div class="slbl">SESIONES</div>
+      <div class="sess-list" id="sess-list"></div>
+    </div>
+
+    <!-- PROGRESO -->
+    <div class="view" id="view-prog">
+      <div class="prog-periods">
+        <div class="prog-period active" data-days="7" onclick="setProgPeriod(7)">Semana</div>
+        <div class="prog-period" data-days="30" onclick="setProgPeriod(30)">30d</div>
+        <div class="prog-period" data-days="90" onclick="setProgPeriod(90)">3m</div>
+        <div class="prog-period" data-days="0" onclick="setProgPeriod(0)">Todo</div>
+      </div>
+      <div id="prog-summary"></div>
+      <div id="prog-prs"></div>
+      <div class="psec prog-ex-card">
+        <div class="drop-header" onclick="toggleDrop('prog-ex-body')">
+          <span class="drop-title" id="prog-ex-title">EJERCICIOS</span>
+          <span class="drop-arrow rot" id="arrow-prog-ex-body">›</span>
+        </div>
+        <div class="drop-body open" id="prog-ex-body">
+          <input class="prog-search" type="text" id="prog-search" placeholder="Buscar ejercicio..." oninput="onProgSearch(this.value)" style="margin:0 0 8px">
+          <div id="prog-exercise-list"></div>
+        </div>
+      </div>
+      <div id="prog-detail" style="display:none">
+        <div id="prog-detail-header"></div>
+        <div class="stat-row" id="stat-row">
+          <div class="sbox hi"><div class="slb">RÉCORD</div><div class="sv" id="sv-max" style="color:var(--accent)">—</div><div class="su" id="su-max">kg</div></div>
+          <div class="sbox"><div class="slb">1RM EST</div><div class="sv" id="sv-1rm" style="color:var(--green)">—</div><div class="su" id="su-1rm">kg</div></div>
+          <div class="sbox"><div class="slb">VOLUMEN</div><div class="sv" id="sv-vol" style="color:var(--orange)">—</div><div class="su">kg total</div></div>
+          <div class="sbox"><div class="slb">SESIONES</div><div class="sv" id="sv-cnt" style="color:var(--blue)">—</div><div class="su">registros</div></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-top">
+            <span class="chart-title">PESO MÁXIMO POR SESIÓN</span>
+            <span class="pr-badge" id="pr-badge" style="display:none">🏆 PR</span>
+          </div>
+          <div class="chart-empty" id="chart-empty" style="display:none"></div>
+          <div class="chart-canvas-wrap" id="chart-cwrap"><canvas id="prog-chart"></canvas></div>
+        </div>
+        <div class="plateau-alert" id="plateau-alert" style="display:none"></div>
+        <div id="prog-best-sets"></div>
+        <div id="prog-recent-sets"></div>
+        <div id="notes-sec" style="display:none">
+          <div class="slbl">NOTAS</div>
+          <div id="notes-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="view" id="view-perfil">
+
+      <!-- Greeting + quick stats (always visible) -->
+      <div class="profile-header" id="profile-header"></div>
+
+      <!-- Peso corporal (most used - always visible) -->
+      <div class="psec">
+        <div class="plbl">REGISTRAR PESO</div>
+        <div class="bw-row">
+          <div class="bw-wrap"><input class="bwinput" type="number" id="bw-val" placeholder="75.5" step="0.1" min="30" max="300"><span class="bwunit">kg</span></div>
+          <button class="bw-addbtn" onclick="logBW()">+</button>
+        </div>
+        <div class="bw-chart-box">
+          <div class="bw-chart-empty" id="bw-empty">Sin registros aún</div>
+          <div class="bw-canvas-wrap" style="display:none;height:120px;position:relative" id="bw-chart-wrap"><canvas id="bw-chart"></canvas></div>
+        </div>
+        <div class="bw-hist" id="bw-hist"></div>
+      </div>
+
+      <!-- Métricas de salud (visible, useful reference) -->
+      <div class="psec">
+        <div class="plbl" style="margin-bottom:8px">MÉTRICAS DE SALUD</div>
+        <div id="imc-wrap"><div style="color:var(--muted2);font-size:11px;text-align:center;padding:10px 0;font-family:'DM Mono',monospace">Completa tus datos para ver métricas</div></div>
+      </div>
+
+      <!-- Mi Rutina (dropdown) -->
+      <div class="psec drop-card">
+        <div class="drop-header" onclick="toggleDrop('rutina-section')">
+          <span class="drop-title">MI RUTINA</span>
+          <span class="drop-arrow" id="arrow-rutina-section">›</span>
+        </div>
+        <div class="drop-body" id="rutina-section">
+          <div id="routine-days"></div>
+          <button class="wiz-relaunch-btn" onclick="showWizard()">GENERAR NUEVA RUTINA</button>
+        </div>
+      </div>
+
+      <!-- Datos personales (dropdown - configured once) -->
+      <div class="psec drop-card">
+        <div class="drop-header" onclick="toggleDrop('datos-section')">
+          <span class="drop-title">DATOS PERSONALES</span>
+          <span class="drop-arrow" id="arrow-datos-section">›</span>
+        </div>
+        <div class="drop-body" id="datos-section">
+          <div class="pfield"><div class="plbl">NOMBRE</div><input class="pinput" type="text" id="p-name" placeholder="Tu nombre" oninput="saveProfile()"></div>
+          <div class="p2">
+            <div class="pfield"><div class="plbl">EDAD</div><input class="pinput pnum" type="number" id="p-age" placeholder="25" min="10" max="99" oninput="saveProfile()"></div>
+            <div class="pfield"><div class="plbl">SEXO</div><div class="sex-row"><div class="sex-btn active" id="sex-h" onclick="setSex('H')">HOMBRE</div><div class="sex-btn" id="sex-m" onclick="setSex('M')">MUJER</div></div></div>
+          </div>
+          <div class="p2">
+            <div class="pfield"><div class="plbl">ALTURA (cm)</div><input class="pinput pnum" type="number" id="p-height" placeholder="175" min="100" max="230" oninput="saveProfile();updateIMC()"></div>
+            <div class="pfield"><div class="plbl">PESO (kg)</div><input class="pinput pnum" type="number" id="p-weight" placeholder="75" min="30" max="300" step="0.1" oninput="saveProfile();updateIMC()"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- App (dropdown) -->
+      <div class="psec drop-card">
+        <div class="drop-header" onclick="toggleDrop('app-section')">
+          <span class="drop-title">APP</span>
+          <span class="drop-arrow" id="arrow-app-section">›</span>
+        </div>
+        <div class="drop-body" id="app-section">
+          <div style="text-align:center;padding:0 0 10px">
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);margin-bottom:8px">Ayúdanos a mejorar la app</div>
+            <button class="feedback-btn" onclick="openFeedback()">ENVIAR FEEDBACK</button>
+          </div>
+          <div style="border-top:1px solid var(--border);padding-top:10px">
+            <div class="backup-row">
+              <div class="backup-btn exp" onclick="exportData()"><div class="backup-lbl">EXPORTAR</div><div class="backup-sub">Guardar JSON</div></div>
+              <label class="backup-btn imp" style="cursor:pointer"><div class="backup-lbl">IMPORTAR</div><div class="backup-sub">Restaurar JSON</div><input type="file" accept=".json" style="display:none" onchange="importData(event)"></label>
+            </div>
+            <button class="install-btn" id="install-btn" onclick="installPWA()" style="display:none">INSTALAR APP</button>
+            <button class="dbtn" onclick="if(confirm('Esto borrará todos tus datos y cargará datos de demo. ¿Continuar?'))loadDemo()" style="margin-top:7px;font-size:11px">CARGAR DATOS DEMO</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <nav class="nav">
+    <div class="ni active" onclick="switchView('hoy',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nlbl">HOY</span>
+    </div>
+    <div class="ni" onclick="switchView('prog',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span class="nlbl">PROGRESO</span>
+    </div>
+    <div class="ni" onclick="switchView('hist',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="nlbl">HISTORIAL</span>
+    </div>
+    <div class="ni" onclick="switchView('perfil',this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nlbl">PERFIL</span>
+    </div>
+  </nav>
+</div>
+
+<!-- ONBOARDING WIZARD -->
+<div class="wizard-overlay" id="wizard-overlay" style="display:none">
+  <div class="wizard">
+    <div class="wizard-dots" id="wizard-dots"></div>
+    <div class="wizard-content" id="wizard-content"></div>
+  </div>
+</div>
+
+<!-- EXERCISE PICKER -->
+<div class="overlay" id="picker-overlay" onclick="closeExPicker(event)">
+  <div class="modal" style="max-height:85dvh">
+    <div class="mhandle"></div>
+    <div class="mtitle">AGREGAR EJERCICIOS</div>
+    <div class="msub">Toca para seleccionar o quitar</div>
+    <input class="prog-search" type="text" id="picker-search" placeholder="Buscar ejercicio..." oninput="onPickerSearch(this.value)" style="margin-top:0">
+    <div id="picker-list" style="max-height:50dvh;overflow-y:auto;margin:8px 0 12px;scrollbar-width:none"></div>
+    <button class="sbtn" onclick="doneExPicker()">LISTO</button>
+  </div>
+</div>
+
+<!-- REST TIMER BAR -->
+<div class="timer-bar" id="timer-bar" style="display:none">
+  <div class="timer-ring" id="timer-ring"></div>
+  <span class="timer-time" id="timer-time">1:30</span>
+  <div class="timer-actions">
+    <button class="timer-skip" onclick="skipTimer()">SALTAR</button>
+    <button class="timer-add" onclick="addTimerTime(30)">+30s</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="mtitle"></div>
+    <div class="msub" id="msub"></div>
+    <div id="mhints"></div>
+    <div id="m-wsec">
+      <div id="prev-sets-block"></div>
+      <div class="sets-header">
+        <div class="sets-title">SERIES DE HOY</div>
+        <div class="unit-row">
+          <button class="ubtn active" id="btn-kg" onclick="setUnit('kg')">kg</button>
+          <button class="ubtn" id="btn-lb" onclick="setUnit('lb')">lb</button>
+        </div>
+      </div>
+      <div id="sets-list"></div>
+      <button class="add-set-btn" onclick="addSet()">+ AÑADIR SERIE</button>
+      <div class="vol-summary" id="vol-summary" style="display:none">
+        <div class="vol-box"><div class="vol-label">SERIES</div><div class="vol-val" id="vol-sets">0</div></div>
+        <div class="vol-box"><div class="vol-label">MÁXIMO</div><div class="vol-val" id="vol-max" style="color:var(--accent)">0</div></div>
+        <div class="vol-box"><div class="vol-label">VOLUMEN</div><div class="vol-val" id="vol-total" style="color:var(--orange)">0</div></div>
+        <div class="vol-box"><div class="vol-label">1RM EST</div><div class="vol-val" id="vol-1rm" style="color:var(--blue)">—</div></div>
+      </div>
+    </div>
+    <div id="m-csec" style="display:none">
+      <div class="cfields">
+        <div class="cfield"><div class="cflabel">Minutos</div><input class="cinput" type="number" id="c-min" placeholder="0" min="0"></div>
+        <div class="cfield"><div class="cflabel">Kilómetros</div><input class="cinput" type="number" id="c-km" placeholder="0" min="0" step="0.1"></div>
+      </div>
+    </div>
+    <textarea class="ninput" id="nval" placeholder="Notas (opcional)..." rows="2"></textarea>
+    <button class="sbtn" onclick="saveEntry()">GUARDAR</button>
+    <button class="dbtn" id="dbtn" onclick="deleteEntry()" style="display:none">BORRAR REGISTRO</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="exercises-db.js?v=47"></script>
+<script src="onboarding.js?v=47"></script>
+<script src="app.js?v=47"></script>
+</body>
+</html>
