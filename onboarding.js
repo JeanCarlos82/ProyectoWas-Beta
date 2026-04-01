@@ -720,6 +720,7 @@ function openManualDayPicker(dk){
   const overlay=document.getElementById('picker-overlay');
   const search=document.getElementById('picker-search');
   const btn=overlay.querySelector('.sbtn');
+  overlay.style.zIndex='400';
   search.value='';
   search.oninput=()=>renderManualPicker(search.value);
   btn.onclick=()=>doneManualPicker();
@@ -761,6 +762,7 @@ function doneManualPicker(){
   });
   const overlay=document.getElementById('picker-overlay');
   overlay.classList.remove('open');
+  overlay.style.zIndex='';
   // Restaurar picker original
   const search=document.getElementById('picker-search');
   const btn=overlay.querySelector('.sbtn');
