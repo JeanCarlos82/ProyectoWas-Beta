@@ -709,7 +709,7 @@ function updateIMC(){
     _s+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
     _s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>',
   ];
-  const actLevel=db.profile.activityLevel||2;
+  const actLevel=db.profile.activityLevel??2;
   const tdee=tmb*actMult[actLevel];
 
   let html=`
@@ -741,18 +741,13 @@ function updateIMC(){
         <span class="act-header-ico">${_s}<path d="M3 12h4l3-9 4 18 3-9h4"/></svg></span>
         <span class="health-label" style="margin:0">NIVEL DE ACTIVIDAD</span>
       </div>
-      <div class="act-level-bar">
-        <div class="act-level-fill" style="width:${(actLevel/4)*100}%"></div>
-        ${actLabels.map((_,i)=>`<div class="act-level-dot ${i<=actLevel?'filled':''}" style="left:${(i/4)*100}%"></div>`).join('')}
-      </div>
-      <div class="activity-list">${actLabels.map((l,i)=>`<div class="act-item ${actLevel===i?'active':''}" onclick="setActivity(${i})">
-        <span class="act-item-ico">${actIcons[i]}</span>
-        <div class="act-item-info">
-          <span class="act-item-name">${l}</span>
-          <span class="act-item-desc">${actExamples[i]}</span>
-        </div>
-        <span class="act-item-mult">×${actMult[i]}</span>
+      <div class="act-row">${actLabels.map((l,i)=>`<div class="act-dot ${actLevel===i?'active':''}" onclick="setActivity(${i})">
+        <span class="act-dot-ico">${actIcons[i]}</span>
       </div>`).join('')}</div>
+      <div class="act-detail">
+        <div class="act-detail-name">${actLabels[actLevel]}</div>
+        <div class="act-detail-desc">${actExamples[actLevel]} · multiplicador ×${actMult[actLevel]}</div>
+      </div>
     </div>`;
   wrap.innerHTML=html;
 }
