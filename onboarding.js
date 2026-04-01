@@ -577,13 +577,47 @@ function showWizardResult(){
   const trainDays=allDK.filter(dk=>!routine[dk].rest);
   const restCount=7-trainDays.length;
 
+  // Colores y iconos por tipo de label
+  const _i=_svg;
+  const labelStyles={
+    // Push (pecho/hombros/tríceps) → naranja
+    push:{color:'var(--orange)',ico:_i+'<polyline points="5 12 12 5 19 12"/><line x1="12" y1="5" x2="12" y2="19"/></svg>'},
+    // Pull (espalda/bíceps) → azul
+    pull:{color:'var(--blue)',ico:_i+'<polyline points="5 12 12 19 19 12"/><line x1="12" y1="19" x2="12" y2="5"/></svg>'},
+    // Legs/Piernas → verde
+    legs:{color:'var(--green)',ico:_i+'<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/></svg>'},
+    // Glúteos → verde
+    glut:{color:'var(--green)',ico:_i+'<circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 1 8 0"/></svg>'},
+    // Upper → accent
+    upper:{color:'var(--accent)',ico:_i+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>'},
+    // Lower → verde
+    lower:{color:'var(--green)',ico:_i+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/></svg>'},
+    // Full Body → accent
+    full:{color:'var(--accent)',ico:_i+'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'},
+    // Cardio → rojo/rosa
+    cardio:{color:'var(--red,#f87171)',ico:_i+'<path d="M3 12h4l3-9 4 18 3-9h4"/></svg>'},
+  };
+  function getLabelStyle(label){
+    const l=label.toLowerCase();
+    if(l.includes('glúteo'))return labelStyles.glut;
+    if(l.includes('push'))return labelStyles.push;
+    if(l.includes('pull'))return labelStyles.pull;
+    if(l.includes('legs')||l.includes('pierna'))return labelStyles.legs;
+    if(l.includes('upper'))return labelStyles.upper;
+    if(l.includes('lower'))return labelStyles.lower;
+    if(l.includes('cardio')&&!l.includes('+'))return labelStyles.cardio;
+    if(l.includes('full'))return labelStyles.full;
+    return{color:'var(--accent)',ico:_i+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'};
+  }
+
   let preview=trainDays.map(dk=>{
     const day=routine[dk];
+    const style=getLabelStyle(day.label);
     const exList=day.exercises.map(e=>{
       const isCardio=e.type==='cardio';
       return`<span class="wiz-dp-ex${isCardio?' cardio':''}">${e.name}</span>`;
     }).join('');
-    return`<div class="wiz-day-preview" onclick="this.classList.toggle('expanded')"><div class="wiz-dp-top"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">${day.label}</span><div class="wiz-dp-right"><span class="wiz-dp-count">${day.exercises.length}</span><span class="wiz-dp-arrow">›</span></div></div><div class="wiz-dp-exlist">${exList}</div></div>`;
+    return`<div class="wiz-day-preview" onclick="this.classList.toggle('expanded')"><div class="wiz-dp-top"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-tag" style="--tag-color:${style.color}"><span class="wiz-dp-tag-ico">${style.ico}</span>${day.label}</span><div class="wiz-dp-right"><span class="wiz-dp-count">${day.exercises.length}</span><span class="wiz-dp-arrow">›</span></div></div><div class="wiz-dp-exlist">${exList}</div></div>`;
   }).join('');
 
   container.innerHTML=`

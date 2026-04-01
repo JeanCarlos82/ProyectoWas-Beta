@@ -502,6 +502,9 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .wiz-dp-top{display:flex;align-items:center;gap:8px;}
 .wiz-dp-day{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--accent);width:30px;flex-shrink:0;}
 .wiz-dp-label{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);flex:1;}
+.wiz-dp-tag{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;color:var(--tag-color);background:color-mix(in srgb, var(--tag-color) 10%, transparent);border:1px solid color-mix(in srgb, var(--tag-color) 25%, transparent);padding:3px 8px;border-radius:6px;flex:1;display:flex;align-items:center;gap:5px;letter-spacing:0.3px;}
+.wiz-dp-tag-ico{flex-shrink:0;width:12px;height:12px;display:flex;align-items:center;justify-content:center;}
+.wiz-dp-tag-ico svg{width:12px;height:12px;}
 .wiz-dp-right{display:flex;align-items:center;gap:6px;}
 .wiz-dp-count{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);background:var(--card2);padding:2px 7px;border-radius:8px;}
 .wiz-dp-arrow{font-size:14px;color:var(--muted2);transition:transform 0.2s;}
