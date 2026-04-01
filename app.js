@@ -68,7 +68,7 @@ function entrySummaryText(e){
     return`${parts.join('+')} series · ${mx}${e.unit||'kg'} máx`;
   }
   if(e.weight)return`${e.weight} ${e.unit||'kg'}`;
-  if(e.type==='cardio'){const parts=[`${e.min||0}min`];if(e.intensity&&e.intensity!=='media')parts.push(e.intensity);if(e.km)parts.push(e.km+'km');if(e.cal)parts.push(e.cal+'kcal');return parts.join(' · ');}
+  if(e.type==='cardio'){const parts=[`${e.min||0}min`];if(e.intensity&&e.intensity!=='media')parts.push(e.intensity);if(e.km)parts.push(e.km+'km');if(e.cal)parts.push((e.calEstimated?'~':'')+e.cal+'kcal');return parts.join(' · ');}
   return '';
 }
 
@@ -1189,6 +1189,45 @@ function openModal(name,type){
 }
 function setCardioIntensity(val){
   document.querySelectorAll('.c-int-opt').forEach(el=>{el.classList.toggle('active',el.dataset.val===val);});
+  updateCalEstimate();
+}
+
+// MET values por ejercicio e intensidad (evidencia: Compendium of Physical Activities)
+// MET = consumo de oxígeno relativo al reposo. Calorías/min = MET × peso(kg) × 3.5 / 200
+const CARDIO_METS={
+  'Correr':{baja:6,media:8.5,alta:11},
+  'Caminadora':{baja:3.5,media:5,alta:8},
+  'Caminar':{baja:2.5,media:3.5,alta:5},
+  'Elíptica':{baja:4.5,media:6,alta:8},
+  'Bicicleta estática':{baja:4,media:6.5,alta:10},
+  'Stairmaster':{baja:6,media:8,alta:10},
+  'Remo ergómetro':{baja:5,media:7,alta:10},
+  'Saltar cuerda':{baja:8,media:10,alta:12},
+  'Natación':{baja:4.5,media:7,alta:10},
+  'Bicicleta de asalto':{baja:6,media:9,alta:12},
+  'HIIT':{baja:6,media:9,alta:12},
+};
+function estimateCalories(exercise,intensity,minutes,weightKg){
+  const mets=CARDIO_METS[exercise]||{baja:4,media:6,alta:8};
+  const met=mets[intensity]||mets.media;
+  return Math.round(met*weightKg*3.5/200*minutes);
+}
+function updateCalEstimate(){
+  const calEl=document.getElementById('c-cal');
+  const estEl=document.getElementById('c-cal-est');
+  if(!calEl||!estEl)return;
+  const min=parseFloat(document.getElementById('c-min').value)||0;
+  const intensity=document.querySelector('.c-int-opt.active')?.dataset.val||'media';
+  const w=parseFloat(db.profile.weight)||70;
+  if(min>0){
+    const est=estimateCalories(curEx,intensity,min,w);
+    estEl.textContent=`~${est} kcal aprox.`;
+    estEl.style.display='';
+    if(!calEl.value)calEl.placeholder=est;
+  } else {
+    estEl.style.display='none';
+    calEl.placeholder='—';
+  }
 }
 function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
 
@@ -1236,7 +1275,7 @@ function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))retur
 })();
 function saveEntry(){
   const t=today(),dk=todayDK();let entry;
-  if(curType==='cardio'){const calEl=document.getElementById('c-cal');entry={exercise:curEx,type:'cardio',min:parseFloat(document.getElementById('c-min').value)||0,intensity:document.querySelector('.c-int-opt.active')?.dataset.val||'media',km:parseFloat(document.getElementById('c-km').value)||0,cal:calEl?parseFloat(calEl.value)||0:0,notes:document.getElementById('nval').value.trim()};}
+  if(curType==='cardio'){const calEl=document.getElementById('c-cal');const min=parseFloat(document.getElementById('c-min').value)||0;const intensity=document.querySelector('.c-int-opt.active')?.dataset.val||'media';const userCal=calEl?parseFloat(calEl.value):0;const cal=userCal||estimateCalories(curEx,intensity,min,parseFloat(db.profile.weight)||70);entry={exercise:curEx,type:'cardio',min,intensity,km:parseFloat(document.getElementById('c-km').value)||0,cal,calEstimated:!userCal,notes:document.getElementById('nval').value.trim()};}
   else{const valid=currentSets.filter(s=>s.w!==''&&s.r!=='');if(!valid.length){toast('Agrega al menos una serie');return;}entry={exercise:curEx,type:'pesas',sets:valid.map(s=>({w:parseFloat(s.w),r:parseInt(s.r),warmup:!!s.warmup})),unit:curUnit,notes:document.getElementById('nval').value.trim()};}
   let sess=db.sessions.find(s=>s.date===t);
   const isNew=!sess;

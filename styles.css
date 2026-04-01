@@ -232,6 +232,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .c-int-opt.active[data-val="baja"]{border-color:var(--green);color:var(--green);background:rgba(74,222,128,0.06);}
 .c-int-opt.active[data-val="media"]{border-color:var(--orange);color:var(--orange);background:rgba(251,146,60,0.06);}
 .c-int-opt.active[data-val="alta"]{border-color:var(--red,#f87171);color:var(--red,#f87171);background:rgba(248,113,113,0.06);}
+.c-cal-est{font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);margin-top:4px;text-align:center;opacity:0.7;}
 
 .sbtn{width:100%;background:var(--accent);color:#000;border:none;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;padding:14px;border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform 0.1s,opacity 0.1s;}
 .sbtn:active{opacity:0.85;transform:scale(0.98);}
