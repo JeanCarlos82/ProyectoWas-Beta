@@ -1065,48 +1065,46 @@ function openModal(name,type){
 }
 function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
 
-// ── Swipe down to close modal ──
+// ── Swipe down to close any modal ──
 (function(){
-  let startY=0,currentY=0,isDragging=false;
-  const getModal=()=>document.querySelector('.overlay.open .modal');
+  let startY=0,currentY=0,isDragging=false,activeOverlay=null,activeModal=null;
   document.addEventListener('touchstart',e=>{
-    const modal=getModal();if(!modal)return;
-    const touch=e.touches[0];
-    // Only start drag from top area of modal or if scrolled to top
-    if(modal.scrollTop<=0){startY=touch.clientY;isDragging=true;currentY=0;}
+    const modal=document.querySelector('.overlay.open .modal');
+    if(!modal)return;
+    if(modal.scrollTop<=0){
+      startY=e.touches[0].clientY;isDragging=true;currentY=0;
+      activeModal=modal;
+      activeOverlay=modal.closest('.overlay');
+    }
   },{passive:true});
   document.addEventListener('touchmove',e=>{
-    if(!isDragging)return;
-    const modal=getModal();if(!modal)return;
+    if(!isDragging||!activeModal)return;
     currentY=e.touches[0].clientY-startY;
     if(currentY>0){
-      // Add rubber-band resistance
       const dampened=currentY*0.6;
-      modal.style.transform=`translateY(${dampened}px)`;
-      modal.style.transition='none';
-      // Fade overlay as you drag
-      const opacity=Math.max(0.3,1-dampened/400);
-      document.getElementById('overlay').style.opacity=opacity;
+      activeModal.style.transform=`translateY(${dampened}px)`;
+      activeModal.style.transition='none';
+      activeOverlay.style.opacity=Math.max(0.3,1-dampened/400);
     } else {currentY=0;}
   },{passive:true});
   document.addEventListener('touchend',()=>{
-    if(!isDragging)return;isDragging=false;
-    const modal=getModal();if(!modal)return;
-    const overlay=document.getElementById('overlay');
+    if(!isDragging||!activeModal)return;isDragging=false;
     if(currentY>80){
-      modal.style.transition='transform 0.4s cubic-bezier(0.32,0.72,0,1)';
-      modal.style.transform='translateY(100%)';
-      overlay.style.transition='opacity 0.35s ease';
-      overlay.style.opacity='0';
-      setTimeout(()=>{overlay.classList.remove('open');modal.style.transition='';modal.style.transform='';overlay.style.transition='';overlay.style.opacity='';},400);
+      activeModal.style.transition='transform 0.4s cubic-bezier(0.32,0.72,0,1)';
+      activeModal.style.transform='translateY(100%)';
+      activeOverlay.style.transition='opacity 0.35s ease';
+      activeOverlay.style.opacity='0';
+      const ov=activeOverlay,mo=activeModal;
+      setTimeout(()=>{ov.classList.remove('open');mo.style.transition='';mo.style.transform='';ov.style.transition='';ov.style.opacity='';},400);
     } else {
-      modal.style.transition='transform 0.35s cubic-bezier(0.32,0.72,0,1)';
-      modal.style.transform='';
-      overlay.style.transition='opacity 0.3s ease';
-      overlay.style.opacity='';
-      setTimeout(()=>{modal.style.transition='';overlay.style.transition='';},350);
+      activeModal.style.transition='transform 0.35s cubic-bezier(0.32,0.72,0,1)';
+      activeModal.style.transform='';
+      activeOverlay.style.transition='opacity 0.3s ease';
+      activeOverlay.style.opacity='';
+      const mo=activeModal,ov=activeOverlay;
+      setTimeout(()=>{mo.style.transition='';ov.style.transition='';},350);
     }
-    currentY=0;
+    currentY=0;activeModal=null;activeOverlay=null;
   });
 })();
 function saveEntry(){
