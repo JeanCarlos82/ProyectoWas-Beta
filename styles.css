@@ -250,16 +250,23 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .sess-day{font-family:'Bebas Neue',sans-serif;font-size:19px;letter-spacing:1px;}
 .sess-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);margin-top:2px;}
 .sess-tag{background:var(--card2);font-family:'DM Mono',monospace;font-size:10px;padding:4px 10px;border-radius:5px;color:var(--muted2);white-space:nowrap;}
-.sess-body{display:none;padding:0 14px 12px;border-top:1px solid var(--border);}
+.sess-body{display:none;padding:4px 14px 14px;border-top:1px solid var(--border);}
 .sess-body.open{display:block;}
-.sess-row{display:flex;align-items:flex-start;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.sess-row{padding:10px 0;border-bottom:1px solid var(--border);}
 .sess-row:last-child{border-bottom:none;}
-.sess-exname{font-size:13px;font-weight:500;}
-.sess-sets{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);margin-top:2px;line-height:1.6;}
-.sess-note{font-size:10px;color:var(--muted2);margin-top:2px;font-style:italic;}
+.sess-row-top{display:flex;align-items:center;justify-content:space-between;}
+.sess-exname{font-size:13px;font-weight:600;letter-spacing:0.2px;}
+.sess-sets-grid{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.sess-set-chip{font-family:'DM Mono',monospace;font-size:11px;background:var(--card2);border:1px solid var(--border);padding:4px 10px;border-radius:8px;color:var(--text);line-height:1.3;}
+.sess-set-chip small{font-size:9px;color:var(--muted2);}
+.sess-set-chip.warmup{opacity:0.45;border-style:dashed;}
+.sess-set-w{font-size:9px;color:var(--muted);font-weight:400;}
+.sess-note{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);margin-top:8px;font-style:italic;padding:4px 8px;background:var(--card2);border-radius:6px;border-left:2px solid var(--accent);}
 .sess-maxval{text-align:right;flex-shrink:0;margin-left:10px;}
 .sess-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);}
+.sess-val small{font-size:10px;color:var(--muted2);}
 .sess-val-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);}
+.sess-empty{color:var(--muted2);font-size:10px;padding:10px 0;font-family:'DM Mono',monospace;}
 .empty{text-align:center;padding:48px 20px;color:var(--muted2);}
 .empty-ico{font-size:36px;margin-bottom:10px;}
 .empty-txt{font-family:'DM Mono',monospace;font-size:12px;line-height:1.8;}

@@ -331,11 +331,16 @@ function renderSessCard(sess){
   const dur=sess.startTime&&sess.endTime?fmtDuration(sess.startTime,sess.endTime):'';
   const rows=(sess.entries||[]).map(e=>{
     let valHtml='',setsHtml='';
-    if(e.type==='cardio'){valHtml=`<div class="sess-val">${e.min||0}<small style="font-size:10px;color:var(--muted2)"> min</small></div>`;}
-    else{const mx=entryMaxWeight(e),sc=entrySetCount(e);valHtml=`<div class="sess-val">${mx||'?'}<small style="font-size:10px;color:var(--muted2)"> ${e.unit||'kg'}</small></div><div class="sess-val-sub">${sc.working} series</div>`;if(e.sets?.length)setsHtml=e.sets.map((s,i)=>`<span style="${s.warmup?'color:var(--muted)':''}">${i+1}. ${s.w}${e.unit||'kg'}×${s.r}${s.warmup?' (C)':''}</span>`).join(' · ');}
-    return`<div class="sess-row"><div><div class="sess-exname">${e.exercise}</div>${setsHtml?`<div class="sess-sets">${setsHtml}</div>`:''}${e.notes?`<div class="sess-note">"${e.notes}"</div>`:''}</div><div class="sess-maxval">${valHtml}</div></div>`;
+    if(e.type==='cardio'){
+      valHtml=`<div class="sess-val">${e.min||0}<small> min</small></div>`;
+    }else{
+      const mx=entryMaxWeight(e),sc=entrySetCount(e);
+      valHtml=`<div class="sess-val">${mx||'?'}<small> ${e.unit||'kg'}</small></div><div class="sess-val-sub">${sc.working} series</div>`;
+      if(e.sets?.length) setsHtml=`<div class="sess-sets-grid">${e.sets.map((s,i)=>`<div class="sess-set-chip${s.warmup?' warmup':''}">${s.w}<small>${e.unit||'kg'}</small> × ${s.r}${s.warmup?' <span class="sess-set-w">C</span>':''}</div>`).join('')}</div>`;
+    }
+    return`<div class="sess-row"><div class="sess-row-top"><div class="sess-exname">${e.exercise}</div><div class="sess-maxval">${valHtml}</div></div>${setsHtml||''}${e.notes?`<div class="sess-note">${e.notes}</div>`:''}</div>`;
   }).join('');
-  return`<div class="sess-card"><div class="sess-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><div><div class="sess-day">${(DL[sess.dayKey]||sess.dayKey).toUpperCase()}</div><div class="sess-date">${fmtDF(sess.date)}${dur?' · '+dur:''}</div></div><div class="sess-tag">${label.toUpperCase()}</div></div><div class="sess-body">${rows||'<div style="color:var(--muted2);font-size:10px;padding:8px 0;font-family:\'DM Mono\',monospace">Sin ejercicios</div>'}</div></div>`;
+  return`<div class="sess-card"><div class="sess-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><div><div class="sess-day">${(DL[sess.dayKey]||sess.dayKey).toUpperCase()}</div><div class="sess-date">${fmtDF(sess.date)}${dur?' · '+dur:''}</div></div><div class="sess-tag">${label.toUpperCase()}</div></div><div class="sess-body">${rows||'<div class="sess-empty">Sin ejercicios registrados</div>'}</div></div>`;
 }
 function renderHist(){
   const list=document.getElementById('sess-list'),sorted=[...db.sessions].sort((a,b)=>b.date.localeCompare(a.date));
