@@ -301,7 +301,10 @@
         <div class="cfield"><div class="cflabel">Calorías (opcional)</div><input class="cinput" type="number" id="c-cal" placeholder="—" min="0"><div class="c-cal-est" id="c-cal-est" style="display:none"></div></div>
       </div>
     </div>
-    <textarea class="ninput" id="nval" placeholder="Notas (opcional)..." rows="2"></textarea>
+    <div class="note-toggle-wrap">
+      <button class="note-toggle-btn" onclick="this.parentElement.classList.toggle('open')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span>Nota</span></button>
+      <textarea class="ninput" id="nval" placeholder="Escribe una nota..." rows="2"></textarea>
+    </div>
     <button class="sbtn" onclick="saveEntry()">GUARDAR</button>
     <button class="dbtn" id="dbtn" onclick="deleteEntry()" style="display:none">BORRAR REGISTRO</button>
   </div>
