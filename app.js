@@ -1160,7 +1160,7 @@ function renderSets(){
   const list=document.getElementById('sets-list');
   if(!currentSets.length){list.innerHTML='';updateVolSummary();return;}
   list.innerHTML=currentSets.map((s,i)=>`<div class="set-row ${s.warmup?'set-warmup':''}">
-    <span class="set-warm ${s.warmup?'on':''}" onclick="toggleWarmup(${i})">${s.warmup?'C':'T'}</span>
+    <span class="set-warm ${s.warmup?'on':''}" onclick="toggleWarmup(${i})">${s.warmup?'C':'N'}</span>
     <div class="set-inputs">
       <div class="set-input-group"><span class="set-input-lbl" id="su-${i}">${curUnit}</span><input class="set-w" type="number" inputmode="decimal" min="0" step="0.5" placeholder="0" value="${s.w}" oninput="currentSets[${i}].w=this.value;updateVolSummary()"></div>
       <span class="set-x-label">×</span>
@@ -1177,7 +1177,7 @@ function updateVolSummary(){
   const mx=working.length?Math.max(...working.map(s=>parseFloat(s.w))):0;
   const vol=working.reduce((a,s)=>a+(parseFloat(s.w)||0)*(parseInt(s.r)||0),0);
   const best1rm=working.length?Math.max(...working.map(s=>calc1RM(parseFloat(s.w)||0,parseInt(s.r)||0))):0;
-  document.getElementById('vol-sets').textContent=`${currentSets.filter(s=>s.warmup).length?currentSets.filter(s=>s.warmup).length+'C+':''}${working.length}T`;
+  document.getElementById('vol-sets').textContent=`${currentSets.filter(s=>s.warmup).length?currentSets.filter(s=>s.warmup).length+'C+':''}${working.length}N`;
   document.getElementById('vol-max').textContent=mx;
   document.getElementById('vol-total').textContent=Math.round(vol);
   document.getElementById('vol-1rm').textContent=best1rm||'—';
