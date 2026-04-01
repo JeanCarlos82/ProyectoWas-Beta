@@ -298,28 +298,48 @@ function adaptExercises(routine,{age,weight,height,experience,sex,goal,activityL
   }
 
   if(goal==='general'){
-    // General: añadir core a días que no lo tengan
+    // General: core + cardio ligero en 1-2 días para salud cardiovascular
     const coreExs=['Plancha','Crunch','Elevación de piernas'];
     let ci=0;
+    let cardioAdded=0;
+    const maxCardio=2; // 1-2 días de cardio para general
+    let cardioName=isFem?'Stairmaster':'Elíptica';
+    if(isHeavy||isOlder)cardioName='Elíptica';
+    if(isVeryHeavy)cardioName='Bicicleta estática';
+    if(isSedentary&&isBeginner)cardioName='Caminadora';
+
     for(const dk in adapted){
       const d=adapted[dk];
       if(d.rest||!d.exercises)continue;
+      // Core en todos los días que no lo tengan
       const hasCore=d.exercises.some(e=>coreExs.includes(e.name)||e.name==='Russian twist');
       if(!hasCore&&d.exercises.length<=6){
         d.exercises.push({name:coreExs[ci%coreExs.length],type:'pesas'});
         ci++;
       }
+      // Cardio en 1-2 días (reemplazar último ejercicio)
+      const hasCardio=d.exercises.some(e=>e.type==='cardio');
+      if(!hasCardio&&cardioAdded<maxCardio){
+        d.exercises[d.exercises.length-1]={name:cardioName,type:'cardio'};
+        d.label=d.label+' + Cardio';
+        cardioAdded++;
+      }
     }
-    // Sedentario general: agregar caminadora como calentamiento activo
-    if(isSedentary){
-      let added=false;
-      for(const dk in adapted){
-        const d=adapted[dk];
-        if(d.rest||!d.exercises||added)continue;
-        if(!d.exercises.some(e=>e.type==='cardio')&&d.exercises.length<=5){
-          d.exercises.push({name:'Caminadora',type:'cardio'});
-          added=true;
-        }
+  }
+
+  if(goal==='musculo'){
+    // Hipertrofia: si tiene 5+ días, añadir cardio ligero en 1 día (recuperación activa)
+    const trainDayKeys=Object.keys(adapted).filter(dk=>!adapted[dk].rest&&adapted[dk].exercises?.length);
+    if(trainDayKeys.length>=5){
+      const lastTrainDay=trainDayKeys[trainDayKeys.length-1];
+      const d=adapted[lastTrainDay];
+      const hasCardio=d.exercises.some(e=>e.type==='cardio');
+      if(!hasCardio){
+        let cardioName=isFem?'Stairmaster':'Elíptica';
+        if(isHeavy||isOlder)cardioName='Elíptica';
+        if(isVeryHeavy)cardioName='Bicicleta estática';
+        d.exercises[d.exercises.length-1]={name:cardioName,type:'cardio'};
+        d.label=d.label+' + Cardio ligero';
       }
     }
   }
@@ -553,18 +573,26 @@ function showWizardResult(){
   const dl={lunes:"Lun",martes:"Mar",miercoles:"Mié",jueves:"Jue",viernes:"Vie",sabado:"Sáb",domingo:"Dom"};
   const allDK=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
 
-  let preview=allDK.map(dk=>{
+  // Solo mostrar días de entrenamiento (descanso se omite para ahorrar espacio)
+  const trainDays=allDK.filter(dk=>!routine[dk].rest);
+  const restCount=7-trainDays.length;
+
+  let preview=trainDays.map(dk=>{
     const day=routine[dk];
-    if(day.rest)return`<div class="wiz-day-preview rest"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">Descanso</span></div>`;
-    const exList=day.exercises.map(e=>`<span class="wiz-dp-ex">${e.name}</span>`).join('');
-    return`<div class="wiz-day-preview"><div class="wiz-dp-top"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">${day.label}</span><span class="wiz-dp-count">${day.exercises.length}</span></div><div class="wiz-dp-exlist">${exList}</div></div>`;
+    const exList=day.exercises.map(e=>{
+      const isCardio=e.type==='cardio';
+      return`<span class="wiz-dp-ex${isCardio?' cardio':''}">${e.name}</span>`;
+    }).join('');
+    return`<div class="wiz-day-preview" onclick="this.classList.toggle('expanded')"><div class="wiz-dp-top"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">${day.label}</span><div class="wiz-dp-right"><span class="wiz-dp-count">${day.exercises.length}</span><span class="wiz-dp-arrow">›</span></div></div><div class="wiz-dp-exlist">${exList}</div></div>`;
   }).join('');
 
   container.innerHTML=`
     <div class="wiz-title">Tu rutina personalizada</div>
-    <div class="wiz-subtitle">${numDays} días · ${splitNames[templateKey]||'Personalizada'}</div>
-    <div class="wiz-preview">${preview}</div>
-    <div class="wiz-result-note">Puedes cambiar ejercicios en cualquier momento desde <b>Perfil → Mi Rutina</b></div>
+    <div class="wiz-subtitle">${numDays} días de entrenamiento · ${restCount} de descanso</div>
+    <div class="wiz-result-scroll">
+      <div class="wiz-preview">${preview}</div>
+    </div>
+    <div class="wiz-result-note">Toca un día para ver los ejercicios · Personaliza en <b>Perfil → Mi Rutina</b></div>
     <div class="wiz-result-actions">
       <button class="sbtn" onclick="applyWizardRoutine()">EMPEZAR A ENTRENAR</button>
       <button class="wiz-customize-btn" onclick="applyWizardRoutine(true)">PERSONALIZAR AHORA</button>
