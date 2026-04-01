@@ -1016,7 +1016,7 @@ function toggleDrop(id){
 }
 
 // ── Feedback ──
-const FEEDBACK_URL=''; // Set your Google Form URL here
+const FEEDBACK_URL='https://docs.google.com/forms/d/e/1FAIpQLSfLQckaUxUdv0gEPzD7PS1UxdjiTVidmkqTCDjPf9IgBLU29A/viewform';
 function openFeedback(){
   if(FEEDBACK_URL){window.open(FEEDBACK_URL,'_blank');}
   else{toast('Configura el link de feedback en app.js');}
