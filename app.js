@@ -366,9 +366,20 @@ function renderHist(){
         <span class="hist-month-arrow ${isFirst?'rot':''}">›</span>
       </div>
       <div class="hist-month-body ${isFirst?'open':''}">`;
+    let wi=0;
     mo.weeks.forEach(wk=>{
-      html+=`<div class="hist-week"><span class="hist-week-dates">${wk.label}</span><span class="hist-week-count">${wk.sessions.length} sesiones</span></div>`;
-      html+=`<div class="sess-list-inner">${wk.sessions.map(renderSessCard).join('')}</div>`;
+      const isFirstWeek=isFirst&&wi===0;
+      html+=`<div class="hist-week-block">
+        <div class="hist-week-hdr" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.hist-week-arrow').classList.toggle('rot')">
+          <span class="hist-week-dates">Semana del ${wk.label}</span>
+          <div class="hist-week-right">
+            <span class="hist-week-count">${wk.sessions.length}</span>
+            <span class="hist-week-arrow ${isFirstWeek?'rot':''}">›</span>
+          </div>
+        </div>
+        <div class="hist-week-body ${isFirstWeek?'open':''}">${wk.sessions.map(renderSessCard).join('')}</div>
+      </div>`;
+      wi++;
     });
     html+=`</div></div>`;
     mi++;
