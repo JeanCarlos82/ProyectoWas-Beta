@@ -881,7 +881,10 @@ function logBW(){
 function delBW(i){db.bw.splice(i,1);ps('gym_bw',db.bw);renderBWChart();}
 function renderBWChart(){
   const bws=db.bw,empty=document.getElementById('bw-empty'),wrap=document.getElementById('bw-chart-wrap'),canvas=document.getElementById('bw-chart'),hist=document.getElementById('bw-hist');
-  hist.innerHTML=[...bws].reverse().slice(0,8).map((b,i)=>`<div class="bw-hrow"><span class="bw-hdate">${fmtDF(b.date)}</span><span class="bw-hval">${b.v} kg</span><button class="bw-hdel" onclick="delBW(${bws.length-1-i})">×</button></div>`).join('');
+  const allRows=[...bws].reverse().map((b,i)=>`<div class="bw-hrow"><span class="bw-hdate">${fmtDF(b.date)}</span><span class="bw-hval">${b.v} kg</span><button class="bw-hdel" onclick="delBW(${bws.length-1-i})">×</button></div>`);
+  const showAll=hist.dataset.expanded==='true';
+  const visible=showAll?allRows:allRows.slice(0,3);
+  hist.innerHTML=visible.join('')+(allRows.length>3&&!showAll?`<button class="bw-more" onclick="this.parentElement.dataset.expanded='true';renderBWChart()">Ver ${allRows.length-3} más</button>`:'')+(showAll&&allRows.length>3?`<button class="bw-more" onclick="this.parentElement.dataset.expanded='false';renderBWChart()">Ver menos</button>`:'');
   if(bws.length<2){empty.style.display='flex';if(wrap)wrap.style.display='none';if(bwCh){bwCh.destroy();bwCh=null;}return;}
   empty.style.display='none';if(wrap)wrap.style.display='block';if(bwCh)bwCh.destroy();
   bwCh=new Chart(canvas.getContext('2d'),{type:'line',data:{labels:bws.map(b=>fmtD(b.date)),datasets:[{data:bws.map(b=>b.v),borderColor:'#3ab4ff',backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,100);g.addColorStop(0,'rgba(58,180,255,0.18)');g.addColorStop(1,'rgba(58,180,255,0)');return g;},borderWidth:2,pointBackgroundColor:'#3ab4ff',pointRadius:3,fill:true,tension:0.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',bodyColor:'#f2f2f2',callbacks:{label:ctx=>`${ctx.raw} kg`}}},scales:{x:{ticks:{color:'#666',font:{size:8}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}},y:{ticks:{color:'#666',font:{size:8}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}}}}});

@@ -388,6 +388,8 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .bw-chart-box{background:var(--card2);border-radius:12px;padding:12px;margin-bottom:10px;}
 .bw-chart-empty{display:flex;align-items:center;justify-content:center;height:100px;color:var(--muted2);font-family:'DM Mono',monospace;font-size:11px;}
 .bw-hist{display:flex;flex-direction:column;gap:4px;}
+.bw-more{width:100%;background:none;border:1px dashed var(--border);border-radius:8px;padding:6px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.bw-more:active{opacity:0.7;}
 .bw-hrow{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border-radius:10px;border:1px solid var(--border);}
 .bw-hdate{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);}
 .bw-hval{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
