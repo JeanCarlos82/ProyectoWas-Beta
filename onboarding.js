@@ -697,9 +697,11 @@ function showManualBuilder(){
 
   const dayTabs=wizardData.selectedDays.map(dk=>{
     const exCount=manualRoutine[dk]?.exercises?.length||0;
+    const copyBtn=exCount>0?`<span class="wiz-md-copy" onclick="event.stopPropagation();showCopyDay('${dk}')" title="Copiar a otro día">${_svg}<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>`:'';
     return`<div class="wiz-manual-day" onclick="openManualDayPicker('${dk}')">
       <span class="wiz-md-name">${dl[dk]}</span>
       <span class="wiz-md-count">${exCount} ej.</span>
+      ${copyBtn}
       <span class="wiz-md-arrow">›</span>
     </div>`;
   }).join('');
@@ -711,6 +713,22 @@ function showManualBuilder(){
     <div class="wiz-subtitle">Toca cada día para agregar ejercicios</div>
     <div class="wiz-manual-days">${dayTabs}</div>
     ${totalEx>0?`<button class="sbtn" onclick="applyManualRoutine()" style="margin-top:16px">EMPEZAR A ENTRENAR</button>`:'<div class="wiz-hint">Agrega al menos un ejercicio</div>'}`;
+}
+
+function showCopyDay(fromDk){
+  const dl={lunes:"Lun",martes:"Mar",miercoles:"Mié",jueves:"Jue",viernes:"Vie",sabado:"Sáb",domingo:"Dom"};
+  const targets=wizardData.selectedDays.filter(dk=>dk!==fromDk);
+  if(!targets.length){toast('No hay otros días');return;}
+  const btns=targets.map(dk=>`<div class="wiz-copy-target" onclick="copyDayTo('${fromDk}','${dk}')">${dl[dk]}</div>`).join('');
+  const container=document.getElementById('wizard-content');
+  const existing=container.querySelector('.wiz-copy-popup');
+  if(existing){existing.remove();showManualBuilder();return;}
+  container.insertAdjacentHTML('beforeend',`<div class="wiz-copy-popup"><div class="wiz-copy-label">Copiar a:</div><div class="wiz-copy-targets">${btns}</div></div>`);
+}
+function copyDayTo(from,to){
+  manualRoutine[to]={...manualRoutine[to],exercises:[...(manualRoutine[from]?.exercises||[]).map(e=>({...e}))]};
+  toast('Copiado ✓');
+  showManualBuilder();
 }
 
 function openManualDayPicker(dk){
