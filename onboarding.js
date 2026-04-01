@@ -4,51 +4,50 @@
 // Enfoque: compuestos pesados como base, progresión de fuerza,
 // equilibrio push/pull, piernas 2x/semana mínimo
 const TEMPLATES_M={
-  // 3 días: Full body cada sesión — compuestos principales rotan
+  // 3 días: Full body — compuestos + máquinas de aislamiento
   fullbody_3:{
     exercises:[
       [{name:"Sentadilla",type:"pesas"},{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
       [{name:"Peso muerto rumano",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Curl martillo",type:"pesas"},{name:"Press francés",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Plancha",type:"pesas"}]
+      [{name:"Prensa de pierna",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Plancha",type:"pesas"}]
     ],labels:["Full Body A","Full Body B","Full Body C"]
   },
-  // 3 días fat loss: 2 full body + 1 cardio/circuito
   fullbody_cardio_3:{
     exercises:[
-      [{name:"Sentadilla",type:"pesas"},{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Sentadilla",type:"pesas"},{name:"Press banca",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Plancha",type:"pesas"}],
       [{name:"Correr",type:"cardio"},{name:"Elíptica",type:"cardio"}],
       [{name:"Peso muerto rumano",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}]
     ],labels:["Full Body","Cardio","Full Body"]
   },
-  // 4 días: Upper/Lower — cada grupo muscular 2x/semana
+  // 4 días: Upper/Lower — máquinas para aislamiento, peso libre para compuestos
   upperlower_4:{
     exercises:[
       [{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"}],
-      [{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Curl martillo",type:"pesas"},{name:"Press francés",type:"pesas"},{name:"Face pull",type:"pesas"}],
+      [{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Pantorrillas en prensa",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Curl martillo",type:"pesas"},{name:"Tríceps en máquina",type:"pesas"},{name:"Face pull",type:"pesas"}],
       [{name:"Sentadilla búlgara",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
     ],labels:["Upper A","Lower A","Upper B","Lower B"]
   },
-  // 5 días: Push/Pull/Legs + Upper/Lower
+  // 5 días: PPL + Upper/Lower — mix peso libre y máquinas
   pplul_5:{
     exercises:[
-      [{name:"Press banca",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Press francés",type:"pesas"}],
-      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
-      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"}],
+      [{name:"Press banca",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Contractor de pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
+      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas en prensa",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Curl en máquina",type:"pesas"},{name:"Tríceps en máquina",type:"pesas"},{name:"Elevaciones laterales en máquina",type:"pesas"}],
       [{name:"Sentadilla búlgara",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Plancha",type:"pesas"}]
     ],labels:["Push","Pull","Legs","Upper","Lower"]
   },
-  // 6 días: PPL x2 — máximo volumen por grupo muscular
+  // 6 días: PPL x2 — día 1 peso libre, día 2 más máquinas (variedad de estímulo)
   ppl_6:{
     exercises:[
       [{name:"Press banca",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Aperturas mancuernas",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
       [{name:"Dominadas",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
-      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Aperturas en polea",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Elevaciones frontales",type:"pesas"},{name:"Press francés",type:"pesas"},{name:"Fondos en banco",type:"pesas"}],
-      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Pájaros",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl predicador",type:"pesas"},{name:"Face pull",type:"pesas"}],
-      [{name:"Sentadilla frontal",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Crunch",type:"pesas"}]
-    ],labels:["Push","Pull","Legs","Push","Pull","Legs"]
+      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
+      [{name:"Press inclinado en máquina",type:"pesas"},{name:"Contractor de pecho",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Elevaciones laterales en máquina",type:"pesas"},{name:"Tríceps en máquina",type:"pesas"},{name:"Press francés",type:"pesas"}],
+      [{name:"Pulldown en máquina",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Remo T-bar",type:"pesas"},{name:"Curl en máquina",type:"pesas"},{name:"Curl predicador",type:"pesas"},{name:"Face pull",type:"pesas"}],
+      [{name:"Hack squat",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas en prensa",type:"pesas"},{name:"Crunch en máquina",type:"pesas"}]
+    ],labels:["Push Libre","Pull Libre","Legs Libre","Push Máquinas","Pull Máquinas","Legs Máquinas"]
   }
 };
 
@@ -59,51 +58,50 @@ const TEMPLATES_M={
 // Las mujeres recuperan más rápido (24-48h vs 48-72h hombres) permitiendo
 // mayor frecuencia de glúteos.
 const TEMPLATES_F={
-  // 3 días: Full body con prioridad glúteos en cada sesión
+  // 3 días: Full body con prioridad glúteos + máquinas de aislamiento
   fullbody_3:{
     exercises:[
       [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Crunch",type:"pesas"}]
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Patada de glúteo en máquina",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Crunch",type:"pesas"}]
     ],labels:["Full Body A","Full Body B","Full Body C"]
   },
-  // 3 días fat loss: 2 full body + 1 cardio con Stairmaster
   fullbody_cardio_3:{
     exercises:[
       [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Plancha",type:"pesas"}],
       [{name:"Stairmaster",type:"cardio"},{name:"Elíptica",type:"cardio"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Patada de glúteo en máquina",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
     ],labels:["Full Body","Cardio","Full Body"]
   },
-  // 4 días: 2 lower (glúteo-focus) + 2 upper, glúteos se trabajan 2x/semana
+  // 4 días: 2 lower + 2 upper — máquinas integradas
   upperlower_4:{
     exercises:[
-      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}]
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo en máquina",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas en prensa",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales en máquina",type:"pesas"},{name:"Crunch",type:"pesas"}]
     ],labels:["Glúteos & Piernas A","Upper A","Glúteos & Piernas B","Upper B"]
   },
-  // 5 días: 3 lower + 2 upper, glúteos se trabajan 3x/semana
+  // 5 días: 3 lower + 2 upper — glúteos 3x/semana con variedad máquina/libre
   pplul_5:{
     exercises:[
-      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}],
-      [{name:"Hip thrust",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Peso muerto sumo",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Stairmaster",type:"cardio"}]
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo en máquina",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas en prensa",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales en máquina",type:"pesas"},{name:"Crunch",type:"pesas"}],
+      [{name:"Hip thrust en máquina",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Peso muerto sumo",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Stairmaster",type:"cardio"}]
     ],labels:["Glúteos Heavy","Upper Push","Piernas & Core","Upper Pull","Glúteos & Cardio"]
   },
-  // 6 días: 3 lower + 2 upper + 1 cardio/core, glúteos 3x/semana
+  // 6 días: 3 lower + 2 upper + 1 cardio/core — días alternos libre/máquina
   ppl_6:{
     exercises:[
-      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Crunch",type:"pesas"}],
-      [{name:"Hip thrust",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Peso muerto sumo",type:"pesas"},{name:"Aductores en máquina",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"}],
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral sentado",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press de hombro en máquina",type:"pesas"},{name:"Remo en máquina",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas en prensa",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Press inclinado en máquina",type:"pesas"},{name:"Contractor de pecho",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl en máquina",type:"pesas"},{name:"Crunch en máquina",type:"pesas"}],
+      [{name:"Hip thrust en máquina",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Peso muerto sumo",type:"pesas"},{name:"Aductores en máquina",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"}],
       [{name:"Stairmaster",type:"cardio"},{name:"Elíptica",type:"cardio"},{name:"Crunch",type:"pesas"},{name:"Russian twist",type:"pesas"},{name:"Elevación de piernas",type:"pesas"},{name:"Plancha",type:"pesas"}]
-    ],labels:["Glúteos Heavy","Upper Push","Piernas","Upper Pull","Glúteos & Aductores","Cardio & Core"]
+    ],labels:["Glúteos Libre","Upper Libre","Piernas Libre","Upper Máquinas","Glúteos Máquinas","Cardio & Core"]
   }
 };
 
@@ -267,21 +265,47 @@ function adaptExercises(routine,{age,weight,height,experience,sex,goal,activityL
   // FASE 3: Adaptación por OBJETIVO
   // ═══════════════════════════════════════════
 
-  if(goal==='grasa'){
-    // Fat loss: cardio al final de cada día de pesas
-    let cardioName='Correr';
-    if(isFem)cardioName='Stairmaster';
-    if(isHeavy||isOlder)cardioName='Elíptica';
-    if(isVeryHeavy)cardioName='Bicicleta estática';
-    // Sedentario principiante → caminadora (más suave que correr)
-    if(isSedentary&&isBeginner)cardioName='Caminadora';
+  // Selección inteligente de cardio según objetivo + perfil completo
+  // Cada objetivo tiene un tipo de cardio óptimo por razón específica:
+  // - Grasa: alta quema calórica → HIIT, correr, Stairmaster
+  // - Fuerza: mínima interferencia con recuperación → caminar, bici
+  // - Músculo: recuperación activa sin catabolismo → elíptica, caminar
+  // - General: salud cardiovascular → variedad moderada
+  function bestCardio(){
+    // Restricciones físicas primero (seguridad)
+    if(isVeryHeavy)return'Bicicleta estática'; // cero impacto articular
+    if(isSedentary&&isBeginner)return'Caminadora'; // empezar suave
+    if(isHeavy)return'Elíptica'; // bajo impacto
+    if(isSenior)return'Elíptica'; // articulaciones
 
+    // Por objetivo
+    if(goal==='grasa'){
+      if(isFem)return'Stairmaster'; // glúteos + quema
+      if(isAdvanced)return'HIIT'; // máxima quema en poco tiempo
+      return'Correr'; // alta quema calórica
+    }
+    if(goal==='fuerza'){
+      return'Caminar'; // mínima interferencia con fuerza
+    }
+    if(goal==='musculo'){
+      if(isFem)return'Stairmaster'; // activa glúteos sin catabolismo
+      return'Elíptica'; // bajo impacto, recuperación activa
+    }
+    // General
+    if(isFem)return'Stairmaster';
+    if(isOlder)return'Elíptica';
+    return'Elíptica';
+  }
+  const optCardio=bestCardio();
+
+  if(goal==='grasa'){
+    // Fat loss: cardio al final de cada día de pesas (alta frecuencia)
     for(const dk in adapted){
       const d=adapted[dk];
       if(d.rest||!d.exercises)continue;
       const hasCardio=d.exercises.some(e=>e.type==='cardio');
       if(!hasCardio){
-        d.exercises[d.exercises.length-1]={name:cardioName,type:'cardio'};
+        d.exercises[d.exercises.length-1]={name:optCardio,type:'cardio'};
         d.label=d.label+' + Cardio';
       }
     }
@@ -295,62 +319,73 @@ function adaptExercises(routine,{age,weight,height,experience,sex,goal,activityL
         const d=adapted[dk];
         if(d.rest||!d.exercises)continue;
         d.exercises=d.exercises.map(ex=>{
-          if(ex.name==='Aperturas mancuernas'||ex.name==='Aperturas en polea')return{...ex,name:'Press cerrado'};
-          if(ex.name==='Curl predicador')return{...ex,name:'Curl con barra'};
-          if(ex.name==='Patada de tríceps')return{...ex,name:'Press francés'};
+          if(ex.name==='Aperturas mancuernas'||ex.name==='Aperturas en polea'||ex.name==='Contractor de pecho')return{...ex,name:'Press cerrado'};
+          if(ex.name==='Curl predicador'||ex.name==='Curl en máquina')return{...ex,name:'Curl con barra'};
+          if(ex.name==='Patada de tríceps'||ex.name==='Tríceps en máquina')return{...ex,name:'Press francés'};
           if(ex.name==='Elevaciones frontales')return{...ex,name:'Press militar'};
-          // Avanzado mujer fuerza: más hip thrust y peso muerto
           if(isAdvanced&&isFem&&ex.name==='Patada de glúteo')return{...ex,name:'Peso muerto sumo'};
+          if(isAdvanced&&isFem&&ex.name==='Patada de glúteo en máquina')return{...ex,name:'Peso muerto sumo'};
           return ex;
         });
       }
     }
-    // Principiante fuerza: mantener compuestos básicos, no cambiar a pesados aún
+    // Cardio ligero en 1 día de fuerza (caminar = mínima interferencia)
+    let addedFCardio=false;
+    for(const dk in adapted){
+      const d=adapted[dk];
+      if(d.rest||!d.exercises||addedFCardio)continue;
+      const hasCardio=d.exercises.some(e=>e.type==='cardio');
+      if(!hasCardio){
+        d.exercises.push({name:optCardio,type:'cardio'});
+        addedFCardio=true;
+      }
+    }
   }
 
   if(goal==='musculo'){
-    // Hipertrofia: asegurar variedad de ángulos y aislamiento
-    // Avanzado: agregar ejercicios de aislamiento extra
+    // Hipertrofia: variedad de ángulos + aislamiento
     if(isAdvanced){
       for(const dk in adapted){
         const d=adapted[dk];
         if(d.rest||!d.exercises)continue;
-        const hasChest=d.exercises.some(e=>['Press banca','Press inclinado','Press con mancuernas'].includes(e.name));
-        const hasBack=d.exercises.some(e=>['Jalón al pecho','Remo con barra','Remo con mancuerna'].includes(e.name));
-        // Agregar aislamiento si hay espacio y compuestos del grupo
-        if(hasChest&&d.exercises.length<7&&!d.exercises.some(e=>e.name==='Aperturas en polea')){
-          d.exercises.push({name:'Aperturas en polea',type:'pesas'});
+        const hasChest=d.exercises.some(e=>['Press banca','Press inclinado','Press con mancuernas','Press en máquina','Press inclinado en máquina'].includes(e.name));
+        const hasBack=d.exercises.some(e=>['Jalón al pecho','Remo con barra','Remo con mancuerna','Remo en máquina','Pulldown en máquina'].includes(e.name));
+        if(hasChest&&d.exercises.length<7&&!d.exercises.some(e=>['Aperturas en polea','Contractor de pecho'].includes(e.name))){
+          d.exercises.push({name:'Contractor de pecho',type:'pesas'});
         } else if(hasBack&&d.exercises.length<7&&!d.exercises.some(e=>e.name==='Face pull')){
           d.exercises.push({name:'Face pull',type:'pesas'});
         }
       }
     }
+    // Cardio ligero en 1 día (5+ días) para recuperación activa
+    const trainDayKeys=Object.keys(adapted).filter(dk=>!adapted[dk].rest&&adapted[dk].exercises?.length);
+    if(trainDayKeys.length>=5){
+      const lastDay=adapted[trainDayKeys[trainDayKeys.length-1]];
+      if(!lastDay.exercises.some(e=>e.type==='cardio')){
+        lastDay.exercises[lastDay.exercises.length-1]={name:optCardio,type:'cardio'};
+        lastDay.label=lastDay.label+' + Cardio ligero';
+      }
+    }
   }
 
   if(goal==='general'){
-    // General: core + cardio ligero en 1-2 días para salud cardiovascular
+    // General: core + cardio en 1-2 días para salud cardiovascular
     const coreExs=['Plancha','Crunch','Elevación de piernas'];
     let ci=0;
     let cardioAdded=0;
-    const maxCardio=2; // 1-2 días de cardio para general
-    let cardioName=isFem?'Stairmaster':'Elíptica';
-    if(isHeavy||isOlder)cardioName='Elíptica';
-    if(isVeryHeavy)cardioName='Bicicleta estática';
-    if(isSedentary&&isBeginner)cardioName='Caminadora';
+    const maxCardio=2;
 
     for(const dk in adapted){
       const d=adapted[dk];
       if(d.rest||!d.exercises)continue;
-      // Core en todos los días que no lo tengan
       const hasCore=d.exercises.some(e=>coreExs.includes(e.name)||e.name==='Russian twist');
       if(!hasCore&&d.exercises.length<=6){
         d.exercises.push({name:coreExs[ci%coreExs.length],type:'pesas'});
         ci++;
       }
-      // Cardio en 1-2 días (reemplazar último ejercicio)
       const hasCardio=d.exercises.some(e=>e.type==='cardio');
       if(!hasCardio&&cardioAdded<maxCardio){
-        d.exercises[d.exercises.length-1]={name:cardioName,type:'cardio'};
+        d.exercises[d.exercises.length-1]={name:optCardio,type:'cardio'};
         d.label=d.label+' + Cardio';
         cardioAdded++;
       }
