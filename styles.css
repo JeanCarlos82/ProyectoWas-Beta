@@ -63,13 +63,16 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .reorder-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:8px;margin-top:8px;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .reorder-btn:active{color:var(--accent);border-color:var(--accent);}
 .reorder-btn svg{width:14px;height:14px;}
-.ex-card.reorder{display:flex;align-items:center;gap:10px;padding:10px 14px;}
-.reorder-arrows{display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
-.reorder-arrow{background:none;border:1px solid var(--border);border-radius:6px;width:28px;height:24px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--accent);-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
-.reorder-arrow:active{background:rgba(232,255,58,0.1);border-color:var(--accent);}
-.reorder-arrow.disabled{opacity:0.2;pointer-events:none;}
-.reorder-arrow svg{width:14px;height:14px;}
-.reorder-idx{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);opacity:0.4;flex-shrink:0;}
+.ex-card.reorder{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;transition:all 0.15s;}
+.ex-card.reorder:active{transform:scale(0.98);}
+.ex-card.reorder-sel{border-color:var(--accent);background:rgba(232,255,58,0.06);}
+.ex-card.reorder-target{border-style:dashed;border-color:var(--accent);opacity:0.7;}
+.reorder-idx{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);opacity:0.4;flex-shrink:0;width:22px;text-align:center;}
+.ex-card.reorder-sel .reorder-idx{opacity:1;}
+.reorder-hint{font-size:9px!important;color:var(--muted2)!important;}
+.ex-card.reorder-sel .reorder-hint{color:var(--accent)!important;}
+.reorder-badge{color:var(--accent);flex-shrink:0;}
+.reorder-badge svg{width:16px;height:16px;}
 .ex-card{
   background:var(--card);border-radius:12px;
   border:1px solid var(--border);border-left:3px solid var(--border);

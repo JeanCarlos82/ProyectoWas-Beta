@@ -280,14 +280,12 @@ function renderHoy(){
     const entry=ts?.entries?.find(e=>e.exercise===ex.name),logged=!!entry,prev=prevEntry(ex.name);
     const sn=ex.name.replace(/'/g,"\\'");
     if(reorderMode){
-      const isFirst=exIdx===0,isLast=exIdx===(day.exercises.length-1);
-      h+=`<div class="ex-card reorder">
-        <div class="reorder-arrows">
-          <button class="reorder-arrow ${isFirst?'disabled':''}" onclick="event.stopPropagation();moveEx(-1,${exIdx})">${_s}<polyline points="18 15 12 9 6 15"/></svg></button>
-          <button class="reorder-arrow ${isLast?'disabled':''}" onclick="event.stopPropagation();moveEx(1,${exIdx})">${_s}<polyline points="6 9 12 15 18 9"/></svg></button>
-        </div>
-        <div class="ex-l"><div class="ex-name">${ex.name}</div></div>
+      const isSel=reorderSelected===exIdx;
+      const isTarget=reorderSelected!==null&&!isSel;
+      h+=`<div class="ex-card reorder ${isSel?'reorder-sel':''}${isTarget?' reorder-target':''}" onclick="event.stopPropagation();selectReorderEx(${exIdx})">
         <span class="reorder-idx">${exIdx+1}</span>
+        <div class="ex-l"><div class="ex-name">${ex.name}</div><div class="ex-sub reorder-hint">${isSel?'Toca donde moverlo':isTarget?'Toca para colocar aquí':'Toca para seleccionar'}</div></div>
+        ${isSel?`<span class="reorder-badge">${_s}<polyline points="5 9 2 12 5 15"/><polyline points="19 9 22 12 19 15"/></svg></span>`:''}
       </div>`;
       return;
     }
@@ -331,23 +329,37 @@ function renderHoy(){
   });
   const exCount=(day.exercises||[]).length;
   if(exCount>1){
-    h+=`<button class="reorder-btn" onclick="event.stopPropagation();toggleReorder()">${_s}<line x1="12" y1="5" x2="12" y2="19"/><polyline points="8 9 12 5 16 9"/><polyline points="8 15 12 19 16 15"/></svg> Reordenar</button>`;
+    h+=`<button class="reorder-btn" onclick="event.stopPropagation();toggleReorder()">${_s}<line x1="12" y1="5" x2="12" y2="19"/><polyline points="8 9 12 5 16 9"/><polyline points="8 15 12 19 16 15"/></svg>${reorderMode?' Listo':' Reordenar'}</button>`;
   }
   h+=`</div>`;c.innerHTML=h;
 }
 
 let reorderMode=false;
+let reorderSelected=null;
 function toggleReorder(){
   reorderMode=!reorderMode;
+  reorderSelected=null;
   renderHoy();
 }
-function moveEx(dir,idx){
-  const dk=todayDK(),exs=db.routine[dk].exercises;
-  const newIdx=idx+dir;
-  if(newIdx<0||newIdx>=exs.length)return;
-  [exs[idx],exs[newIdx]]=[exs[newIdx],exs[idx]];
-  ps('gym_routine',db.routine);
-  renderHoy();
+function selectReorderEx(idx){
+  if(reorderSelected===null){
+    // Primer tap: seleccionar
+    reorderSelected=idx;
+    renderHoy();
+  } else if(reorderSelected===idx){
+    // Mismo: deseleccionar
+    reorderSelected=null;
+    renderHoy();
+  } else {
+    // Segundo tap: mover a esta posición
+    const dk=todayDK(),exs=db.routine[dk].exercises;
+    const [moved]=exs.splice(reorderSelected,1);
+    exs.splice(idx,0,moved);
+    ps('gym_routine',db.routine);
+    reorderSelected=null;
+    renderHoy();
+    toast('Movido ✓');
+  }
 }
 
 function getWeekRange(dateStr){
