@@ -336,7 +336,17 @@ function renderSessCard(sess){
     }else{
       const mx=entryMaxWeight(e),sc=entrySetCount(e);
       valHtml=`<div class="sess-val">${mx||'?'}<small> ${e.unit||'kg'}</small></div><div class="sess-val-sub">${sc.working} series</div>`;
-      if(e.sets?.length) setsHtml=`<div class="sess-sets-grid">${e.sets.map((s,i)=>`<div class="sess-set-chip${s.warmup?' warmup':''}">${s.w}<small>${e.unit||'kg'}</small> × ${s.r}${s.warmup?' <span class="sess-set-w">C</span>':''}</div>`).join('')}</div>`;
+      if(e.sets?.length){
+        const working=e.sets.filter(s=>!s.warmup);
+        setsHtml=`<div class="sess-sets-grid">${e.sets.map((s,i)=>`<div class="sess-set-chip${s.warmup?' warmup':''}">${s.w}<small>${e.unit||'kg'}</small> × ${s.r}${s.warmup?' <span class="sess-set-w">C</span>':''}</div>`).join('')}</div>`;
+        if(working.length){
+          const avg=Math.round(working.reduce((a,s)=>a+(parseFloat(s.w)||0),0)/working.length*10)/10;
+          const vol=working.reduce((a,s)=>a+(parseFloat(s.w)||0)*(parseInt(s.r)||0),0);
+          const best1rm=entryBest1RM(e);
+          const unit=e.unit||'kg';
+          setsHtml+=`<div class="sess-stats"><span>Promedio <b>${avg} ${unit}</b></span><span>Volumen <b>${vol} ${unit}</b></span>${best1rm?`<span>1RM <b>${best1rm} ${unit}</b></span>`:''}</div>`;
+        }
+      }
     }
     return`<div class="sess-row"><div class="sess-row-top"><div class="sess-exname">${e.exercise}</div><div class="sess-maxval">${valHtml}</div></div>${setsHtml||''}${e.notes?`<div class="sess-note">${e.notes}</div>`:''}</div>`;
   }).join('');

@@ -261,6 +261,8 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .sess-set-chip small{font-size:9px;color:var(--muted2);}
 .sess-set-chip.warmup{opacity:0.45;border-style:dashed;}
 .sess-set-w{font-size:9px;color:var(--muted);font-weight:400;}
+.sess-stats{display:flex;gap:12px;margin-top:8px;padding:6px 10px;background:var(--card2);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);}
+.sess-stats b{color:var(--accent);font-weight:600;}
 .sess-note{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);margin-top:8px;font-style:italic;padding:4px 8px;background:var(--card2);border-radius:6px;border-left:2px solid var(--accent);}
 .sess-maxval{text-align:right;flex-shrink:0;margin-left:10px;}
 .sess-val{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);}
