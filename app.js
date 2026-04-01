@@ -414,7 +414,7 @@ function getRecentExercises(n=5){
   const sorted=[...db.sessions].sort((a,b)=>b.date.localeCompare(a.date));
   for(const s of sorted){
     for(const e of (s.entries||[]).reverse()){
-      if(!seen.has(e.exercise)&&e.type!=='cardio'){seen.add(e.exercise);result.push(e.exercise);}
+      if(!seen.has(e.exercise)){seen.add(e.exercise);result.push(e.exercise);}
       if(result.length>=n)return result;
     }
   }
@@ -576,17 +576,77 @@ function detectPlateau(pts,windowSize=4){
 
 function renderExChart(){
   document.getElementById('prog-detail').style.display='block';
+  const exInfo=getExerciseInfo(selEx);
+  const isCardio=exInfo?.type==='cardio'||db.sessions.some(s=>s.entries?.find(e=>e.exercise===selEx&&e.type==='cardio'));
   document.getElementById('prog-detail-header').innerHTML=`<div class="prog-detail-title">${selEx}</div><div class="prog-detail-mg">${getExerciseMuscleGroup(selEx)}</div>`;
+  const chartTitleEl=document.getElementById('chart-title-text');
+  if(chartTitleEl)chartTitleEl.textContent=isCardio?'TIEMPO POR SESIÓN':'PESO MÁXIMO POR SESIÓN';
+
+  const wrap=document.getElementById('chart-cwrap'),sr=document.getElementById('stat-row'),prb=document.getElementById('pr-badge');
+  const pa=document.getElementById('plateau-alert');
+
+  // ── CARDIO PROGRESS ──
+  if(isCardio){
+    const cpts=[];
+    db.sessions.forEach(s=>{const e=s.entries?.find(e=>e.exercise===selEx&&e.type==='cardio');if(e&&e.min)cpts.push({date:s.date,min:e.min||0,km:e.km||0,cal:e.cal||0,intensity:e.intensity||'media',notes:e.notes});});
+    cpts.sort((a,b)=>a.date.localeCompare(b.date));
+    if(cpts.length<2){wrap.style.display='none';sr.style.display='none';prb.style.display='none';document.getElementById('notes-sec').style.display='none';if(pa)pa.style.display='none';document.getElementById('prog-best-sets').innerHTML='';document.getElementById('prog-recent-sets').innerHTML='';return;}
+
+    const minVals=cpts.map(p=>p.min),maxMin=Math.max(...minVals),totalMin=minVals.reduce((a,v)=>a+v,0),totalKm=cpts.reduce((a,p)=>a+p.km,0),totalCal=cpts.reduce((a,p)=>a+p.cal,0);
+
+    sr.style.display='flex';prb.style.display='none';if(pa)pa.style.display='none';
+    document.getElementById('sv-max').textContent=maxMin;document.getElementById('su-max').textContent='min máx';
+    document.getElementById('sv-1rm').textContent=Math.round(totalMin);document.getElementById('su-1rm').textContent='min total';
+    document.getElementById('sv-vol').textContent=totalKm?totalKm.toFixed(1):'—';document.getElementById('su-vol')&&(document.getElementById('su-vol').textContent='km total');
+    document.getElementById('sv-cnt').textContent=cpts.length;
+
+    // Stat box labels for cardio
+    const sboxes=sr.querySelectorAll('.sbox');
+    if(sboxes[0])sboxes[0].querySelector('.slb').textContent='MÁXIMO';
+    if(sboxes[1])sboxes[1].querySelector('.slb').textContent='TOTAL';
+    if(sboxes[2])sboxes[2].querySelector('.slb').textContent=totalKm?'DISTANCIA':'CALORÍAS';
+    if(sboxes[2]){document.getElementById('sv-vol').textContent=totalKm?totalKm.toFixed(1):(totalCal||'—');}
+    if(sboxes[3])sboxes[3].querySelector('.slb').textContent='SESIONES';
+
+    wrap.style.display='block';
+    const lr=linearRegression(minVals);
+    const trendData=minVals.map((_,i)=>Math.round((lr.intercept+lr.slope*i)*10)/10);
+    if(progCh)progCh.destroy();
+    progCh=new Chart(document.getElementById('prog-chart').getContext('2d'),{type:'line',data:{labels:cpts.map(p=>fmtD(p.date)),datasets:[
+      {data:minVals,borderColor:'#38bdf8',backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(56,189,248,0.2)');g.addColorStop(1,'rgba(56,189,248,0)');return g;},borderWidth:2.5,pointBackgroundColor:'#38bdf8',pointBorderColor:'rgba(56,189,248,0.3)',pointBorderWidth:1,pointRadius:3,pointHoverRadius:7,fill:true,tension:0.35},
+      {data:trendData,borderColor:'rgba(232,255,58,0.4)',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false,tension:0}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',titleColor:'#555',bodyColor:'#f2f2f2',borderColor:'#202020',borderWidth:1,padding:9,filter:item=>item.datasetIndex===0,callbacks:{label:ctx=>`${ctx.raw} min`,afterLabel:ctx=>{const p=cpts[ctx.dataIndex];const parts=[];if(p.intensity!=='media')parts.push(p.intensity);if(p.km)parts.push(p.km+'km');if(p.cal)parts.push(p.cal+'kcal');return parts.length?parts.join(' · '):''}}}},scales:{x:{ticks:{color:'#3a3a3a',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}},y:{ticks:{color:'#3a3a3a',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}}}}});
+
+    document.getElementById('prog-best-sets').innerHTML='';
+    // Recent cardio sessions
+    const recentC=cpts.slice().reverse().slice(0,5);
+    document.getElementById('prog-recent-sets').innerHTML=recentC.length?`
+      <div class="slbl slbl-ico">${_s}<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ÚLTIMAS SESIONES</div>
+      <div class="prog-recent-list">${recentC.map(p=>{const parts=[p.min+'min'];if(p.intensity!=='media')parts.push(p.intensity);if(p.km)parts.push(p.km+'km');if(p.cal)parts.push(p.cal+'kcal');return`<div class="prog-recent-row"><span class="prog-recent-date">${fmtD(p.date)}</span><span class="prog-recent-info">${parts.join(' · ')}</span></div>`;}).join('')}</div>`:'';
+
+    const wN=cpts.filter(p=>p.notes).reverse().slice(0,5),ns=document.getElementById('notes-sec');
+    if(wN.length){ns.style.display='block';document.getElementById('notes-list').innerHTML=wN.map(p=>`<div class="note-row"><div class="note-date">${fmtD(p.date)}</div><div class="note-text">${p.notes}</div><div class="note-wt">${p.min}<span style="font-size:8px;color:var(--muted2)"> min</span></div></div>`).join('');}
+    else ns.style.display='none';
+    return;
+  }
+
+  // ── WEIGHT EXERCISE PROGRESS ──
   const pts=[];
   db.sessions.forEach(s=>{const e=s.entries?.find(e=>e.exercise===selEx);if(e){const mx=entryMaxWeight(e),vol=entryVolume(e),unit=e.unit||'kg',rm=entryBest1RM(e);if(mx)pts.push({date:s.date,mx,vol,unit,notes:e.notes,rm});}});
   pts.sort((a,b)=>a.date.localeCompare(b.date));
-  const wrap=document.getElementById('chart-cwrap'),sr=document.getElementById('stat-row'),prb=document.getElementById('pr-badge');
-  const pa=document.getElementById('plateau-alert');
-  if(pts.length<2){wrap.style.display='none';sr.style.display='none';prb.style.display='none';document.getElementById('notes-sec').style.display='none';if(pa)pa.style.display='none';return;}
+  if(pts.length<2){wrap.style.display='none';sr.style.display='none';prb.style.display='none';document.getElementById('notes-sec').style.display='none';if(pa)pa.style.display='none';document.getElementById('prog-best-sets').innerHTML='';document.getElementById('prog-recent-sets').innerHTML='';return;}
   wrap.style.display='block';sr.style.display='flex';
   const mxVals=pts.map(p=>p.mx),maxV=Math.max(...mxVals),unit=pts[0].unit,totalVol=pts.reduce((a,p)=>a+p.vol,0),isPR=mxVals[mxVals.length-1]===maxV;
   const best1rm=Math.max(...pts.map(p=>p.rm||0));
   prb.style.display=isPR?'':'none';
+
+  // Restore weight stat labels
+  const sboxes=sr.querySelectorAll('.sbox');
+  if(sboxes[0])sboxes[0].querySelector('.slb').textContent='RÉCORD';
+  if(sboxes[1])sboxes[1].querySelector('.slb').textContent='1RM EST';
+  if(sboxes[2])sboxes[2].querySelector('.slb').textContent='VOLUMEN';
+  if(sboxes[3])sboxes[3].querySelector('.slb').textContent='SESIONES';
+
   document.getElementById('sv-max').textContent=maxV;document.getElementById('su-max').textContent=unit;
   document.getElementById('sv-vol').textContent=Math.round(totalVol).toLocaleString();document.getElementById('sv-cnt').textContent=pts.length;
   document.getElementById('sv-1rm').textContent=best1rm||'—';document.getElementById('su-1rm').textContent=unit;
