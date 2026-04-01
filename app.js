@@ -1188,29 +1188,46 @@ function installPWA(){
 }
 
 // ── GYM GUIDE ──
+const GI={
+  crown:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 17l2-12 5 5 3-7 3 7 5-5 2 12z"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  weight:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="4" height="8" rx="1"/><rect x="18" y="8" width="4" height="8" rx="1"/><rect x="6" y="6" width="3" height="12" rx="1"/><rect x="15" y="6" width="3" height="12" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/></svg>',
+  bars:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="14" width="4" height="6" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/><rect x="16" y="4" width="4" height="16" rx="1"/></svg>',
+  repeat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
+  hash:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>',
+  thermo:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+  trendUp:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  wall:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="9"/><line x1="15" y1="9" x2="15" y2="15"/><line x1="9" y1="15" x2="9" y2="21"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c-4-3-8-7-8-12a8 8 0 0 1 14-5.3c1 1 2 2.5 2 5.3 0 5-4 9-8 12z"/><path d="M12 22c-1.5-1.5-3-3.5-3-6a3 3 0 0 1 6 0c0 2.5-1.5 4.5-3 6z"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+  ruler:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.4 2.4 0 0 1 0-3.4l2.6-2.6a2.4 2.4 0 0 1 3.4 0z"/><line x1="14.5" y1="12.5" x2="11.5" y2="9.5"/><line x1="11" y1="16" x2="8" y2="13"/><line x1="18" y1="9" x2="15" y2="6"/></svg>',
+  expand:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>',
+  shield:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+};
 const GUIDE_DATA=[
   {cat:'MEDIDAS DE FUERZA',color:'var(--accent)',items:[
-    {ico:'🏆',term:'1RM',name:'1 Rep Max',desc:'El peso máximo que puedes levantar en una sola repetición. Es la referencia universal de fuerza.',example:'Si haces 80kg × 5 reps en press banca, tu 1RM estimado es ~93kg. No necesitas intentar tu máximo real — la app lo calcula por ti.'},
-    {ico:'⭐',term:'PR',name:'Personal Record',desc:'Tu récord personal — el mejor rendimiento que has logrado en un ejercicio.',example:'Si antes tu máximo en sentadilla era 100kg y hoy levantas 105kg, ¡ese es tu nuevo PR!'},
-    {ico:'⚖️',term:'Peso máximo',name:'Max Weight',desc:'El peso más alto que usaste en tus sets de trabajo (sin contar calentamiento) durante una sesión.',example:'Si hiciste 3 series de press banca: 60kg, 70kg y 75kg — tu peso máximo es 75kg.'},
+    {ico:GI.crown,term:'1RM',name:'1 Rep Max',desc:'El peso máximo que puedes levantar en una sola repetición. Es la referencia universal de fuerza.',example:'Si haces 80kg × 5 reps en press banca, tu 1RM estimado es ~93kg. No necesitas intentar tu máximo real — la app lo calcula por ti.'},
+    {ico:GI.star,term:'PR',name:'Personal Record',desc:'Tu récord personal — el mejor rendimiento que has logrado en un ejercicio.',example:'Si antes tu máximo en sentadilla era 100kg y hoy levantas 105kg, ¡ese es tu nuevo PR!'},
+    {ico:GI.weight,term:'Peso máximo',name:'Max Weight',desc:'El peso más alto que usaste en tus sets de trabajo (sin contar calentamiento) durante una sesión.',example:'Si hiciste 3 series de press banca: 60kg, 70kg y 75kg — tu peso máximo es 75kg.'},
   ]},
   {cat:'VOLUMEN Y CARGA',color:'var(--orange)',items:[
-    {ico:'📊',term:'Volumen',name:'Total Volume',desc:'La cantidad total de peso que moviste. Se calcula: peso × repeticiones, sumado en todas las series.',example:'3 series de 80kg × 10 reps = 2,400kg de volumen. Más volumen = más estímulo muscular.'},
-    {ico:'🔁',term:'Series (Sets)',name:'Working Sets',desc:'Cada grupo de repeticiones que haces de un ejercicio. Las series "de trabajo" son las que cuentan — no el calentamiento.',example:'Si haces 4 × 10 en curl de bíceps, son 4 series de 10 repeticiones cada una.'},
-    {ico:'🔢',term:'Reps',name:'Repeticiones',desc:'El número de veces que repites un movimiento dentro de una serie.',example:'Si subes y bajas la barra 10 veces en press banca, hiciste 10 reps.'},
-    {ico:'🌡️',term:'Calentamiento',name:'Warm-up Set',desc:'Series ligeras que haces antes de tus sets de trabajo para preparar músculos y articulaciones. No cuentan en los cálculos.',example:'Antes de hacer sentadilla con 100kg, haces 1 serie con 40kg y otra con 70kg. Esas son de calentamiento.'},
+    {ico:GI.bars,term:'Volumen',name:'Total Volume',desc:'La cantidad total de peso que moviste. Se calcula: peso × repeticiones, sumado en todas las series.',example:'3 series de 80kg × 10 reps = 2,400kg de volumen. Más volumen = más estímulo muscular.'},
+    {ico:GI.repeat,term:'Series (Sets)',name:'Working Sets',desc:'Cada grupo de repeticiones que haces de un ejercicio. Las series "de trabajo" son las que cuentan — no el calentamiento.',example:'Si haces 4 × 10 en curl de bíceps, son 4 series de 10 repeticiones cada una.'},
+    {ico:GI.hash,term:'Reps',name:'Repeticiones',desc:'El número de veces que repites un movimiento dentro de una serie.',example:'Si subes y bajas la barra 10 veces en press banca, hiciste 10 reps.'},
+    {ico:GI.thermo,term:'Calentamiento',name:'Warm-up Set',desc:'Series ligeras que haces antes de tus sets de trabajo para preparar músculos y articulaciones. No cuentan en los cálculos.',example:'Antes de hacer sentadilla con 100kg, haces 1 serie con 40kg y otra con 70kg. Esas son de calentamiento.'},
   ]},
   {cat:'PROGRESO',color:'var(--blue)',items:[
-    {ico:'📈',term:'Sobrecarga progresiva',name:'Progressive Overload',desc:'El principio fundamental del gym: aumentar gradualmente la dificultad (peso, reps o series) para que tus músculos sigan creciendo.',example:'Semana 1: 60kg × 8 reps. Semana 2: 60kg × 10 reps. Semana 3: 62.5kg × 8 reps. Eso es sobrecarga progresiva.'},
-    {ico:'🧱',term:'Plateau',name:'Estancamiento',desc:'Cuando dejas de progresar durante varias semanas. Es normal y tiene solución: cambiar ejercicios, volumen o descanso.',example:'Si llevas 3 semanas haciendo press banca con 70kg × 8 y no logras subir, estás en un plateau.'},
-    {ico:'🔥',term:'Streak de constancia',name:'Consistency Streak',desc:'Días consecutivos que has entrenado según tu rutina. Mide tu disciplina.',example:'Si tu rutina es Lun-Mié-Vie y entrenas los 3 días durante 4 semanas sin fallar, tu streak crece.'},
-    {ico:'⚡',term:'Streak de progreso',name:'Progress Streak',desc:'Sesiones consecutivas donde mejoraste vs. la sesión anterior (más peso, más reps o más volumen).',example:'Si cada sesión de pecho superas algo de la anterior, tu streak de progreso sube.'},
+    {ico:GI.trendUp,term:'Sobrecarga progresiva',name:'Progressive Overload',desc:'El principio fundamental del gym: aumentar gradualmente la dificultad (peso, reps o series) para que tus músculos sigan creciendo.',example:'Semana 1: 60kg × 8 reps. Semana 2: 60kg × 10 reps. Semana 3: 62.5kg × 8 reps. Eso es sobrecarga progresiva.'},
+    {ico:GI.wall,term:'Plateau',name:'Estancamiento',desc:'Cuando dejas de progresar durante varias semanas. Es normal y tiene solución: cambiar ejercicios, volumen o descanso.',example:'Si llevas 3 semanas haciendo press banca con 70kg × 8 y no logras subir, estás en un plateau.'},
+    {ico:GI.flame,term:'Streak de constancia',name:'Consistency Streak',desc:'Días consecutivos que has entrenado según tu rutina. Mide tu disciplina.',example:'Si tu rutina es Lun-Mié-Vie y entrenas los 3 días durante 4 semanas sin fallar, tu streak crece.'},
+    {ico:GI.bolt,term:'Streak de progreso',name:'Progress Streak',desc:'Sesiones consecutivas donde mejoraste vs. la sesión anterior (más peso, más reps o más volumen).',example:'Si cada sesión de pecho superas algo de la anterior, tu streak de progreso sube.'},
   ]},
   {cat:'CUERPO',color:'var(--green)',items:[
-    {ico:'📐',term:'IMC',name:'Índice de Masa Corporal',desc:'Una medida básica que relaciona tu peso y altura. Útil como referencia general, pero no distingue entre músculo y grasa.',example:'Peso 75kg, mido 1.75m → IMC = 75 ÷ (1.75²) = 24.5 (normal). Un fisicoculturista de 95kg puede tener IMC "alto" pero poca grasa.'},
-    {ico:'💪',term:'Hipertrofia',name:'Muscle Growth',desc:'El objetivo de aumentar el tamaño muscular. Se logra con 8-12 reps por serie y descansos de 60-90 segundos.',example:'Si tu objetivo es que los músculos se vean más grandes, entrenas en rango de hipertrofia.'},
-    {ico:'🦾',term:'Fuerza',name:'Strength',desc:'El objetivo de levantar el máximo peso posible. Se entrena con 1-5 reps por serie con pesos altos y descansos largos (3-5 min).',example:'Un powerlifter entrena fuerza: pocas reps, mucho peso, mucho descanso entre series.'},
-    {ico:'🫀',term:'Resistencia',name:'Endurance',desc:'La capacidad de mantener el esfuerzo por más tiempo. Se entrena con 15+ reps, poco peso y descansos cortos.',example:'Hacer 20 reps de sentadilla con peso ligero entrena resistencia muscular.'},
+    {ico:GI.ruler,term:'IMC',name:'Índice de Masa Corporal',desc:'Una medida básica que relaciona tu peso y altura. Útil como referencia general, pero no distingue entre músculo y grasa.',example:'Peso 75kg, mido 1.75m → IMC = 75 ÷ (1.75²) = 24.5 (normal). Un fisicoculturista de 95kg puede tener IMC "alto" pero poca grasa.'},
+    {ico:GI.expand,term:'Hipertrofia',name:'Muscle Growth',desc:'El objetivo de aumentar el tamaño muscular. Se logra con 8-12 reps por serie y descansos de 60-90 segundos.',example:'Si tu objetivo es que los músculos se vean más grandes, entrenas en rango de hipertrofia.'},
+    {ico:GI.shield,term:'Fuerza',name:'Strength',desc:'El objetivo de levantar el máximo peso posible. Se entrena con 1-5 reps por serie con pesos altos y descansos largos (3-5 min).',example:'Un powerlifter entrena fuerza: pocas reps, mucho peso, mucho descanso entre series.'},
+    {ico:GI.heart,term:'Resistencia',name:'Endurance',desc:'La capacidad de mantener el esfuerzo por más tiempo. Se entrena con 15+ reps, poco peso y descansos cortos.',example:'Hacer 20 reps de sentadilla con peso ligero entrena resistencia muscular.'},
   ]},
 ];
 
@@ -1220,7 +1237,7 @@ function openGuide(){
     <div class="guide-cat">
       <div class="guide-cat-hdr" style="--cat-color:${cat.color}">${cat.cat}</div>
       ${cat.items.map(item=>`
-        <div class="guide-card" onclick="this.classList.toggle('expanded')">
+        <div class="guide-card" style="--cat-color:${cat.color}" onclick="this.classList.toggle('expanded')">
           <div class="guide-card-top">
             <span class="guide-card-ico">${item.ico}</span>
             <div class="guide-card-info">
