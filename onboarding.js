@@ -1,6 +1,7 @@
 // ── ONBOARDING WIZARD ──
 
-const ROUTINE_TEMPLATES={
+// ── TEMPLATES MASCULINOS ──
+const TEMPLATES_M={
   fullbody_3:{
     exercises:[
       [{name:"Sentadilla",type:"pesas"},{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
@@ -44,13 +45,63 @@ const ROUTINE_TEMPLATES={
   }
 };
 
-function selectTemplate(experience,numDays,goal){
+// ── TEMPLATES FEMENINOS ──
+// Enfoque: más volumen en glúteos/piernas, menos aislamiento de brazos,
+// más core funcional, hip thrust como movimiento principal
+const TEMPLATES_F={
+  fullbody_3:{
+    exercises:[
+      [{name:"Sentadilla",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Crunch",type:"pesas"}],
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
+    ],labels:["Full Body A","Full Body B","Full Body C"]
+  },
+  fullbody_cardio_3:{
+    exercises:[
+      [{name:"Sentadilla",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Elíptica",type:"cardio"},{name:"Stairmaster",type:"cardio"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}]
+    ],labels:["Full Body","Cardio","Full Body"]
+  },
+  upperlower_4:{
+    exercises:[
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
+    ],labels:["Upper A","Lower A","Upper B","Lower B"]
+  },
+  pplul_5:{
+    exercises:[
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
+    ],labels:["Push","Pull","Glúteos & Piernas","Upper","Lower"]
+  },
+  ppl_6:{
+    exercises:[
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Aperturas en polea",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Aperturas mancuernas",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Elevaciones frontales",type:"pesas"},{name:"Extensiones de tríceps",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Remo en polea baja",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Pájaros",type:"pesas"},{name:"Curl con barra Z",type:"pesas"},{name:"Face pull",type:"pesas"}],
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
+    ],labels:["Push","Pull","Glúteos & Piernas","Push","Pull","Glúteos & Piernas"]
+  }
+};
+
+const ROUTINE_TEMPLATES=TEMPLATES_M;
+
+function selectTemplate(experience,numDays,goal,sex){
+  const templates=sex==='M'?TEMPLATES_F:TEMPLATES_M;
   // Perder grasa + principiante → add cardio day
-  if(goal==='grasa'&&experience==='principiante'&&numDays<=3)return'fullbody_cardio_3';
-  if(numDays<=3)return'fullbody_3';
-  if(numDays===4)return'upperlower_4';
-  if(numDays===5)return'pplul_5';
-  return'ppl_6';
+  if(goal==='grasa'&&experience==='principiante'&&numDays<=3)return{key:'fullbody_cardio_3',templates};
+  if(numDays<=3)return{key:'fullbody_3',templates};
+  if(numDays===4)return{key:'upperlower_4',templates};
+  if(numDays===5)return{key:'pplul_5',templates};
+  return{key:'ppl_6',templates};
 }
 
 function getDaysWarning(experience,numDays){
@@ -73,8 +124,8 @@ function goalToObjective(goal){
   return'hipertrofia';
 }
 
-function buildRoutineFromWizard(templateKey,selectedDays){
-  const tmpl=ROUTINE_TEMPLATES[templateKey];
+function buildRoutineFromWizard(templateKey,selectedDays,templates){
+  const tmpl=(templates||TEMPLATES_M)[templateKey];
   const allDK=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
   const routine={};
   let exIdx=0;
@@ -94,12 +145,13 @@ const WIZARD_STEPS=5;
 let wizardStep=1;
 let wizardData={name:'',age:'',sex:'H',height:'',weight:'',activityLevel:2,goal:null,experience:null,selectedDays:[]};
 
+const _s='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
 const ACTIVITY_OPTS=[
-  {i:0,l:'Sedentario',d:'Trabajo de oficina, sin ejercicio',emoji:'🪑'},
-  {i:1,l:'Ligero',d:'Caminas a diario o 1-2 días de gym',emoji:'🚶'},
-  {i:2,l:'Moderado',d:'3-4 días de gym por semana',emoji:'💪'},
-  {i:3,l:'Activo',d:'5-6 días de gym o deporte frecuente',emoji:'🏃'},
-  {i:4,l:'Muy activo',d:'Entrenas 2 veces al día o trabajo físico',emoji:'🔥'}
+  {i:0,l:'Sedentario',d:'Trabajo de oficina, sin ejercicio',ico:_s+'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'},
+  {i:1,l:'Ligero',d:'Caminas a diario o 1-2 días de gym',ico:_s+'<path d="M13 4v16"/><path d="M17 4v16"/><rect x="5" y="8" width="14" height="8" rx="1" fill="none"/></svg>'},
+  {i:2,l:'Moderado',d:'3-4 días de gym por semana',ico:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>'},
+  {i:3,l:'Activo',d:'5-6 días de gym o deporte frecuente',ico:_s+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'},
+  {i:4,l:'Muy activo',d:'Entrenas 2 veces al día o trabajo físico',ico:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>'}
 ];
 
 function showWizard(){
@@ -144,33 +196,34 @@ function renderWizardStep(){
       <div class="wiz-subtitle">Esto nos ayuda a calcular tus calorías y sugerirte días de entrenamiento</div>
       <div class="wiz-options">
         ${ACTIVITY_OPTS.map(a=>`<div class="wiz-opt ${wizardData.activityLevel===a.i?'active':''}" onclick="wizSelectActivity(${a.i})">
-          <span class="wiz-emoji">${a.emoji}</span>
+          <span class="wiz-emoji wiz-svg-ico">${a.ico}</span>
           <div><span class="wiz-opt-title">${a.l}</span><span class="wiz-opt-desc">${a.d}</span></div>
         </div>`).join('')}
       </div>`;
 
   } else if(wizardStep===3){
-    // OBJETIVO
+    // OBJETIVO — adaptado por sexo
+    const isFem=wizardData.sex==='M';
+    const goals=isFem?[
+      {key:'musculo',title:'Tonificar y definir',desc:'Hipertrofia · 3-4 series × 10-15 reps · Enfoque en glúteos, piernas y core'},
+      {key:'fuerza',title:'Ganar fuerza',desc:'Fuerza funcional · 4-5 series × 5-8 reps · Sentadilla, peso muerto, hip thrust'},
+      {key:'grasa',title:'Perder grasa',desc:'Resistencia + cardio · 3 series × 15-20 reps · Circuitos y HIIT'},
+      {key:'general',title:'Estar en forma',desc:'General · 3 series × 10-12 reps · Equilibrio de todo el cuerpo'},
+    ]:[
+      {key:'musculo',title:'Ganar músculo',desc:'Hipertrofia · 3-4 series × 8-12 reps'},
+      {key:'fuerza',title:'Ganar fuerza',desc:'Fuerza · 4-5 series × 3-6 reps'},
+      {key:'grasa',title:'Perder grasa',desc:'Resistencia + cardio · 3 series × 12-15 reps'},
+      {key:'general',title:'Estar en forma',desc:'General · 3 series × 8-12 reps'},
+    ];
+    const goalIcons={musculo:_s+'<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>',fuerza:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',grasa:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/></svg>',general:_s+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'};
     container.innerHTML=`
       <div class="wiz-title">¿Cuál es tu objetivo?</div>
       <div class="wiz-subtitle">Adaptamos ejercicios, series y repeticiones</div>
       <div class="wiz-options">
-        <div class="wiz-opt ${wizardData.goal==='musculo'?'active':''}" onclick="wizSelect('goal','musculo')">
-          <span class="wiz-emoji">💪</span>
-          <div><span class="wiz-opt-title">Ganar músculo</span><span class="wiz-opt-desc">Hipertrofia · 3-4 series × 8-12 reps</span></div>
-        </div>
-        <div class="wiz-opt ${wizardData.goal==='fuerza'?'active':''}" onclick="wizSelect('goal','fuerza')">
-          <span class="wiz-emoji">🏋️</span>
-          <div><span class="wiz-opt-title">Ganar fuerza</span><span class="wiz-opt-desc">Fuerza · 4-5 series × 3-6 reps</span></div>
-        </div>
-        <div class="wiz-opt ${wizardData.goal==='grasa'?'active':''}" onclick="wizSelect('goal','grasa')">
-          <span class="wiz-emoji">🔥</span>
-          <div><span class="wiz-opt-title">Perder grasa</span><span class="wiz-opt-desc">Resistencia + cardio · 3 series × 12-15 reps</span></div>
-        </div>
-        <div class="wiz-opt ${wizardData.goal==='general'?'active':''}" onclick="wizSelect('goal','general')">
-          <span class="wiz-emoji">⚡</span>
-          <div><span class="wiz-opt-title">Estar en forma</span><span class="wiz-opt-desc">General · 3 series × 8-12 reps</span></div>
-        </div>
+        ${goals.map(g=>`<div class="wiz-opt ${wizardData.goal===g.key?'active':''}" onclick="wizSelect('goal','${g.key}')">
+          <span class="wiz-emoji wiz-svg-ico">${goalIcons[g.key]}</span>
+          <div><span class="wiz-opt-title">${g.title}</span><span class="wiz-opt-desc">${g.desc}</span></div>
+        </div>`).join('')}
       </div>`;
 
   } else if(wizardStep===4){
@@ -180,15 +233,15 @@ function renderWizardStep(){
       <div class="wiz-subtitle">Esto define la complejidad de tu rutina</div>
       <div class="wiz-options">
         <div class="wiz-opt ${wizardData.experience==='principiante'?'active':''}" onclick="wizSelect('experience','principiante')">
-          <span class="wiz-emoji">🌱</span>
+          <span class="wiz-emoji wiz-svg-ico">${_s}<circle cx="12" cy="12" r="3"/><path d="M12 3v3"/><path d="M12 18v3"/></svg></span>
           <div><span class="wiz-opt-title">Nunca he entrenado</span><span class="wiz-opt-desc">Empezamos con lo básico — ejercicios compuestos</span></div>
         </div>
         <div class="wiz-opt ${wizardData.experience==='intermedio'?'active':''}" onclick="wizSelect('experience','intermedio')">
-          <span class="wiz-emoji">🔄</span>
+          <span class="wiz-emoji wiz-svg-ico">${_s}<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
           <div><span class="wiz-opt-title">Menos de 1 año</span><span class="wiz-opt-desc">Ya conoces los ejercicios — más variedad y volumen</span></div>
         </div>
         <div class="wiz-opt ${wizardData.experience==='avanzado'?'active':''}" onclick="wizSelect('experience','avanzado')">
-          <span class="wiz-emoji">🏆</span>
+          <span class="wiz-emoji wiz-svg-ico">${_s}<path d="M6 9H3a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4h0"/><path d="M18 9h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4h0"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg></span>
           <div><span class="wiz-opt-title">Más de 1 año</span><span class="wiz-opt-desc">Rutinas avanzadas — mayor frecuencia y especificidad</span></div>
         </div>
       </div>`;
@@ -244,8 +297,8 @@ function toggleWizDay(dk){
 
 function showWizardResult(){
   const numDays=wizardData.selectedDays.length;
-  const templateKey=selectTemplate(wizardData.experience,numDays,wizardData.goal);
-  const routine=buildRoutineFromWizard(templateKey,wizardData.selectedDays);
+  const {key:templateKey,templates}=selectTemplate(wizardData.experience,numDays,wizardData.goal,wizardData.sex);
+  const routine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
   const container=document.getElementById('wizard-content');
   document.getElementById('wizard-dots').innerHTML='';
 
@@ -271,8 +324,8 @@ function showWizardResult(){
 
 function applyWizardRoutine(customize){
   const numDays=wizardData.selectedDays.length;
-  const templateKey=selectTemplate(wizardData.experience,numDays,wizardData.goal);
-  const routine=buildRoutineFromWizard(templateKey,wizardData.selectedDays);
+  const {key:templateKey,templates}=selectTemplate(wizardData.experience,numDays,wizardData.goal,wizardData.sex);
+  const routine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
 
   db.routine=routine;
   ps('gym_routine',db.routine);
