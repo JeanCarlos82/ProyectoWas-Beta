@@ -109,9 +109,9 @@ const TEMPLATES_F={
 
 const ROUTINE_TEMPLATES=TEMPLATES_M;
 
-// ── ADAPTACIÓN POR CARACTERÍSTICAS FÍSICAS ──
+// ── ADAPTACIÓN POR CARACTERÍSTICAS FÍSICAS Y OBJETIVO ──
 // Basado en evidencia: ACSM, NSCA, investigación en biomecánica
-function adaptExercises(routine,{age,weight,height,experience,sex}){
+function adaptExercises(routine,{age,weight,height,experience,sex,goal}){
   const a=parseInt(age)||25;
   const w=parseFloat(weight)||70;
   const h=parseFloat(height)||170;
@@ -123,73 +123,58 @@ function adaptExercises(routine,{age,weight,height,experience,sex}){
   const isOlder=a>=45;
   const isSenior=a>=50;
   const isYoung=a<20;
+  const isFem=sex==='M';
 
-  // Tabla de sustituciones: [original, condición, reemplazo]
+  // Tabla de sustituciones: [original, reemplazo]
   const swaps=[];
 
   // === SENTADILLA ===
-  // Principiante + mayor o sobrepeso → prensa o goblet
   if(isBeginner&&(isOlder||isVeryHeavy))swaps.push(['Sentadilla','Prensa de pierna']);
   else if(isBeginner&&isHeavy)swaps.push(['Sentadilla','Sentadilla goblet']);
-  // Personas altas → box squat o prensa (biomecánica desfavorable)
   else if(isTall&&isBeginner)swaps.push(['Sentadilla','Prensa de pierna']);
-  // Joven principiante → goblet primero
   else if(isYoung&&isBeginner)swaps.push(['Sentadilla','Sentadilla goblet']);
 
-  // Sentadilla frontal y búlgara → principiante mayor/pesado usa prensa
   if(isBeginner&&(isOlder||isVeryHeavy)){
     swaps.push(['Sentadilla frontal','Prensa de pierna']);
     swaps.push(['Sentadilla búlgara','Zancadas']);
   }
 
   // === PESO MUERTO ===
-  // Senior o muy pesado principiante → puente de glúteo
   if(isSenior&&isBeginner)swaps.push(['Peso muerto rumano','Puente de glúteo']);
   else if(isVeryHeavy&&isBeginner)swaps.push(['Peso muerto rumano','Puente de glúteo']);
-  // Mayor de 40 principiante → peso muerto rumano con mancuernas (más seguro)
   else if(isOlder&&isBeginner)swaps.push(['Peso muerto','Peso muerto rumano']);
-  // Peso muerto sumo → principiante mayor usa hip thrust
   if((isOlder||isVeryHeavy)&&isBeginner)swaps.push(['Peso muerto sumo','Hip thrust']);
 
   // === PRESS BANCA ===
-  // Principiante mayor → press en máquina primero
   if(isSenior&&isBeginner)swaps.push(['Press banca','Press en máquina']);
   else if(isOlder&&isBeginner)swaps.push(['Press banca','Press con mancuernas']);
-  // Principiante joven → mancuernas
   if(isYoung&&isBeginner)swaps.push(['Press banca','Press con mancuernas']);
 
   // === PRESS MILITAR ===
-  // Mayor 45 principiante → press con mancuernas hombro (menos estrés articular)
   if(isOlder&&isBeginner)swaps.push(['Press militar','Press con mancuernas hombro']);
 
   // === REMO CON BARRA ===
-  // Mayor o pesado principiante → remo en máquina (espalda apoyada)
   if((isOlder||isHeavy)&&isBeginner)swaps.push(['Remo con barra','Remo en máquina']);
-  // Alto principiante → remo en máquina
   if(isTall&&isBeginner)swaps.push(['Remo con barra','Remo en máquina']);
 
   // === DOMINADAS ===
-  // Principiante o pesado → jalón al pecho
   if(isBeginner||isHeavy)swaps.push(['Dominadas','Jalón al pecho']);
 
   // === FONDOS ===
-  // Mayor o pesado → tríceps en polea
   if(isOlder||isHeavy)swaps.push(['Fondos en paralelas','Tríceps en polea']);
   if(isOlder&&isBeginner)swaps.push(['Fondos en banco','Tríceps en polea']);
 
   // === CARDIO ===
-  // Sobrepeso o mayor → elíptica en vez de correr (impacto articular)
   if(isHeavy||isOlder)swaps.push(['Correr','Elíptica']);
-  // Muy pesado → solo elíptica o bici
   if(isVeryHeavy)swaps.push(['Stairmaster','Bicicleta estática']);
 
-  // === EJERCICIOS AVANZADOS → principiante usa versiones más simples ===
+  // === PRINCIPIANTE ===
   if(isBeginner){
     swaps.push(['Sentadilla frontal','Sentadilla goblet']);
     swaps.push(['Hack squat','Prensa de pierna']);
   }
 
-  // Aplicar sustituciones a toda la rutina
+  // Aplicar sustituciones
   const adapted={};
   for(const dk in routine){
     adapted[dk]={...routine[dk]};
@@ -200,12 +185,73 @@ function adaptExercises(routine,{age,weight,height,experience,sex}){
       });
     }
   }
+
+  // === ADAPTACIÓN POR OBJETIVO ===
+
+  if(goal==='grasa'){
+    // Fat loss: agregar cardio al final de cada día de pesas
+    // Elíptica para sobrepeso/mayores, Stairmaster para mujeres, Correr para el resto
+    let cardioName='Correr';
+    if(isFem)cardioName='Stairmaster';
+    if(isHeavy||isOlder)cardioName='Elíptica';
+    if(isVeryHeavy)cardioName='Bicicleta estática';
+
+    for(const dk in adapted){
+      const d=adapted[dk];
+      if(d.rest||!d.exercises)continue;
+      // Si el día ya tiene cardio, no duplicar
+      const hasCardio=d.exercises.some(e=>e.type==='cardio');
+      if(!hasCardio){
+        // Reemplazar el último ejercicio de aislamiento por cardio
+        // (mantener compuestos, sacrificar aislamiento por cardio)
+        const lastIdx=d.exercises.length-1;
+        d.exercises[lastIdx]={name:cardioName,type:'cardio'};
+        // Actualizar label para indicar que incluye cardio
+        d.label=d.label+' + Cardio';
+      }
+    }
+  }
+
+  if(goal==='fuerza'){
+    // Fuerza: reemplazar ejercicios de aislamiento por compuestos pesados
+    // Para hombres: más press banca, sentadilla, peso muerto
+    // Para mujeres: más hip thrust, sentadilla, peso muerto rumano
+    for(const dk in adapted){
+      const d=adapted[dk];
+      if(d.rest||!d.exercises)continue;
+      // Reemplazar aperturas/aislamiento por compuestos de fuerza
+      d.exercises=d.exercises.map(ex=>{
+        if(ex.name==='Aperturas mancuernas'||ex.name==='Aperturas en polea')return{...ex,name:'Press cerrado'};
+        if(ex.name==='Curl predicador')return{...ex,name:'Curl con barra'};
+        if(ex.name==='Patada de tríceps')return{...ex,name:'Press francés'};
+        if(ex.name==='Elevaciones frontales')return{...ex,name:'Press militar'};
+        return ex;
+      });
+    }
+  }
+
+  if(goal==='general'){
+    // General: añadir core a días que no lo tengan
+    const coreExs=['Plancha','Crunch','Elevación de piernas'];
+    let ci=0;
+    for(const dk in adapted){
+      const d=adapted[dk];
+      if(d.rest||!d.exercises)continue;
+      const hasCore=d.exercises.some(e=>coreExs.includes(e.name)||e.name==='Russian twist');
+      if(!hasCore&&d.exercises.length>=5){
+        // Agregar core al final
+        d.exercises.push({name:coreExs[ci%coreExs.length],type:'pesas'});
+        ci++;
+      }
+    }
+  }
+
   return adapted;
 }
 
 function selectTemplate(experience,numDays,goal,sex){
   const templates=sex==='M'?TEMPLATES_F:TEMPLATES_M;
-  if(goal==='grasa'&&experience==='principiante'&&numDays<=3)return{key:'fullbody_cardio_3',templates};
+  if(goal==='grasa'&&numDays<=3)return{key:'fullbody_cardio_3',templates};
   if(numDays<=3)return{key:'fullbody_3',templates};
   if(numDays===4)return{key:'upperlower_4',templates};
   if(numDays===5)return{key:'pplul_5',templates};
@@ -407,7 +453,7 @@ function showWizardResult(){
   const numDays=wizardData.selectedDays.length;
   const {key:templateKey,templates}=selectTemplate(wizardData.experience,numDays,wizardData.goal,wizardData.sex);
   const rawRoutine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
-  const routine=adaptExercises(rawRoutine,{age:wizardData.age,weight:wizardData.weight,height:wizardData.height,experience:wizardData.experience,sex:wizardData.sex});
+  const routine=adaptExercises(rawRoutine,{age:wizardData.age,weight:wizardData.weight,height:wizardData.height,experience:wizardData.experience,sex:wizardData.sex,goal:wizardData.goal});
   const container=document.getElementById('wizard-content');
   document.getElementById('wizard-dots').innerHTML='';
 
@@ -437,7 +483,7 @@ function applyWizardRoutine(customize){
   const numDays=wizardData.selectedDays.length;
   const {key:templateKey,templates}=selectTemplate(wizardData.experience,numDays,wizardData.goal,wizardData.sex);
   const rawRoutine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
-  const routine=adaptExercises(rawRoutine,{age:wizardData.age,weight:wizardData.weight,height:wizardData.height,experience:wizardData.experience,sex:wizardData.sex});
+  const routine=adaptExercises(rawRoutine,{age:wizardData.age,weight:wizardData.weight,height:wizardData.height,experience:wizardData.experience,sex:wizardData.sex,goal:wizardData.goal});
 
   db.routine=routine;
   ps('gym_routine',db.routine);
