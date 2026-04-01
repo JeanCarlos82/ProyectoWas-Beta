@@ -354,7 +354,7 @@ function renderSessCard(sess){
 }
 function renderHist(){
   const list=document.getElementById('sess-list'),sorted=[...db.sessions].sort((a,b)=>b.date.localeCompare(a.date));
-  if(!sorted.length){list.innerHTML=`<div class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Aún no hay sesiones.<br>¡Empieza hoy!</div></div>`;return;}
+  if(!sorted.length){list.innerHTML=`<div class="empty"><div class="empty-ico">${_s}<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><div class="empty-txt">Aún no hay sesiones.<br>¡Empieza hoy!</div></div>`;return;}
   // Group by month → week
   const months=new Map();
   sorted.forEach(sess=>{
@@ -467,18 +467,25 @@ function renderProg(){
   const totalSets=periodSessions.reduce((a,s)=>a+s.entries.reduce((b,e)=>b+(e.sets?.filter(s=>!s.warmup).length||0),0),0);
 
   // Summary cards
+  const _pci={
+    sess:_s+'<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    vol:_s+'<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/></svg>',
+    sets:_s+'<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+  };
   document.getElementById('prog-summary').innerHTML=`
     <div class="prog-cards">
-      <div class="prog-card"><div class="prog-card-val">${periodSessions.length}</div><div class="prog-card-lbl">Sesiones</div></div>
-      <div class="prog-card"><div class="prog-card-val" style="color:var(--orange)">${totalVol>=1000?(totalVol/1000).toFixed(1)+'k':Math.round(totalVol)}</div><div class="prog-card-lbl">kg volumen</div></div>
-      <div class="prog-card"><div class="prog-card-val" style="color:var(--blue)">${totalSets}</div><div class="prog-card-lbl">Sets totales</div></div>
+      <div class="prog-card"><div class="prog-card-ico">${_pci.sess}</div><div class="prog-card-val">${periodSessions.length}</div><div class="prog-card-lbl">Sesiones</div></div>
+      <div class="prog-card"><div class="prog-card-ico">${_pci.vol}</div><div class="prog-card-val" style="color:var(--orange)">${totalVol>=1000?(totalVol/1000).toFixed(1)+'k':Math.round(totalVol)}</div><div class="prog-card-lbl">kg volumen</div></div>
+      <div class="prog-card"><div class="prog-card-ico">${_pci.sets}</div><div class="prog-card-val" style="color:var(--blue)">${totalSets}</div><div class="prog-card-lbl">Sets totales</div></div>
     </div>`;
 
   // Recent PRs
   const prs=findRecentPRs(3);
+  const _trophy=_s+'<path d="M6 9H3a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4h0"/><path d="M18 9h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4h0"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg>';
+  const prColors=['var(--accent)','var(--muted2)','var(--orange)'];
   document.getElementById('prog-prs').innerHTML=prs.length?`
-    <div class="slbl">PRs RECIENTES</div>
-    <div class="prog-pr-list">${prs.sort((a,b)=>b.weight-a.weight).map((pr,i)=>{const medals=['🥇','🥈','🥉'];return`<div class="prog-pr-item"><span class="prog-pr-icon">${medals[i]||i+1}</span><span class="prog-pr-name">${pr.exercise}</span><span class="prog-pr-val">${pr.weight}${pr.unit}</span><span class="prog-pr-date">${fmtD(pr.date)}</span></div>`;}).join('')}</div>`:'';
+    <div class="slbl slbl-ico">${_trophy}PRs RECIENTES</div>
+    <div class="prog-pr-list">${prs.sort((a,b)=>b.weight-a.weight).map((pr,i)=>`<div class="prog-pr-item"><span class="prog-pr-icon" style="color:${prColors[i]||'var(--muted2)'}">${i+1}</span><span class="prog-pr-name">${pr.exercise}</span><span class="prog-pr-val">${pr.weight}${pr.unit}</span><span class="prog-pr-date">${fmtD(pr.date)}</span></div>`).join('')}</div>`:'';
 
   // Exercise list
   renderProgExList();
@@ -589,7 +596,7 @@ function renderExChart(){
   if(pa){
     if(plateau.isPlateaued&&mxVals.length>=4){
       pa.style.display='block';
-      pa.innerHTML=`<span class="plateau-icon">⚠️</span><div><div class="plateau-title">Meseta detectada — ${plateau.sessionsStuck} sesiones sin progreso</div><div class="plateau-tip">Prueba: subir reps, reducir peso 10%, o cambiar variante</div></div>`;
+      pa.innerHTML=`<span class="plateau-icon">${_s}<line x1="3" y1="17" x2="8" y2="12"/><line x1="8" y1="12" x2="21" y2="12" stroke-dasharray="3 2"/></svg></span><div><div class="plateau-title">Meseta detectada — ${plateau.sessionsStuck} sesiones sin progreso</div><div class="plateau-tip">Prueba: subir reps, reducir peso 10%, o cambiar variante</div></div>`;
     } else pa.style.display='none';
   }
 
@@ -602,7 +609,7 @@ function renderExChart(){
   progCh=new Chart(document.getElementById('prog-chart').getContext('2d'),{type:'line',data:{labels:pts.map(p=>fmtD(p.date)),datasets:[
     {data:mxVals,borderColor:'#E8FF3A',backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(232,255,58,0.2)');g.addColorStop(1,'rgba(232,255,58,0)');return g;},borderWidth:2.5,pointBackgroundColor:mxVals.map((_,i)=>i===prIdx?'#000':'#E8FF3A'),pointBorderColor:mxVals.map((_,i)=>i===prIdx?'#E8FF3A':'rgba(232,255,58,0.3)'),pointBorderWidth:mxVals.map((_,i)=>i===prIdx?2.5:1),pointRadius:mxVals.map((_,i)=>i===prIdx?6:3),pointHoverRadius:7,fill:true,tension:0.35},
     {data:trendData,borderColor:'rgba(58,180,255,0.4)',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false,tension:0}
-  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',titleColor:'#555',bodyColor:'#f2f2f2',borderColor:'#202020',borderWidth:1,padding:9,filter:item=>item.datasetIndex===0,callbacks:{label:ctx=>`${ctx.raw} ${unit}`,afterLabel:ctx=>{const p=pts[ctx.dataIndex];return p.notes?`📝 ${p.notes}`:''}}}},scales:{x:{ticks:{color:'#3a3a3a',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}},y:{ticks:{color:'#3a3a3a',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}}}}});
+  ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',titleColor:'#555',bodyColor:'#f2f2f2',borderColor:'#202020',borderWidth:1,padding:9,filter:item=>item.datasetIndex===0,callbacks:{label:ctx=>`${ctx.raw} ${unit}`,afterLabel:ctx=>{const p=pts[ctx.dataIndex];return p.notes?`✎ ${p.notes}`:''}}}},scales:{x:{ticks:{color:'#3a3a3a',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}},y:{ticks:{color:'#3a3a3a',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}}}}});
   const wN=pts.filter(p=>p.notes).reverse().slice(0,5),ns=document.getElementById('notes-sec');
   if(wN.length){ns.style.display='block';document.getElementById('notes-list').innerHTML=wN.map(p=>`<div class="note-row"><div class="note-date">${fmtD(p.date)}</div><div class="note-text">${p.notes}</div><div class="note-wt">${p.mx}<span style="font-size:8px;color:var(--muted2)"> ${p.unit}</span></div></div>`).join('');}
   else ns.style.display='none';
@@ -614,13 +621,13 @@ function renderExChart(){
   allSets.forEach(s=>{if(!bestByReps[s.r]||s.w>bestByReps[s.r].w)bestByReps[s.r]=s;});
   const repRanges=Object.keys(bestByReps).map(Number).sort((a,b)=>a-b);
   document.getElementById('prog-best-sets').innerHTML=repRanges.length?`
-    <div class="slbl">MEJORES SETS POR REPS</div>
+    <div class="slbl slbl-ico">${_s}<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>MEJORES SETS POR REPS</div>
     <div class="prog-best-list">${repRanges.map(r=>{const s=bestByReps[r];return`<div class="prog-best-row"><span class="prog-best-reps">${r} rep${r>1?'s':''}</span><span class="prog-best-weight">${s.w}${s.unit}</span><span class="prog-best-date">${fmtD(s.date)}</span></div>`;}).join('')}</div>`:'';
 
   // Recent sessions for this exercise
   const recentSess=db.sessions.filter(s=>s.entries?.some(e=>e.exercise===selEx)).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
   document.getElementById('prog-recent-sets').innerHTML=recentSess.length?`
-    <div class="slbl">ÚLTIMAS SESIONES</div>
+    <div class="slbl slbl-ico">${_s}<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>ÚLTIMAS SESIONES</div>
     <div class="prog-recent-list">${recentSess.map(s=>{const e=s.entries.find(e=>e.exercise===selEx);const mx=entryMaxWeight(e);const vol=entryVolume(e);const sc=e.sets?.filter(st=>!st.warmup).length||0;return`<div class="prog-recent-row"><span class="prog-recent-date">${fmtD(s.date)}</span><span class="prog-recent-info">${sc}×${mx}${e.unit||'kg'}</span><span class="prog-recent-vol">${Math.round(vol)}kg vol</span></div>`;}).join('')}</div>`:'';
 }
 
@@ -641,13 +648,19 @@ function renderProfileHeader(){
   const latestBW=db.bw.length?db.bw[db.bw.length-1].v:p.weight||'—';
   const streak=calcStreak();
 
+  const _phi={
+    bw:_s+'<path d="M12 3v4"/><circle cx="12" cy="3" r="1"/><path d="M6.5 10L12 7l5.5 3"/><rect x="4" y="14" width="16" height="4" rx="2"/></svg>',
+    sess:_s+'<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    ex:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',
+    fire:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/></svg>',
+  };
   el.innerHTML=`
     <div class="ph-greeting">Hola, <span class="ph-name">${name}</span></div>
     <div class="ph-stats">
-      <div class="ph-stat"><span class="ph-stat-val">${latestBW}</span><span class="ph-stat-lbl">kg</span></div>
-      <div class="ph-stat"><span class="ph-stat-val">${totalSessions}</span><span class="ph-stat-lbl">sesiones</span></div>
-      <div class="ph-stat"><span class="ph-stat-val">${totalExercises}</span><span class="ph-stat-lbl">ejercicios</span></div>
-      <div class="ph-stat"><span class="ph-stat-val">${streak}</span><span class="ph-stat-lbl">racha</span></div>
+      <div class="ph-stat"><span class="ph-stat-ico">${_phi.bw}</span><span class="ph-stat-val">${latestBW}</span><span class="ph-stat-lbl">kg</span></div>
+      <div class="ph-stat"><span class="ph-stat-ico">${_phi.sess}</span><span class="ph-stat-val">${totalSessions}</span><span class="ph-stat-lbl">sesiones</span></div>
+      <div class="ph-stat"><span class="ph-stat-ico">${_phi.ex}</span><span class="ph-stat-val">${totalExercises}</span><span class="ph-stat-lbl">ejercicios</span></div>
+      <div class="ph-stat"><span class="ph-stat-ico">${_phi.fire}</span><span class="ph-stat-val">${streak}</span><span class="ph-stat-lbl">racha</span></div>
     </div>`;
 }
 function saveProfile(){
