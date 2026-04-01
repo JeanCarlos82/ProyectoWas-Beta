@@ -702,6 +702,13 @@ function updateIMC(){
   const actMult=[1.2,1.375,1.55,1.725,1.9];
   const actLabels=['Sedentario','Ligero','Moderado','Activo','Muy activo'];
   const actExamples=['Oficina, sin ejercicio','Caminar, 1-2 días gym','3-4 días gym','5-6 días gym','2x al día, trabajo físico'];
+  const actIcons=[
+    _s+'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    _s+'<path d="M13 4v16"/><path d="M17 4v16"/><path d="M19 8H5c-.6 0-1 .4-1 1v6c0 .6.4 1 1 1h14c.6 0 1-.4 1-1V9c0-.6-.4-1-1-1z" fill="none"/></svg>',
+    _s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',
+    _s+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+    _s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>',
+  ];
   const actLevel=db.profile.activityLevel||2;
   const tdee=tmb*actMult[actLevel];
 
@@ -730,8 +737,22 @@ function updateIMC(){
     </div>
     <div class="imc-bar">${bars}</div>
     <div class="health-activity">
-      <div class="health-label" style="margin-bottom:6px">NIVEL DE ACTIVIDAD</div>
-      <div class="activity-opts">${actLabels.map((l,i)=>`<div class="activity-opt ${actLevel===i?'active':''}" onclick="setActivity(${i})"><span class="activity-name">${l}</span><span class="activity-example">${actExamples[i]}</span></div>`).join('')}</div>
+      <div class="act-header">
+        <span class="act-header-ico">${_s}<path d="M3 12h4l3-9 4 18 3-9h4"/></svg></span>
+        <span class="health-label" style="margin:0">NIVEL DE ACTIVIDAD</span>
+      </div>
+      <div class="act-level-bar">
+        <div class="act-level-fill" style="width:${(actLevel/4)*100}%"></div>
+        ${actLabels.map((_,i)=>`<div class="act-level-dot ${i<=actLevel?'filled':''}" style="left:${(i/4)*100}%"></div>`).join('')}
+      </div>
+      <div class="activity-list">${actLabels.map((l,i)=>`<div class="act-item ${actLevel===i?'active':''}" onclick="setActivity(${i})">
+        <span class="act-item-ico">${actIcons[i]}</span>
+        <div class="act-item-info">
+          <span class="act-item-name">${l}</span>
+          <span class="act-item-desc">${actExamples[i]}</span>
+        </div>
+        <span class="act-item-mult">×${actMult[i]}</span>
+      </div>`).join('')}</div>
     </div>`;
   wrap.innerHTML=html;
 }
