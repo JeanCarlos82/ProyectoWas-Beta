@@ -494,12 +494,18 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 
 /* Result preview */
 .wiz-preview{display:flex;flex-direction:column;gap:4px;margin:16px 0;}
-.wiz-day-preview{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
-.wiz-day-preview.rest{opacity:0.4;}
-.wiz-dp-day{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--accent);width:30px;}
+.wiz-day-preview{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px;overflow:hidden;}
+.wiz-day-preview.rest{opacity:0.35;padding:8px 14px;}
+.wiz-day-preview.rest .wiz-dp-day{width:auto;}
+.wiz-dp-top{display:flex;align-items:center;gap:8px;}
+.wiz-dp-day{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--accent);width:30px;flex-shrink:0;}
 .wiz-dp-label{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text);flex:1;}
-.wiz-dp-count{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);}
-.wiz-result-actions{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.wiz-dp-count{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);background:var(--card2);padding:2px 7px;border-radius:8px;}
+.wiz-dp-exlist{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;}
+.wiz-dp-ex{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);background:var(--card2);border:1px solid var(--border);padding:3px 8px;border-radius:6px;}
+.wiz-result-note{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);text-align:center;margin-top:14px;padding:8px 12px;background:var(--card2);border-radius:8px;border-left:2px solid var(--accent);}
+.wiz-result-note b{color:var(--accent);}
+.wiz-result-actions{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
 .wiz-customize-btn{width:100%;padding:12px;background:transparent;border:1px solid var(--border2);border-radius:10px;color:var(--muted2);font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .wiz-customize-btn:active{border-color:var(--accent);color:var(--accent);}
 .wiz-relaunch-btn{width:100%;padding:10px;background:transparent;border:1px solid var(--border2);border-radius:7px;color:var(--blue);font-family:'DM Mono',monospace;font-size:10px;cursor:pointer;margin-top:10px;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}

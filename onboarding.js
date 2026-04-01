@@ -46,49 +46,57 @@ const TEMPLATES_M={
 };
 
 // ── TEMPLATES FEMENINOS ──
-// Enfoque: más volumen en glúteos/piernas, menos aislamiento de brazos,
-// más core funcional, hip thrust como movimiento principal
+// Basado en evidencia: glúteos 2-3x/semana, más lower que upper,
+// hip thrust como movimiento principal, ejercicios unilaterales para
+// estabilidad de cadera, cardio con Stairmaster para activar glúteos.
+// Las mujeres recuperan más rápido (24-48h vs 48-72h hombres) permitiendo
+// mayor frecuencia de glúteos.
 const TEMPLATES_F={
+  // 3 días: Full body con prioridad glúteos en cada sesión
   fullbody_3:{
     exercises:[
-      [{name:"Sentadilla",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Crunch",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Crunch",type:"pesas"}]
     ],labels:["Full Body A","Full Body B","Full Body C"]
   },
+  // 3 días fat loss: 2 full body + 1 cardio con Stairmaster
   fullbody_cardio_3:{
     exercises:[
-      [{name:"Sentadilla",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Elíptica",type:"cardio"},{name:"Stairmaster",type:"cardio"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}]
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Stairmaster",type:"cardio"},{name:"Elíptica",type:"cardio"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
     ],labels:["Full Body","Cardio","Full Body"]
   },
+  // 4 días: 2 lower (glúteo-focus) + 2 upper, glúteos se trabajan 2x/semana
   upperlower_4:{
     exercises:[
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
       [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
-    ],labels:["Upper A","Lower A","Upper B","Lower B"]
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}]
+    ],labels:["Glúteos & Piernas A","Upper A","Glúteos & Piernas B","Upper B"]
   },
+  // 5 días: 3 lower + 2 upper, glúteos se trabajan 3x/semana
   pplul_5:{
     exercises:[
-      [{name:"Press con mancuernas",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
-      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
-      [{name:"Press con mancuernas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
-    ],labels:["Push","Pull","Glúteos & Piernas","Upper","Lower"]
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}],
+      [{name:"Hip thrust",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Peso muerto sumo",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Stairmaster",type:"cardio"}]
+    ],labels:["Glúteos Heavy","Upper Push","Piernas & Core","Upper Pull","Glúteos & Cardio"]
   },
+  // 6 días: 3 lower + 2 upper + 1 cardio/core, glúteos 3x/semana
   ppl_6:{
     exercises:[
-      [{name:"Press con mancuernas",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Aperturas en polea",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
-      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"}],
-      [{name:"Press inclinado",type:"pesas"},{name:"Aperturas mancuernas",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Elevaciones frontales",type:"pesas"},{name:"Extensiones de tríceps",type:"pesas"},{name:"Plancha",type:"pesas"}],
-      [{name:"Remo en polea baja",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Pájaros",type:"pesas"},{name:"Curl con barra Z",type:"pesas"},{name:"Face pull",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
-    ],labels:["Push","Pull","Glúteos & Piernas","Push","Pull","Glúteos & Piernas"]
+      [{name:"Hip thrust",type:"pesas"},{name:"Sentadilla",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"},{name:"Patada de glúteo",type:"pesas"},{name:"Plancha",type:"pesas"}],
+      [{name:"Press con mancuernas",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
+      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Puente de glúteo",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}],
+      [{name:"Press inclinado",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Crunch",type:"pesas"}],
+      [{name:"Hip thrust",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Peso muerto sumo",type:"pesas"},{name:"Aductores en máquina",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Abductores en máquina",type:"pesas"}],
+      [{name:"Stairmaster",type:"cardio"},{name:"Elíptica",type:"cardio"},{name:"Crunch",type:"pesas"},{name:"Russian twist",type:"pesas"},{name:"Elevación de piernas",type:"pesas"},{name:"Plancha",type:"pesas"}]
+    ],labels:["Glúteos Heavy","Upper Push","Piernas","Upper Pull","Glúteos & Aductores","Cardio & Core"]
   }
 };
 
@@ -309,16 +317,18 @@ function showWizardResult(){
   let preview=allDK.map(dk=>{
     const day=routine[dk];
     if(day.rest)return`<div class="wiz-day-preview rest"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">Descanso</span></div>`;
-    return`<div class="wiz-day-preview"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">${day.label}</span><span class="wiz-dp-count">${day.exercises.length} ej.</span></div>`;
+    const exList=day.exercises.map(e=>`<span class="wiz-dp-ex">${e.name}</span>`).join('');
+    return`<div class="wiz-day-preview"><div class="wiz-dp-top"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-label">${day.label}</span><span class="wiz-dp-count">${day.exercises.length}</span></div><div class="wiz-dp-exlist">${exList}</div></div>`;
   }).join('');
 
   container.innerHTML=`
     <div class="wiz-title">Tu rutina personalizada</div>
     <div class="wiz-subtitle">${numDays} días · ${splitNames[templateKey]||'Personalizada'}</div>
     <div class="wiz-preview">${preview}</div>
+    <div class="wiz-result-note">Puedes cambiar ejercicios en cualquier momento desde <b>Perfil → Mi Rutina</b></div>
     <div class="wiz-result-actions">
       <button class="sbtn" onclick="applyWizardRoutine()">EMPEZAR A ENTRENAR</button>
-      <button class="wiz-customize-btn" onclick="applyWizardRoutine(true)">PERSONALIZAR EJERCICIOS</button>
+      <button class="wiz-customize-btn" onclick="applyWizardRoutine(true)">PERSONALIZAR AHORA</button>
     </div>`;
 }
 
