@@ -1190,7 +1190,7 @@ function setUnit(u){
 function openModal(name,type){
   curEx=name;curType=type;currentSets=[];
   document.getElementById('mtitle').textContent=name;
-  document.getElementById('nval').value='';const nw=document.querySelector('.note-toggle-wrap');if(nw)nw.classList.remove('open');document.getElementById('c-min').value='';document.getElementById('c-km').value='';
+  document.getElementById('nval').value='';const ne=document.getElementById('note-expand');if(ne)ne.classList.remove('open');document.getElementById('c-min').value='';document.getElementById('c-km').value='';
   const calEl=document.getElementById('c-cal');if(calEl)calEl.value='';
   setCardioIntensity('media');
   document.getElementById('m-wsec').style.display=type==='cardio'?'none':'';
@@ -1243,7 +1243,7 @@ function openModal(name,type){
     renderSets();
   }
   document.getElementById('mhints').innerHTML=hints;
-  if(entry){if(type==='cardio'){document.getElementById('c-min').value=entry.min||'';document.getElementById('c-km').value=entry.km||'';const calEl=document.getElementById('c-cal');if(calEl)calEl.value=entry.cal||'';if(entry.intensity)setCardioIntensity(entry.intensity);}document.getElementById('nval').value=entry.notes||'';if(entry.notes){const nw=document.querySelector('.note-toggle-wrap');if(nw)nw.classList.add('open');}del.style.display='';}
+  if(entry){if(type==='cardio'){document.getElementById('c-min').value=entry.min||'';document.getElementById('c-km').value=entry.km||'';const calEl=document.getElementById('c-cal');if(calEl)calEl.value=entry.cal||'';if(entry.intensity)setCardioIntensity(entry.intensity);}document.getElementById('nval').value=entry.notes||'';if(entry.notes){const ne=document.getElementById('note-expand');if(ne)ne.classList.add('open');}del.style.display='';}
   else del.style.display='none';
   document.getElementById('overlay').classList.add('open');
 }
