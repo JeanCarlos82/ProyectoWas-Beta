@@ -373,7 +373,7 @@ function renderHist(){
         <div class="hist-week-hdr" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.hist-week-arrow').classList.toggle('rot')">
           <span class="hist-week-dates">Semana del ${wk.label}</span>
           <div class="hist-week-right">
-            <span class="hist-week-count">${wk.sessions.length}</span>
+            <span class="hist-week-count">${wk.sessions.length} ${wk.sessions.length===1?'día':'días'}</span>
             <span class="hist-week-arrow ${isFirstWeek?'rot':''}">›</span>
           </div>
         </div>
