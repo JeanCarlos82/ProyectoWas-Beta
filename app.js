@@ -916,18 +916,31 @@ function getDayFocus(exercises){
 
 function renderRutina(){
   const dkWeek=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
+  const muscleColors={'Pecho':'#f87171','Tríceps':'#fb923c','Hombros':'#fbbf24','Espalda':'#60a5fa','Bíceps':'#818cf8','Cuádriceps':'#4ade80','Isquiotibiales':'#34d399','Glúteos':'#2dd4bf','Pantorrillas':'#6ee7b7','Core':'#f59e0b','Cardio':'#38bdf8'};
   document.getElementById('routine-days').innerHTML=dkWeek.map(dk=>{
     const day=db.routine[dk]||{label:'',rest:false,exercises:[]};
     const isRest=day.rest;
     const exList=(day.exercises||[]);
     const focus=getDayFocus(exList);
+    const exCount=exList.length;
+    const exRows=exList.map((ex,i)=>{
+      const info=getExerciseInfo(ex.name);
+      const mg=info?.muscleGroup?.[0]||'Otro';
+      const color=muscleColors[mg]||'#777';
+      return`<div class="exrow">
+        <span class="exrow-num">${i+1}</span>
+        <span class="exrow-name">${ex.name}</span>
+        <span class="exrow-mg" style="color:${color};border-color:${color}33;background:${color}0d">${mg}</span>
+        <button class="exrow-del" onclick="removeEx('${dk}',${i})">×</button>
+      </div>`;
+    }).join('');
     return`<div class="day-block ${isRest?'day-rest':''}" id="db-${dk}">
       <div class="day-hdr" onclick="toggleDay('${dk}')">
         <div class="day-hdr-left">
           <span class="day-letter">${DL[dk].charAt(0)}</span>
           <div>
-            <div class="day-name">${DL[dk].toUpperCase()}</div>
-            <div class="day-sub">${isRest?'Descanso':focus||'Toca para configurar'}</div>
+            <div class="day-name">${DL[dk].toUpperCase()}${!isRest&&day.label?` <span class="day-label-tag">${day.label}</span>`:''}</div>
+            <div class="day-sub">${isRest?'Descanso':exCount?`${exCount} ejercicios · ${focus}`:'Toca para configurar'}</div>
           </div>
         </div>
         <div class="day-tog" id="dtog-${dk}">›</div>
@@ -938,12 +951,7 @@ function renderRutina(){
           <span class="tog-lbl">Día de descanso</span>
         </div>
         <div id="dexsec-${dk}" style="${isRest?'display:none':''}">
-          <div id="dexlist-${dk}">
-            ${exList.map((ex,i)=>`<div class="exrow">
-              <span class="exrow-name">${ex.name}</span>
-              <button class="exrow-del" onclick="removeEx('${dk}',${i})">×</button>
-            </div>`).join('')}
-          </div>
+          <div id="dexlist-${dk}">${exRows}</div>
           <div class="routine-actions">
             <button class="picker-open-btn" onclick="openExPicker('${dk}')">+ AGREGAR EJERCICIOS</button>
             ${otherDaysWithExercises(dk).length?`<button class="copy-day-btn" onclick="showCopyMenu('${dk}')">COPIAR DE...</button>`:''}
