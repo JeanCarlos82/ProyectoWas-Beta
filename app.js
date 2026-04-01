@@ -283,9 +283,12 @@ function renderHoy(){
       const isSel=reorderSelected===exIdx;
       const isTarget=reorderSelected!==null&&!isSel;
       h+=`<div class="ex-card reorder ${isSel?'reorder-sel':''}${isTarget?' reorder-target':''}" onclick="event.stopPropagation();selectReorderEx(${exIdx})">
-        <span class="reorder-idx">${exIdx+1}</span>
-        <div class="ex-l"><div class="ex-name">${ex.name}</div><div class="ex-sub reorder-hint">${isSel?'Toca donde moverlo':isTarget?'Toca para colocar aquí':'Toca para seleccionar'}</div></div>
-        ${isSel?`<span class="reorder-badge">${_s}<polyline points="5 9 2 12 5 15"/><polyline points="19 9 22 12 19 15"/></svg></span>`:''}
+        <span class="reorder-num">${exIdx+1}</span>
+        <div class="reorder-info">
+          <div class="reorder-name">${ex.name}</div>
+          <div class="reorder-hint">${isSel?'Toca donde moverlo':isTarget?'Posición ${exIdx+1} · Toca para colocar aquí':'Toca para seleccionar'}</div>
+        </div>
+        ${isSel?`<span class="reorder-badge">${_s}<polyline points="5 9 2 12 5 15"/><polyline points="19 9 22 12 19 15"/></svg></span>`:`<span class="reorder-pos">#${exIdx+1}</span>`}
       </div>`;
       return;
     }
