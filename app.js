@@ -330,12 +330,12 @@ function renderHoy(){
     }
   });
   const exCount=(day.exercises||[]).length;
-  if(exCount>1){
-    if(reorderMode){
-      h+=`<div class="reorder-note">${_s}<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><p><b>1.</b> Toca el ejercicio que quieras mover · <b>2.</b> Toca la posición donde colocarlo</p></div>`;
-    }
-    h+=`<button class="reorder-btn" onclick="event.stopPropagation();toggleReorder()">${_s}<line x1="12" y1="5" x2="12" y2="19"/><polyline points="8 9 12 5 16 9"/><polyline points="8 15 12 19 16 15"/></svg>${reorderMode?' LISTO':' Reordenar'}</button>`;
+  if(reorderMode&&exCount>1){
+    h+=`<div class="reorder-note">${_s}<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><p><b>1.</b> Toca el ejercicio que quieras mover · <b>2.</b> Toca la posición donde colocarlo</p></div>`;
   }
+  // Actualizar estado visual del botón toggle
+  const togBtn=document.getElementById('reorder-toggle');
+  if(togBtn)togBtn.classList.toggle('active',reorderMode);
   h+=`</div>`;c.innerHTML=h;
 }
 

@@ -60,9 +60,12 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 
 /* ── EXERCISE CARDS ── */
 .ex-list{display:flex;flex-direction:column;gap:6px;}
-.reorder-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;margin-top:10px;background:linear-gradient(135deg,rgba(232,255,58,0.04) 0%,rgba(232,255,58,0.01) 100%);border:1px solid rgba(232,255,58,0.15);border-radius:12px;color:var(--accent);font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:0.8px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all 0.2s;}
-.reorder-btn:active{background:rgba(232,255,58,0.1);border-color:var(--accent);transform:scale(0.97);}
-.reorder-btn svg{width:15px;height:15px;opacity:0.7;}
+.slbl-between{justify-content:space-between;}
+.slbl-left{display:flex;align-items:center;gap:6px;}
+.reorder-toggle{background:var(--card2);border:1px solid var(--border);border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--muted2);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all 0.2s;}
+.reorder-toggle:active{transform:scale(0.9);}
+.reorder-toggle.active{background:rgba(232,255,58,0.1);border-color:var(--accent);color:var(--accent);}
+.reorder-toggle svg{width:16px;height:16px;}
 .ex-card.reorder{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
 .ex-card.reorder:active{transform:scale(0.98);}
 .ex-card.reorder-sel{border-color:var(--accent);background:rgba(232,255,58,0.06);}
