@@ -280,11 +280,15 @@ function renderHoy(){
     const entry=ts?.entries?.find(e=>e.exercise===ex.name),logged=!!entry,prev=prevEntry(ex.name);
     const sn=ex.name.replace(/'/g,"\\'");
     if(ex.type==='cardio'){
+      const intColors={baja:'g',media:'y',alta:'r'};
+      const intLabels={baja:'Baja',media:'Media',alta:'Alta'};
+      const intChip=logged&&entry.intensity?`<span class="chip ${intColors[entry.intensity]||'y'}">${intLabels[entry.intensity]||'Media'}</span>`:'';
+      const calChip=logged&&entry.cal?`<span class="chip b">${entry.calEstimated?'~':''}${entry.cal} kcal</span>`:'';
       h+=`<div class="ex-card ${logged?'logged':''}" onclick="openModal('${sn}','cardio')">
         <div class="ex-l">
           <div class="ex-name">${ex.name}</div>
           <div class="ex-sub">${logged?entrySummaryText(entry):'Toca para registrar'}</div>
-          <div class="ex-chips"><span class="chip y">Cardio</span>${logged?'<span class="chip g">✓</span>':''}</div>
+          <div class="ex-chips"><span class="chip y">Cardio</span>${intChip}${calChip}${logged?'<span class="chip g">✓</span>':''}</div>
         </div>
         <div class="ex-r">${logged?'<div class="ex-check"><svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>':'<span class="ex-arrow">›</span>'}</div>
       </div>`;
