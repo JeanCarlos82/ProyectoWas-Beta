@@ -614,8 +614,13 @@ function showWizardResult(){
     const day=routine[dk];
     const style=getLabelStyle(day.label);
     const exList=day.exercises.map(e=>{
-      const isCardio=e.type==='cardio';
-      return`<span class="wiz-dp-ex${isCardio?' cardio':''}">${e.name}</span>`;
+      const info=getExerciseInfo(e.name);
+      let zone='default';
+      if(e.type==='cardio')zone='cardio';
+      else if(info?.zone==='inferior')zone='lower';
+      else if(info?.zone==='superior')zone='upper';
+      else if(info?.zone==='core')zone='core';
+      return`<span class="wiz-dp-ex ${zone}">${e.name}</span>`;
     }).join('');
     return`<div class="wiz-day-preview" onclick="this.classList.toggle('expanded')"><div class="wiz-dp-top"><span class="wiz-dp-day">${dl[dk]}</span><span class="wiz-dp-tag" style="--tag-color:${style.color}"><span class="wiz-dp-tag-ico">${style.ico}</span>${day.label}</span><div class="wiz-dp-right"><span class="wiz-dp-count">${day.exercises.length}</span><span class="wiz-dp-arrow">›</span></div></div><div class="wiz-dp-exlist">${exList}</div></div>`;
   }).join('');
