@@ -692,6 +692,19 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .guide-card-ex-label{font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1.5px;color:var(--accent);margin-bottom:4px;}
 .guide-card-example p{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted2);line-height:1.6;}
 
+/* ── WIZARD MANUAL BUILDER ── */
+.wiz-manual-days{display:flex;flex-direction:column;gap:4px;margin:12px 0;}
+.wiz-manual-day{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.wiz-manual-day:active{opacity:0.7;}
+.wiz-md-name{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;color:var(--text);flex:1;}
+.wiz-md-count{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);background:var(--card2);padding:2px 8px;border-radius:6px;}
+.wiz-md-arrow{font-size:14px;color:var(--muted2);}
+.wiz-import-tip{display:flex;align-items:flex-start;gap:8px;margin-top:14px;padding:10px 12px;background:linear-gradient(135deg,rgba(232,255,58,0.06) 0%,rgba(232,255,58,0.02) 100%);border:1px solid rgba(232,255,58,0.15);border-radius:10px;}
+.wiz-import-tip svg{width:16px;height:16px;flex-shrink:0;color:var(--accent);margin-top:1px;}
+.wiz-import-tip p{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);line-height:1.7;margin:0;}
+.wiz-import-tip b{color:var(--text);}
+.wiz-import-tip i{color:var(--accent);font-style:normal;}
+
 /* ── RESPONSIVE: small Android (360px) ── */
 @media(max-width:374px){
   .hdr-day{font-size:28px;}

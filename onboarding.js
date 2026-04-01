@@ -472,9 +472,9 @@ function buildRoutineFromWizard(templateKey,selectedDays,templates){
 }
 
 // ── Wizard State ──
-const WIZARD_STEPS=5;
+const WIZARD_STEPS=6;
 let wizardStep=1;
-let wizardData={name:'',age:'',sex:'H',height:'',weight:'',activityLevel:2,goal:null,experience:null,selectedDays:[]};
+let wizardData={name:'',age:'',sex:'H',height:'',weight:'',activityLevel:2,goal:null,experience:null,selectedDays:[],mode:null}; // mode: 'auto','manual','import'
 
 const _svg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
 const ACTIVITY_OPTS=[
@@ -491,7 +491,7 @@ function showWizard(){
     if(!confirm('Esto reemplazará tu rutina actual. ¿Continuar?'))return;
   }
   wizardStep=1;
-  wizardData={name:db.profile.name||'',age:db.profile.age||'',sex:db.profile.sex||'H',height:db.profile.height||'',weight:db.profile.weight||'',activityLevel:db.profile.activityLevel??2,goal:null,experience:null,selectedDays:[]};
+  wizardData={name:db.profile.name||'',age:db.profile.age||'',sex:db.profile.sex||'H',height:db.profile.height||'',weight:db.profile.weight||'',activityLevel:db.profile.activityLevel??2,goal:null,experience:null,selectedDays:[],mode:null};
   document.getElementById('wizard-overlay').style.display='flex';
   renderWizardStep();
 }
@@ -500,7 +500,9 @@ function hideWizard(){document.getElementById('wizard-overlay').style.display='n
 function renderWizardStep(){
   const container=document.getElementById('wizard-content');
   const dots=document.getElementById('wizard-dots');
-  dots.innerHTML=Array.from({length:WIZARD_STEPS},(_,i)=>i+1).map(n=>`<span class="wiz-dot ${n===wizardStep?'active':''}${n<wizardStep?' done':''}"></span>`).join('');
+  const totalDots=wizardData.mode==='auto'?6:wizardData.mode==='manual'?3:1;
+  const dotStep=wizardStep>totalDots?totalDots:wizardStep;
+  dots.innerHTML=Array.from({length:totalDots},(_,i)=>i+1).map(n=>`<span class="wiz-dot ${n===dotStep?'active':''}${n<dotStep?' done':''}"></span>`).join('');
 
   if(wizardStep===1){
     // DATOS PERSONALES
@@ -521,7 +523,31 @@ function renderWizardStep(){
       <button class="sbtn" onclick="wizNextProfile()" style="margin-top:16px">CONTINUAR</button>`;
 
   } else if(wizardStep===2){
-    // NIVEL DE ACTIVIDAD
+    // ELEGIR MODO
+    container.innerHTML=`
+      <div class="wiz-title">¿Cómo quieres tu rutina?</div>
+      <div class="wiz-subtitle">Elige la opción que mejor te venga</div>
+      <div class="wiz-options">
+        <div class="wiz-opt ${wizardData.mode==='auto'?'active':''}" onclick="wizSelectMode('auto')">
+          <span class="wiz-emoji wiz-svg-ico">${_svg}<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          <div><span class="wiz-opt-title">Sugiéreme una rutina</span><span class="wiz-opt-desc">Te creamos una rutina personalizada según tus datos y objetivos</span></div>
+        </div>
+        <div class="wiz-opt ${wizardData.mode==='manual'?'active':''}" onclick="wizSelectMode('manual')">
+          <span class="wiz-emoji wiz-svg-ico">${_svg}<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+          <div><span class="wiz-opt-title">Crear la mía</span><span class="wiz-opt-desc">Elige tus días y ejercicios a tu gusto</span></div>
+        </div>
+        <div class="wiz-opt" onclick="wizImportRoutine()">
+          <span class="wiz-emoji wiz-svg-ico">${_svg}<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+          <div><span class="wiz-opt-title">Importar rutina</span><span class="wiz-opt-desc">Importa un JSON de una rutina existente</span></div>
+        </div>
+      </div>
+      <div class="wiz-import-tip">
+        ${_svg}<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <p>¿Ya tienes una rutina escrita? Cópiala en <b>ChatGPT</b> y dile: <i>"Convierte mi rutina a JSON con este formato"</i> junto con un export de ejemplo de esta app. Luego impórtala aquí.</p>
+      </div>`;
+
+  } else if(wizardStep===3){
+    // NIVEL DE ACTIVIDAD (solo modo auto)
     container.innerHTML=`
       <div class="wiz-title">Tu estilo de vida</div>
       <div class="wiz-subtitle">Esto nos ayuda a calcular tus calorías y sugerirte días de entrenamiento</div>
@@ -532,7 +558,7 @@ function renderWizardStep(){
         </div>`).join('')}
       </div>`;
 
-  } else if(wizardStep===3){
+  } else if(wizardStep===4){
     // OBJETIVO — adaptado por sexo
     const isFem=wizardData.sex==='M';
     const goals=isFem?[
@@ -557,7 +583,7 @@ function renderWizardStep(){
         </div>`).join('')}
       </div>`;
 
-  } else if(wizardStep===4){
+  } else if(wizardStep===5){
     // EXPERIENCIA
     container.innerHTML=`
       <div class="wiz-title">¿Cuánta experiencia tienes?</div>
@@ -577,23 +603,24 @@ function renderWizardStep(){
         </div>
       </div>`;
 
-  } else if(wizardStep===5){
-    // DÍAS — con sugerencia basada en actividad + experiencia
-    const suggested=getSuggestedDays(wizardData.activityLevel,wizardData.experience);
-    const warning=wizardData.selectedDays.length?getDaysWarning(wizardData.experience,wizardData.selectedDays.length):null;
+  } else if(wizardStep===6||wizardStep==='manual_days'){
+    const isManual=wizardData.mode==='manual';
+    const suggested=isManual?4:getSuggestedDays(wizardData.activityLevel,wizardData.experience);
+    const warning=!isManual&&wizardData.selectedDays.length?getDaysWarning(wizardData.experience,wizardData.selectedDays.length):null;
     const allDays=[
       {key:"lunes",label:"L"},{key:"martes",label:"M"},{key:"miercoles",label:"X"},
       {key:"jueves",label:"J"},{key:"viernes",label:"V"},{key:"sabado",label:"S"},{key:"domingo",label:"D"}
     ];
+    const minDays=isManual?1:3;
     container.innerHTML=`
       <div class="wiz-title">¿Qué días entrenas?</div>
-      <div class="wiz-subtitle">Basado en tu actividad y nivel, te recomendamos <strong>${suggested} días</strong></div>
+      <div class="wiz-subtitle">${isManual?'Selecciona los días que quieras entrenar':`Basado en tu actividad y nivel, te recomendamos <strong>${suggested} días</strong>`}</div>
       <div class="wiz-day-picker">
         ${allDays.map(d=>`<div class="wiz-day-btn ${wizardData.selectedDays.includes(d.key)?'active':''}" onclick="toggleWizDay('${d.key}')">${d.label}</div>`).join('')}
       </div>
-      <div class="wiz-day-count">${wizardData.selectedDays.length} de ${suggested} recomendados</div>
+      <div class="wiz-day-count">${wizardData.selectedDays.length} días seleccionados</div>
       ${warning?`<div class="wiz-warning">${warning}</div>`:''}
-      ${wizardData.selectedDays.length>=3?`<button class="sbtn" onclick="showWizardResult()" style="margin-top:16px">VER MI RUTINA</button>`:'<div class="wiz-hint">Selecciona al menos 3 días</div>'}`;
+      ${wizardData.selectedDays.length>=minDays?`<button class="sbtn" onclick="${isManual?'showManualBuilder()':'showWizardResult()'}" style="margin-top:16px">${isManual?'ELEGIR EJERCICIOS':'VER MI RUTINA'}</button>`:`<div class="wiz-hint">Selecciona al menos ${minDays} día${minDays>1?'s':''}</div>`}`;
   }
 }
 
@@ -605,10 +632,30 @@ function wizNextProfile(){
   wizardStep=2;renderWizardStep();
 }
 
+function wizSelectMode(mode){
+  wizardData.mode=mode;
+  renderWizardStep();
+  if(mode==='auto'){
+    setTimeout(()=>{wizardStep=3;renderWizardStep();},300);
+  } else if(mode==='manual'){
+    setTimeout(()=>{wizardStep='manual_days';renderWizardStep();},300);
+  }
+}
+function wizImportRoutine(){
+  // Guardar perfil primero
+  db.profile={...db.profile,name:wizardData.name||db.profile.name,age:wizardData.age||db.profile.age,sex:wizardData.sex||db.profile.sex,height:wizardData.height||db.profile.height,weight:wizardData.weight||db.profile.weight,activityLevel:wizardData.activityLevel??2};
+  ps('gym_profile',db.profile);
+  localStorage.setItem('gym_onboarded','true');
+  hideWizard();
+  // Abrir importador
+  const input=document.createElement('input');input.type='file';input.accept='.json';
+  input.onchange=e=>importData(e);
+  input.click();
+}
 function wizSelectActivity(level){
   wizardData.activityLevel=level;
   renderWizardStep();
-  setTimeout(()=>{wizardStep=3;renderWizardStep();},300);
+  setTimeout(()=>{wizardStep=4;renderWizardStep();},300);
 }
 
 function wizSelect(key,value){
@@ -624,6 +671,117 @@ function toggleWizDay(dk){
   const order=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
   wizardData.selectedDays.sort((a,b)=>order.indexOf(a)-order.indexOf(b));
   renderWizardStep();
+}
+
+// ── Manual routine builder ──
+let manualRoutine={};
+function showManualBuilder(){
+  const container=document.getElementById('wizard-content');
+  document.getElementById('wizard-dots').innerHTML='';
+  const dl={lunes:"Lunes",martes:"Martes",miercoles:"Miércoles",jueves:"Jueves",viernes:"Viernes",sabado:"Sábado",domingo:"Domingo"};
+  const allDK=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
+
+  // Inicializar rutina manual si no existe
+  if(!Object.keys(manualRoutine).length){
+    allDK.forEach(dk=>{
+      if(wizardData.selectedDays.includes(dk)){
+        manualRoutine[dk]={label:'Entrenamiento',rest:false,exercises:[]};
+      } else {
+        manualRoutine[dk]={label:'Descanso',rest:true,exercises:[]};
+      }
+    });
+  }
+
+  const dayTabs=wizardData.selectedDays.map(dk=>{
+    const exCount=manualRoutine[dk]?.exercises?.length||0;
+    return`<div class="wiz-manual-day" onclick="openManualDayPicker('${dk}')">
+      <span class="wiz-md-name">${dl[dk]}</span>
+      <span class="wiz-md-count">${exCount} ej.</span>
+      <span class="wiz-md-arrow">›</span>
+    </div>`;
+  }).join('');
+
+  const totalEx=wizardData.selectedDays.reduce((a,dk)=>a+(manualRoutine[dk]?.exercises?.length||0),0);
+
+  container.innerHTML=`
+    <div class="wiz-title">Elige tus ejercicios</div>
+    <div class="wiz-subtitle">Toca cada día para agregar ejercicios</div>
+    <div class="wiz-manual-days">${dayTabs}</div>
+    ${totalEx>0?`<button class="sbtn" onclick="applyManualRoutine()" style="margin-top:16px">EMPEZAR A ENTRENAR</button>`:'<div class="wiz-hint">Agrega al menos un ejercicio</div>'}`;
+}
+
+function openManualDayPicker(dk){
+  const current=manualRoutine[dk]?.exercises||[];
+  window._manualPickerDay=dk;
+  window._manualPickerSelected=current.map(e=>e.name);
+  const overlay=document.getElementById('picker-overlay');
+  const search=document.getElementById('picker-search');
+  const btn=overlay.querySelector('.sbtn');
+  search.value='';
+  search.oninput=()=>renderManualPicker(search.value);
+  btn.onclick=()=>doneManualPicker();
+  renderManualPicker('');
+  overlay.classList.add('open');
+}
+
+function renderManualPicker(query){
+  const q=(query||'').trim().toLowerCase();
+  const selected=window._manualPickerSelected||[];
+  const list=document.getElementById('picker-list');
+  const zones=[{key:'superior',label:'TREN SUPERIOR'},{key:'inferior',label:'TREN INFERIOR'},{key:'core',label:'CORE'},{key:'cardio',label:'CARDIO'}];
+  let html='';
+  zones.forEach(z=>{
+    const exs=EXERCISE_DB.filter(e=>e.zone===z.key&&(!q||e.name.toLowerCase().includes(q)||e.muscleGroup.some(m=>m.toLowerCase().includes(q))));
+    if(!exs.length)return;
+    html+=`<div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--accent);letter-spacing:1.5px;padding:8px 0 4px">${z.label}</div>`;
+    exs.forEach(e=>{
+      const sel=selected.includes(e.name);
+      html+=`<div class="pick-item ${sel?'selected':''}" onclick="toggleManualEx('${e.name.replace(/'/g,"\\'")}')"><span>${e.name}</span><span class="pick-mg">${e.muscleGroup[0]}</span></div>`;
+    });
+  });
+  list.innerHTML=html;
+}
+
+function toggleManualEx(name){
+  const sel=window._manualPickerSelected;
+  const idx=sel.indexOf(name);
+  if(idx>=0)sel.splice(idx,1);else sel.push(name);
+  renderManualPicker(document.getElementById('picker-search')?.value||'');
+}
+
+function doneManualPicker(){
+  const dk=window._manualPickerDay;
+  const selected=window._manualPickerSelected||[];
+  manualRoutine[dk].exercises=selected.map(name=>{
+    const info=getExerciseInfo(name);
+    return{name,type:info?.type||'pesas'};
+  });
+  const overlay=document.getElementById('picker-overlay');
+  overlay.classList.remove('open');
+  // Restaurar picker original
+  const search=document.getElementById('picker-search');
+  const btn=overlay.querySelector('.sbtn');
+  search.oninput=()=>onPickerSearch(search.value);
+  btn.onclick=()=>doneExPicker();
+  showManualBuilder();
+}
+
+function applyManualRoutine(){
+  const allDK=["lunes","martes","miercoles","jueves","viernes","sabado","domingo"];
+  allDK.forEach(dk=>{
+    if(!manualRoutine[dk])manualRoutine[dk]={label:'Descanso',rest:true,exercises:[]};
+  });
+  db.routine=manualRoutine;
+  ps('gym_routine',db.routine);
+  db.profile={...db.profile,name:wizardData.name||'Usuario',age:wizardData.age||'25',sex:wizardData.sex||'H',height:wizardData.height||'175',weight:wizardData.weight||'75',activityLevel:wizardData.activityLevel??2};
+  ps('gym_profile',db.profile);
+  db.objective='hipertrofia';
+  ps('gym_objective',db.objective);
+  localStorage.setItem('gym_onboarded','true');
+  manualRoutine={};
+  hideWizard();
+  renderHeader();renderObj();renderHoy();
+  toast('Rutina creada ✓');
 }
 
 function showWizardResult(){
