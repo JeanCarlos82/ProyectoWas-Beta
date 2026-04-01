@@ -711,8 +711,14 @@ function showManualBuilder(){
   container.innerHTML=`
     <div class="wiz-title">Elige tus ejercicios</div>
     <div class="wiz-subtitle">Toca cada día para agregar ejercicios</div>
+    <div class="wiz-manual-steps">
+      <div class="wiz-ms"><span class="wiz-ms-n">1</span>Toca un día para abrir el catálogo</div>
+      <div class="wiz-ms"><span class="wiz-ms-n">2</span>Selecciona los ejercicios que quieras</div>
+      <div class="wiz-ms"><span class="wiz-ms-n">3</span>Usa el ícono de copiar para repetir un día</div>
+    </div>
     <div class="wiz-manual-days">${dayTabs}</div>
-    ${totalEx>0?`<button class="sbtn" onclick="applyManualRoutine()" style="margin-top:16px">EMPEZAR A ENTRENAR</button>`:'<div class="wiz-hint">Agrega al menos un ejercicio</div>'}`;
+    <div class="wiz-manual-note">Puedes modificar tu rutina cuando quieras desde <b>Perfil → Mi Rutina</b></div>
+    ${totalEx>0?`<button class="sbtn" onclick="applyManualRoutine()" style="margin-top:12px">EMPEZAR A ENTRENAR</button>`:'<div class="wiz-hint">Agrega al menos un ejercicio</div>'}`;
 }
 
 function showCopyDay(fromDk){
@@ -726,6 +732,10 @@ function showCopyDay(fromDk){
   container.insertAdjacentHTML('beforeend',`<div class="wiz-copy-popup"><div class="wiz-copy-label">Copiar a:</div><div class="wiz-copy-targets">${btns}</div></div>`);
 }
 function copyDayTo(from,to){
+  const hasExisting=manualRoutine[to]?.exercises?.length>0;
+  if(hasExisting){
+    if(!confirm('Este día ya tiene ejercicios. ¿Quieres reemplazarlos?'))return;
+  }
   manualRoutine[to]={...manualRoutine[to],exercises:[...(manualRoutine[from]?.exercises||[]).map(e=>({...e}))]};
   toast('Copiado ✓');
   showManualBuilder();
