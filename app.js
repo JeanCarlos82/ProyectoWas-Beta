@@ -1194,20 +1194,20 @@ const GI={
   crown:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',
   // PR — trophy cup
   star:_s+'<path d="M6 9H3a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4h0"/><path d="M18 9h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4h0"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg>',
-  // Max weight — arrow up in circle
-  weight:_s+'<circle cx="12" cy="12" r="10"/><polyline points="16 12 12 8 8 12"/><line x1="12" y1="16" x2="12" y2="8"/></svg>',
+  // Max weight — gauge/speedometer at max
+  weight:_s+'<path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12"/><line x1="12" y1="12" x2="17" y2="7"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>',
   // Volume — bar chart ascending
   bars:_s+'<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/></svg>',
   // Sets — layers/stack
   repeat:_s+'<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
   // Reps — rotate clockwise (cycle)
   hash:_s+'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
-  // Warm-up — sunrise/warmth
-  thermo:_s+'<path d="M12 2v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M19.07 4.93l-2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4 20h16"/><circle cx="12" cy="14" r="4"/></svg>',
+  // Warm-up — flame with dashed outline (light/soft fire)
+  thermo:_s+'<path d="M9 18a3 3 0 0 0 6 0c0-2-1.5-3-3-4.5C10.5 15 9 16 9 18z"/><path d="M12 2C8.5 5 5 8.5 5 13a7 7 0 0 0 14 0c0-4.5-3.5-8-7-11z" stroke-dasharray="3 2"/></svg>',
   // Progressive overload — trending up
   trendUp:_s+'<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
-  // Plateau — horizontal line (flat/stuck)
-  wall:_s+'<line x1="3" y1="12" x2="21" y2="12"/><circle cx="7" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/><circle cx="17" cy="12" r="1" fill="currentColor" stroke="none"/><path d="M3 6l4 6-4 6"/><path d="M21 6l-4 6 4 6"/></svg>',
+  // Plateau — flat trend line (going up then stuck)
+  wall:_s+'<polyline points="3 17 8 12 13 12 18 12"/><line x1="18" y1="12" x2="21" y2="12" stroke-dasharray="2 2"/><line x1="16" y1="10" x2="20" y2="10" stroke-opacity="0.3"/><line x1="16" y1="14" x2="20" y2="14" stroke-opacity="0.3"/></svg>',
   // Consistency streak — flame
   flame:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>',
   // Progress streak — lightning bolt
