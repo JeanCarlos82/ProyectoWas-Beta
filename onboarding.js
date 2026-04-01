@@ -837,7 +837,6 @@ function showWizardResult(){
     <div class="wiz-result-note">Toca un día para ver los ejercicios · Personaliza en <b>Perfil → Mi Rutina</b></div>
     <div class="wiz-result-actions">
       <button class="sbtn" onclick="applyWizardRoutine()">EMPEZAR A ENTRENAR</button>
-      <button class="wiz-customize-btn" onclick="applyWizardRoutine(true)">PERSONALIZAR AHORA</button>
     </div>`;
 }
 
