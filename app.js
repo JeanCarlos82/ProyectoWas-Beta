@@ -1058,23 +1058,30 @@ function openModal(name,type){
     if(prev?.sets?.length){
       const last3=getLastEntries(name,3);
       const unit=prev.unit||'kg';
+      const _pi='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
+      const piIco={
+        weight:_pi+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',
+        reps:_pi+'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>',
+        sets:_pi+'<polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>',
+        vol:_pi+'<line x1="6" y1="20" x2="6" y2="14"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/></svg>',
+      };
       if(last3.length>=2){
         const avgWeight=Math.round(last3.reduce((a,e)=>a+(entryMaxWeight(e)||0),0)/last3.length*10)/10;
         const avgReps=Math.round(last3.reduce((a,e)=>{const ws=e.sets?.filter(s=>!s.warmup)||[];return a+(ws.length?Math.max(...ws.map(s=>parseInt(s.r)||0)):0);},0)/last3.length);
         const avgVol=Math.round(last3.reduce((a,e)=>a+entryVolume(e),0)/last3.length);
         const avgSets=Math.round(last3.reduce((a,e)=>a+(e.sets?.filter(s=>!s.warmup).length||0),0)/last3.length);
         prevBlock=`<div class="prev-avg-card">
-          <div class="prev-avg-title">TU PROMEDIO <span class="prev-avg-sub">últimas ${last3.length} sesiones</span></div>
+          <div class="prev-avg-title"><span class="prev-avg-ico">${_pi}<path d="M12 8v8"/><path d="M8 12h8"/><circle cx="12" cy="12" r="10"/></svg></span>TU PROMEDIO <span class="prev-avg-sub">últimas ${last3.length} sesiones</span></div>
           <div class="prev-avg-grid">
-            <div class="prev-avg-item"><span class="prev-avg-val">${avgWeight}</span><span class="prev-avg-lbl">${unit} máx</span></div>
-            <div class="prev-avg-item"><span class="prev-avg-val">${avgReps}</span><span class="prev-avg-lbl">reps máx</span></div>
-            <div class="prev-avg-item"><span class="prev-avg-val">${avgSets}</span><span class="prev-avg-lbl">series</span></div>
-            <div class="prev-avg-item"><span class="prev-avg-val">${avgVol>=1000?(avgVol/1000).toFixed(1)+'k':avgVol}</span><span class="prev-avg-lbl">kg vol</span></div>
+            <div class="prev-avg-item"><span class="prev-avg-item-ico">${piIco.weight}</span><span class="prev-avg-val">${avgWeight}</span><span class="prev-avg-lbl">${unit} máx</span></div>
+            <div class="prev-avg-item"><span class="prev-avg-item-ico">${piIco.reps}</span><span class="prev-avg-val">${avgReps}</span><span class="prev-avg-lbl">reps máx</span></div>
+            <div class="prev-avg-item"><span class="prev-avg-item-ico">${piIco.sets}</span><span class="prev-avg-val">${avgSets}</span><span class="prev-avg-lbl">series</span></div>
+            <div class="prev-avg-item"><span class="prev-avg-item-ico">${piIco.vol}</span><span class="prev-avg-val">${avgVol>=1000?(avgVol/1000).toFixed(1)+'k':avgVol}</span><span class="prev-avg-lbl">kg vol</span></div>
           </div>
         </div>`;
       } else {
         const mx=entryMaxWeight(prev);
-        prevBlock=`<div class="prev-avg-card"><div class="prev-avg-title">SESIÓN ANTERIOR</div><div class="prev-avg-grid"><div class="prev-avg-item"><span class="prev-avg-val">${mx}</span><span class="prev-avg-lbl">${unit} máx</span></div><div class="prev-avg-item"><span class="prev-avg-val">${prev.sets.filter(s=>!s.warmup).length}</span><span class="prev-avg-lbl">series</span></div></div></div>`;
+        prevBlock=`<div class="prev-avg-card"><div class="prev-avg-title"><span class="prev-avg-ico">${_pi}<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>SESIÓN ANTERIOR</div><div class="prev-avg-grid"><div class="prev-avg-item"><span class="prev-avg-item-ico">${piIco.weight}</span><span class="prev-avg-val">${mx}</span><span class="prev-avg-lbl">${unit} máx</span></div><div class="prev-avg-item"><span class="prev-avg-item-ico">${piIco.sets}</span><span class="prev-avg-val">${prev.sets.filter(s=>!s.warmup).length}</span><span class="prev-avg-lbl">series</span></div></div></div>`;
       }
     }
     document.getElementById('prev-sets-block').innerHTML=prevBlock;
