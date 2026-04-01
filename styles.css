@@ -59,7 +59,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .slbl::after{content:'';flex:1;height:1px;background:var(--border);}
 
 /* ── EXERCISE CARDS ── */
-.ex-list{display:flex;flex-direction:column;gap:6px;}
+.ex-list{display:flex;flex-direction:column;gap:6px;padding-bottom:56px;}
 .fab-reorder{position:fixed;bottom:calc(56px + max(env(safe-area-inset-bottom,0px),8px) + 14px);right:calc(var(--margin) + var(--safe-right) + 4px);z-index:50;background:var(--accent);border:none;border-radius:24px;height:44px;display:flex;align-items:center;gap:6px;padding:0 16px 0 12px;color:#0d0d0d;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all 0.25s;box-shadow:0 4px 16px rgba(232,255,58,0.25);}
 .fab-reorder:active{transform:scale(0.93);}
 .fab-reorder.active{background:#0d0d0d;color:var(--accent);border:1.5px solid var(--accent);box-shadow:0 4px 16px rgba(232,255,58,0.15);}

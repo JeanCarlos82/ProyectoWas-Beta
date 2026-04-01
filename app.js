@@ -1400,7 +1400,9 @@ function switchView(name,el){
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('view-'+name).classList.add('active');el.classList.add('active');
   document.getElementById('scroll').scrollTop=0;
-  if(name==='hoy'){startDurationInterval();}else{stopDurationInterval();}
+  if(name==='hoy'){startDurationInterval();}else{stopDurationInterval();reorderMode=false;}
+  const fab=document.getElementById('reorder-toggle');
+  if(fab)fab.style.display=name==='hoy'?'':'none';
   if(name==='hist')renderHist();
   if(name==='prog')renderProg();
   if(name==='perfil'){loadProfile();renderBWChart();renderRutina();}
