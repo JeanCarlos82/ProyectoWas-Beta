@@ -105,8 +105,6 @@ const TEMPLATES_F={
   }
 };
 
-const ROUTINE_TEMPLATES=TEMPLATES_M;
-
 // ── ADAPTACIÓN POR TODAS LAS VARIABLES DEL USUARIO ──
 // Variables: edad, peso, altura (BMI), sexo, experiencia, objetivo, actividad
 // Basado en evidencia: ACSM, NSCA, investigación en biomecánica

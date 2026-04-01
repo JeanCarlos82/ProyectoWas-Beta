@@ -95,7 +95,7 @@ const EXERCISE_DB = [
   {name:"Patada de glúteo",type:"pesas",zone:"inferior",muscleGroup:["Glúteos"]},
   {name:"Patada de glúteo en máquina",type:"pesas",zone:"inferior",muscleGroup:["Glúteos"]},
   {name:"Puente de glúteo",type:"pesas",zone:"inferior",muscleGroup:["Glúteos"]},
-  {name:"Aductores en máquina",type:"pesas",zone:"inferior",muscleGroup:["Cuádriceps"]},
+  {name:"Aductores en máquina",type:"pesas",zone:"inferior",muscleGroup:["Glúteos"]},
   {name:"Abductores en máquina",type:"pesas",zone:"inferior",muscleGroup:["Glúteos"]},
 
   // ── PANTORRILLAS ──

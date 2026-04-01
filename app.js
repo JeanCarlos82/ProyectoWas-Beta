@@ -5,6 +5,8 @@ const OBJS={fuerza:{reps:"1–5 reps",series:"4–6 series"},hipertrofia:{reps:"
 const IMC_C=[{max:18.5,label:"Bajo peso",color:"#3ab4ff"},{max:25,label:"Peso normal",color:"#3aff8a"},{max:30,label:"Sobrepeso",color:"#ffaa3a"},{max:35,label:"Obesidad I",color:"#ff4d4d"},{max:999,label:"Obesidad II+",color:"#ff4d4d"}];
 const DR={lunes:{label:"Pecho + Tríceps",rest:false,exercises:[{name:"Press banca",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Aperturas mancuernas",type:"pesas"},{name:"Fondos en paralelas",type:"pesas"},{name:"Press francés",type:"pesas"}]},martes:{label:"Espalda + Bíceps",rest:false,exercises:[{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}]},miercoles:{label:"Hombros",rest:false,exercises:[{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Elevaciones frontales",type:"pesas"},{name:"Pájaros",type:"pesas"}]},jueves:{label:"Pierna",rest:false,exercises:[{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"}]},viernes:{label:"Bíceps + Tríceps",rest:false,exercises:[{name:"Curl concentrado",type:"pesas"},{name:"Curl en polea",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Patada de tríceps",type:"pesas"}]},sabado:{label:"Cardio",rest:false,exercises:[{name:"Correr",type:"cardio"},{name:"Bicicleta estática",type:"cardio"},{name:"Elíptica",type:"cardio"}]},domingo:{label:"Descanso",rest:true,exercises:[]}};
 
+function escapeHtml(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+
 function loadDB(){try{return{routine:JSON.parse(localStorage.getItem('gym_routine'))||DR,sessions:JSON.parse(localStorage.getItem('gym_sessions'))||[],profile:JSON.parse(localStorage.getItem('gym_profile'))||{name:'',age:'',sex:'H',height:'',weight:'',restTimerSeconds:90},objective:localStorage.getItem('gym_objective')||'hipertrofia',bw:JSON.parse(localStorage.getItem('gym_bw'))||[]}}catch{return{routine:DR,sessions:[],profile:{name:'',age:'',sex:'H',height:'',weight:'',restTimerSeconds:90},objective:'hipertrofia',bw:[]}}}
 function ps(k,v){localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));}
 let db=loadDB(),selMG=null,selEx=null,bwCh=null,progCh=null,curEx=null,curType=null,curUnit='kg',currentSets=[];
@@ -274,7 +276,7 @@ function smartSuggestion(name){
 
 function renderHoy(){
   const dk=todayDK(),day=db.routine[dk],ts=db.sessions.find(s=>s.date===today()),obj=OBJS[db.objective],c=document.getElementById('hoy-content');
-  if(!day||day.rest){c.innerHTML=`<div class="rest-day"><div class="rest-emo">💤</div><div class="rest-t">DÍA DE DESCANSO</div><div class="rest-s">Descansa hoy.<br>Mañana más fuerte.</div></div>`;return;}
+  if(!day||day.rest){c.innerHTML=`<div class="rest-day"><div class="rest-emo">${_s}<path d="M2 4h4l2-2h8l2 2h4"/><path d="M3 4v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V4"/><path d="M12 10v4"/><path d="M10 12h4"/></svg></div><div class="rest-t">DÍA DE DESCANSO</div><div class="rest-s">Descansa hoy.<br>Mañana más fuerte.</div></div>`;return;}
   let h=`<div class="ex-list">`;
   (day.exercises||[]).forEach((ex,exIdx)=>{
     const entry=ts?.entries?.find(e=>e.exercise===ex.name),logged=!!entry,prev=prevEntry(ex.name);
@@ -286,7 +288,7 @@ function renderHoy(){
         <span class="reorder-num">${exIdx+1}</span>
         <div class="reorder-info">
           <div class="reorder-name">${ex.name}</div>
-          <div class="reorder-hint">${isSel?'Toca la posición destino':isTarget?'Posición ${exIdx+1}':''}</div>
+          <div class="reorder-hint">${isSel?'Toca la posición destino':isTarget?`Posición ${exIdx+1}`:''}</div>
         </div>
       </div>`;
       return;
@@ -396,7 +398,7 @@ function renderSessCard(sess){
         }
       }
     }
-    return`<div class="sess-row"><div class="sess-row-top"><div class="sess-exname">${e.exercise}</div><div class="sess-maxval">${valHtml}</div></div>${setsHtml||''}${e.notes?`<div class="sess-note">${e.notes}</div>`:''}</div>`;
+    return`<div class="sess-row"><div class="sess-row-top"><div class="sess-exname">${e.exercise}</div><div class="sess-maxval">${valHtml}</div></div>${setsHtml||''}${e.notes?`<div class="sess-note">${escapeHtml(e.notes)}</div>`:''}</div>`;
   }).join('');
   return`<div class="sess-card"><div class="sess-hdr" onclick="this.nextElementSibling.classList.toggle('open')"><div><div class="sess-day">${(DL[sess.dayKey]||sess.dayKey).toUpperCase()}</div><div class="sess-date">${fmtDF(sess.date)}${dur?' · '+dur:''}</div></div><div class="sess-tag">${label.toUpperCase()}</div></div><div class="sess-body">${rows||'<div class="sess-empty">Sin ejercicios registrados</div>'}</div></div>`;
 }
@@ -597,9 +599,6 @@ function selectEx(name){
   }
 }
 
-function clearChart(){
-  document.getElementById('prog-detail').style.display='none';
-}
 
 // ── Linear regression for trend line ──
 function linearRegression(pts){
@@ -659,7 +658,7 @@ function renderExChart(){
     wrap.style.display='block';
     const lr=linearRegression(minVals);
     const trendData=minVals.map((_,i)=>Math.round((lr.intercept+lr.slope*i)*10)/10);
-    if(progCh)progCh.destroy();
+    if(progCh){progCh.destroy();progCh=null;}
     progCh=new Chart(document.getElementById('prog-chart').getContext('2d'),{type:'line',data:{labels:cpts.map(p=>fmtD(p.date)),datasets:[
       {data:minVals,borderColor:'#38bdf8',backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(56,189,248,0.2)');g.addColorStop(1,'rgba(56,189,248,0)');return g;},borderWidth:2.5,pointBackgroundColor:'#38bdf8',pointBorderColor:'rgba(56,189,248,0.3)',pointBorderWidth:1,pointRadius:3,pointHoverRadius:7,fill:true,tension:0.35},
       {data:trendData,borderColor:'rgba(232,255,58,0.4)',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false,tension:0}
@@ -673,7 +672,7 @@ function renderExChart(){
       <div class="prog-recent-list">${recentC.map(p=>{const parts=[p.min+'min'];if(p.intensity!=='media')parts.push(p.intensity);if(p.km)parts.push(p.km+'km');if(p.cal)parts.push(p.cal+'kcal');return`<div class="prog-recent-row"><span class="prog-recent-date">${fmtD(p.date)}</span><span class="prog-recent-info">${parts.join(' · ')}</span></div>`;}).join('')}</div>`:'';
 
     const wN=cpts.filter(p=>p.notes).reverse().slice(0,5),ns=document.getElementById('notes-sec');
-    if(wN.length){ns.style.display='block';document.getElementById('notes-list').innerHTML=wN.map(p=>`<div class="note-row"><div class="note-date">${fmtD(p.date)}</div><div class="note-text">${p.notes}</div><div class="note-wt">${p.min}<span style="font-size:8px;color:var(--muted2)"> min</span></div></div>`).join('');}
+    if(wN.length){ns.style.display='block';document.getElementById('notes-list').innerHTML=wN.map(p=>`<div class="note-row"><div class="note-date">${fmtD(p.date)}</div><div class="note-text">${escapeHtml(p.notes)}</div><div class="note-wt">${p.min}<span style="font-size:8px;color:var(--muted2)"> min</span></div></div>`).join('');}
     else ns.style.display='none';
     return;
   }
@@ -712,14 +711,14 @@ function renderExChart(){
   const lr=linearRegression(mxVals);
   const trendData=mxVals.map((_,i)=>Math.round((lr.intercept+lr.slope*i)*10)/10);
 
-  if(progCh)progCh.destroy();
+  if(progCh){progCh.destroy();progCh=null;}
   const prIdx=mxVals.lastIndexOf(maxV);
   progCh=new Chart(document.getElementById('prog-chart').getContext('2d'),{type:'line',data:{labels:pts.map(p=>fmtD(p.date)),datasets:[
     {data:mxVals,borderColor:'#E8FF3A',backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,200);g.addColorStop(0,'rgba(232,255,58,0.2)');g.addColorStop(1,'rgba(232,255,58,0)');return g;},borderWidth:2.5,pointBackgroundColor:mxVals.map((_,i)=>i===prIdx?'#000':'#E8FF3A'),pointBorderColor:mxVals.map((_,i)=>i===prIdx?'#E8FF3A':'rgba(232,255,58,0.3)'),pointBorderWidth:mxVals.map((_,i)=>i===prIdx?2.5:1),pointRadius:mxVals.map((_,i)=>i===prIdx?6:3),pointHoverRadius:7,fill:true,tension:0.35},
     {data:trendData,borderColor:'rgba(58,180,255,0.4)',borderWidth:1.5,borderDash:[6,4],pointRadius:0,fill:false,tension:0}
   ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',titleColor:'#888',bodyColor:'#f2f2f2',borderColor:'#202020',borderWidth:1,padding:9,filter:item=>item.datasetIndex===0,callbacks:{label:ctx=>`${ctx.raw} ${unit}`,afterLabel:ctx=>{const p=pts[ctx.dataIndex];return p.notes?`✎ ${p.notes}`:''}}}},scales:{x:{ticks:{color:'#666',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}},y:{ticks:{color:'#666',font:{size:8,family:"'DM Mono',monospace"}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}}}}});
   const wN=pts.filter(p=>p.notes).reverse().slice(0,5),ns=document.getElementById('notes-sec');
-  if(wN.length){ns.style.display='block';document.getElementById('notes-list').innerHTML=wN.map(p=>`<div class="note-row"><div class="note-date">${fmtD(p.date)}</div><div class="note-text">${p.notes}</div><div class="note-wt">${p.mx}<span style="font-size:8px;color:var(--muted2)"> ${p.unit}</span></div></div>`).join('');}
+  if(wN.length){ns.style.display='block';document.getElementById('notes-list').innerHTML=wN.map(p=>`<div class="note-row"><div class="note-date">${fmtD(p.date)}</div><div class="note-text">${escapeHtml(p.notes)}</div><div class="note-wt">${p.mx}<span style="font-size:8px;color:var(--muted2)"> ${p.unit}</span></div></div>`).join('');}
   else ns.style.display='none';
 
   // Best sets by rep range
@@ -930,7 +929,7 @@ function renderBWChart(){
   const visible=showAll?allRows:allRows.slice(0,3);
   hist.innerHTML=visible.join('')+(allRows.length>3&&!showAll?`<button class="bw-more" onclick="this.parentElement.dataset.expanded='true';renderBWChart()">Ver ${allRows.length-3} más</button>`:'')+(showAll&&allRows.length>3?`<button class="bw-more" onclick="this.parentElement.dataset.expanded='false';renderBWChart()">Ver menos</button>`:'');
   if(bws.length<2){empty.style.display='flex';if(wrap)wrap.style.display='none';if(bwCh){bwCh.destroy();bwCh=null;}return;}
-  empty.style.display='none';if(wrap)wrap.style.display='block';if(bwCh)bwCh.destroy();
+  empty.style.display='none';if(wrap)wrap.style.display='block';if(bwCh){bwCh.destroy();bwCh=null;}
   bwCh=new Chart(canvas.getContext('2d'),{type:'line',data:{labels:bws.map(b=>fmtD(b.date)),datasets:[{data:bws.map(b=>b.v),borderColor:'#3ab4ff',backgroundColor:ctx=>{const g=ctx.chart.ctx.createLinearGradient(0,0,0,100);g.addColorStop(0,'rgba(58,180,255,0.18)');g.addColorStop(1,'rgba(58,180,255,0)');return g;},borderWidth:2,pointBackgroundColor:'#3ab4ff',pointRadius:3,fill:true,tension:0.35}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1a1a',bodyColor:'#f2f2f2',callbacks:{label:ctx=>`${ctx.raw} kg`}}},scales:{x:{ticks:{color:'#666',font:{size:8}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}},y:{ticks:{color:'#666',font:{size:8}},grid:{color:'rgba(255,255,255,0.03)'},border:{color:'#202020'}}}}});
 }
 
