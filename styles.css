@@ -310,6 +310,8 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .pfield{margin-bottom:11px;}
 .pfield:last-child{margin-bottom:0;}
 .plbl{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
+.plbl-ico{display:flex;align-items:center;gap:6px;}
+.plbl-ico svg{width:14px;height:14px;color:var(--accent);flex-shrink:0;}
 .pinput{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:11px 14px;outline:none;transition:border-color 0.2s;-webkit-user-select:text;user-select:text;}
 .pinput:focus{border-color:var(--accent);}
 .pnum{font-family:'Bebas Neue',sans-serif;font-size:28px;-moz-appearance:textfield;}
@@ -564,6 +566,8 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .drop-header{display:flex;align-items:center;justify-content:space-between;padding:10px 0;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .drop-header:active{opacity:0.6;}
 .drop-title{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:var(--text);}
+.drop-title-ico{display:flex;align-items:center;gap:8px;}
+.drop-title-ico svg{width:16px;height:16px;color:var(--accent);flex-shrink:0;}
 .drop-arrow{color:var(--muted2);font-size:16px;transition:transform 0.25s ease;}
 .drop-body{display:none;padding-bottom:4px;animation:dropOpen 0.25s ease;}
 .drop-body.open{display:block;}
