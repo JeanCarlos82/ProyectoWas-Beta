@@ -1,14 +1,18 @@
 // ── ONBOARDING WIZARD ──
 
 // ── TEMPLATES MASCULINOS ──
+// Enfoque: compuestos pesados como base, progresión de fuerza,
+// equilibrio push/pull, piernas 2x/semana mínimo
 const TEMPLATES_M={
+  // 3 días: Full body cada sesión — compuestos principales rotan
   fullbody_3:{
     exercises:[
       [{name:"Sentadilla",type:"pesas"},{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
       [{name:"Peso muerto rumano",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Curl martillo",type:"pesas"},{name:"Press francés",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Fondos en banco",type:"pesas"}]
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Press con mancuernas",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Plancha",type:"pesas"}]
     ],labels:["Full Body A","Full Body B","Full Body C"]
   },
+  // 3 días fat loss: 2 full body + 1 cardio/circuito
   fullbody_cardio_3:{
     exercises:[
       [{name:"Sentadilla",type:"pesas"},{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Plancha",type:"pesas"}],
@@ -16,31 +20,34 @@ const TEMPLATES_M={
       [{name:"Peso muerto rumano",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Crunch",type:"pesas"}]
     ],labels:["Full Body","Cardio","Full Body"]
   },
+  // 4 días: Upper/Lower — cada grupo muscular 2x/semana
   upperlower_4:{
     exercises:[
       [{name:"Press banca",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"}],
-      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Hip thrust",type:"pesas"}],
+      [{name:"Sentadilla",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Plancha",type:"pesas"}],
       [{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Curl martillo",type:"pesas"},{name:"Press francés",type:"pesas"},{name:"Face pull",type:"pesas"}],
-      [{name:"Peso muerto rumano",type:"pesas"},{name:"Sentadilla búlgara",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"}]
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Elevación de piernas",type:"pesas"}]
     ],labels:["Upper A","Lower A","Upper B","Lower B"]
   },
+  // 5 días: Push/Pull/Legs + Upper/Lower
   pplul_5:{
     exercises:[
       [{name:"Press banca",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Press francés",type:"pesas"}],
-      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
-      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Hip thrust",type:"pesas"}],
+      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
+      [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
       [{name:"Press inclinado",type:"pesas"},{name:"Jalón al pecho",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Tríceps en polea",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"}],
-      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"}]
+      [{name:"Sentadilla búlgara",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Plancha",type:"pesas"}]
     ],labels:["Push","Pull","Legs","Upper","Lower"]
   },
+  // 6 días: PPL x2 — máximo volumen por grupo muscular
   ppl_6:{
     exercises:[
       [{name:"Press banca",type:"pesas"},{name:"Press inclinado",type:"pesas"},{name:"Aperturas mancuernas",type:"pesas"},{name:"Press militar",type:"pesas"},{name:"Elevaciones laterales",type:"pesas"},{name:"Tríceps en polea",type:"pesas"}],
-      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
+      [{name:"Dominadas",type:"pesas"},{name:"Remo con barra",type:"pesas"},{name:"Remo con mancuerna",type:"pesas"},{name:"Face pull",type:"pesas"},{name:"Curl con barra",type:"pesas"},{name:"Curl martillo",type:"pesas"}],
       [{name:"Sentadilla",type:"pesas"},{name:"Prensa de pierna",type:"pesas"},{name:"Peso muerto rumano",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Hip thrust",type:"pesas"},{name:"Pantorrillas",type:"pesas"}],
       [{name:"Press inclinado",type:"pesas"},{name:"Aperturas en polea",type:"pesas"},{name:"Press Arnold",type:"pesas"},{name:"Elevaciones frontales",type:"pesas"},{name:"Press francés",type:"pesas"},{name:"Fondos en banco",type:"pesas"}],
-      [{name:"Dominadas",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Pájaros",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl predicador",type:"pesas"}],
-      [{name:"Sentadilla frontal",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Abductores en máquina",type:"pesas"}]
+      [{name:"Jalón al pecho",type:"pesas"},{name:"Remo en polea baja",type:"pesas"},{name:"Pájaros",type:"pesas"},{name:"Curl con mancuernas",type:"pesas"},{name:"Curl predicador",type:"pesas"},{name:"Face pull",type:"pesas"}],
+      [{name:"Sentadilla frontal",type:"pesas"},{name:"Zancadas",type:"pesas"},{name:"Extensiones cuádriceps",type:"pesas"},{name:"Curl femoral",type:"pesas"},{name:"Pantorrillas",type:"pesas"},{name:"Crunch",type:"pesas"}]
     ],labels:["Push","Pull","Legs","Push","Pull","Legs"]
   }
 };
@@ -102,9 +109,102 @@ const TEMPLATES_F={
 
 const ROUTINE_TEMPLATES=TEMPLATES_M;
 
+// ── ADAPTACIÓN POR CARACTERÍSTICAS FÍSICAS ──
+// Basado en evidencia: ACSM, NSCA, investigación en biomecánica
+function adaptExercises(routine,{age,weight,height,experience,sex}){
+  const a=parseInt(age)||25;
+  const w=parseFloat(weight)||70;
+  const h=parseFloat(height)||170;
+  const bmi=h>0?w/((h/100)*(h/100)):22;
+  const isBeginner=experience==='principiante';
+  const isTall=h>=185;
+  const isHeavy=bmi>=30;
+  const isVeryHeavy=bmi>=35;
+  const isOlder=a>=45;
+  const isSenior=a>=50;
+  const isYoung=a<20;
+
+  // Tabla de sustituciones: [original, condición, reemplazo]
+  const swaps=[];
+
+  // === SENTADILLA ===
+  // Principiante + mayor o sobrepeso → prensa o goblet
+  if(isBeginner&&(isOlder||isVeryHeavy))swaps.push(['Sentadilla','Prensa de pierna']);
+  else if(isBeginner&&isHeavy)swaps.push(['Sentadilla','Sentadilla goblet']);
+  // Personas altas → box squat o prensa (biomecánica desfavorable)
+  else if(isTall&&isBeginner)swaps.push(['Sentadilla','Prensa de pierna']);
+  // Joven principiante → goblet primero
+  else if(isYoung&&isBeginner)swaps.push(['Sentadilla','Sentadilla goblet']);
+
+  // Sentadilla frontal y búlgara → principiante mayor/pesado usa prensa
+  if(isBeginner&&(isOlder||isVeryHeavy)){
+    swaps.push(['Sentadilla frontal','Prensa de pierna']);
+    swaps.push(['Sentadilla búlgara','Zancadas']);
+  }
+
+  // === PESO MUERTO ===
+  // Senior o muy pesado principiante → puente de glúteo
+  if(isSenior&&isBeginner)swaps.push(['Peso muerto rumano','Puente de glúteo']);
+  else if(isVeryHeavy&&isBeginner)swaps.push(['Peso muerto rumano','Puente de glúteo']);
+  // Mayor de 40 principiante → peso muerto rumano con mancuernas (más seguro)
+  else if(isOlder&&isBeginner)swaps.push(['Peso muerto','Peso muerto rumano']);
+  // Peso muerto sumo → principiante mayor usa hip thrust
+  if((isOlder||isVeryHeavy)&&isBeginner)swaps.push(['Peso muerto sumo','Hip thrust']);
+
+  // === PRESS BANCA ===
+  // Principiante mayor → press en máquina primero
+  if(isSenior&&isBeginner)swaps.push(['Press banca','Press en máquina']);
+  else if(isOlder&&isBeginner)swaps.push(['Press banca','Press con mancuernas']);
+  // Principiante joven → mancuernas
+  if(isYoung&&isBeginner)swaps.push(['Press banca','Press con mancuernas']);
+
+  // === PRESS MILITAR ===
+  // Mayor 45 principiante → press con mancuernas hombro (menos estrés articular)
+  if(isOlder&&isBeginner)swaps.push(['Press militar','Press con mancuernas hombro']);
+
+  // === REMO CON BARRA ===
+  // Mayor o pesado principiante → remo en máquina (espalda apoyada)
+  if((isOlder||isHeavy)&&isBeginner)swaps.push(['Remo con barra','Remo en máquina']);
+  // Alto principiante → remo en máquina
+  if(isTall&&isBeginner)swaps.push(['Remo con barra','Remo en máquina']);
+
+  // === DOMINADAS ===
+  // Principiante o pesado → jalón al pecho
+  if(isBeginner||isHeavy)swaps.push(['Dominadas','Jalón al pecho']);
+
+  // === FONDOS ===
+  // Mayor o pesado → tríceps en polea
+  if(isOlder||isHeavy)swaps.push(['Fondos en paralelas','Tríceps en polea']);
+  if(isOlder&&isBeginner)swaps.push(['Fondos en banco','Tríceps en polea']);
+
+  // === CARDIO ===
+  // Sobrepeso o mayor → elíptica en vez de correr (impacto articular)
+  if(isHeavy||isOlder)swaps.push(['Correr','Elíptica']);
+  // Muy pesado → solo elíptica o bici
+  if(isVeryHeavy)swaps.push(['Stairmaster','Bicicleta estática']);
+
+  // === EJERCICIOS AVANZADOS → principiante usa versiones más simples ===
+  if(isBeginner){
+    swaps.push(['Sentadilla frontal','Sentadilla goblet']);
+    swaps.push(['Hack squat','Prensa de pierna']);
+  }
+
+  // Aplicar sustituciones a toda la rutina
+  const adapted={};
+  for(const dk in routine){
+    adapted[dk]={...routine[dk]};
+    if(adapted[dk].exercises){
+      adapted[dk].exercises=adapted[dk].exercises.map(ex=>{
+        const swap=swaps.find(s=>s[0]===ex.name);
+        return swap?{...ex,name:swap[1]}:ex;
+      });
+    }
+  }
+  return adapted;
+}
+
 function selectTemplate(experience,numDays,goal,sex){
   const templates=sex==='M'?TEMPLATES_F:TEMPLATES_M;
-  // Perder grasa + principiante → add cardio day
   if(goal==='grasa'&&experience==='principiante'&&numDays<=3)return{key:'fullbody_cardio_3',templates};
   if(numDays<=3)return{key:'fullbody_3',templates};
   if(numDays===4)return{key:'upperlower_4',templates};
@@ -306,7 +406,8 @@ function toggleWizDay(dk){
 function showWizardResult(){
   const numDays=wizardData.selectedDays.length;
   const {key:templateKey,templates}=selectTemplate(wizardData.experience,numDays,wizardData.goal,wizardData.sex);
-  const routine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
+  const rawRoutine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
+  const routine=adaptExercises(rawRoutine,{age:wizardData.age,weight:wizardData.weight,height:wizardData.height,experience:wizardData.experience,sex:wizardData.sex});
   const container=document.getElementById('wizard-content');
   document.getElementById('wizard-dots').innerHTML='';
 
@@ -335,7 +436,8 @@ function showWizardResult(){
 function applyWizardRoutine(customize){
   const numDays=wizardData.selectedDays.length;
   const {key:templateKey,templates}=selectTemplate(wizardData.experience,numDays,wizardData.goal,wizardData.sex);
-  const routine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
+  const rawRoutine=buildRoutineFromWizard(templateKey,wizardData.selectedDays,templates);
+  const routine=adaptExercises(rawRoutine,{age:wizardData.age,weight:wizardData.weight,height:wizardData.height,experience:wizardData.experience,sex:wizardData.sex});
 
   db.routine=routine;
   ps('gym_routine',db.routine);

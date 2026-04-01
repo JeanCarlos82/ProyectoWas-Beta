@@ -58,6 +58,7 @@ const EXERCISE_DB = [
 
   // ── CUÁDRICEPS ──
   {name:"Sentadilla",type:"pesas",zone:"inferior",muscleGroup:["Cuádriceps","Glúteos"]},
+  {name:"Sentadilla goblet",type:"pesas",zone:"inferior",muscleGroup:["Cuádriceps","Glúteos"]},
   {name:"Sentadilla frontal",type:"pesas",zone:"inferior",muscleGroup:["Cuádriceps"]},
   {name:"Sentadilla búlgara",type:"pesas",zone:"inferior",muscleGroup:["Cuádriceps","Glúteos"]},
   {name:"Prensa de pierna",type:"pesas",zone:"inferior",muscleGroup:["Cuádriceps","Glúteos"]},
