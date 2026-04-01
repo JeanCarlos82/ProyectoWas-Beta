@@ -107,7 +107,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 
 /* ── BOTTOM NAV (pill style) ── */
 .nav{
-  position:fixed;bottom:8px;left:var(--margin);right:var(--margin);
+  position:fixed;bottom:3px;left:var(--margin);right:var(--margin);
   display:flex;align-items:center;
   background:var(--card);
   border-radius:999px;
@@ -118,7 +118,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
   z-index:80;
 }
 @supports(bottom:env(safe-area-inset-bottom)){
-  .nav{bottom:max(env(safe-area-inset-bottom),8px);}
+  .nav{bottom:max(env(safe-area-inset-bottom),3px);}
 }
 .ni{
   flex:1 1 0;height:44px;display:flex;align-items:center;justify-content:center;gap:7px;
