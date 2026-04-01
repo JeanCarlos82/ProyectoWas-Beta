@@ -298,7 +298,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 
 .stat-row{display:flex;gap:5px;margin-bottom:8px;}
 .sbox{flex:1;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 10px 8px;}
-.sbox.hi{border-color:rgba(232,255,58,0.18);}
+.sbox.hi{}
 .slb{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
 .sv{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;}
 .su{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);}
