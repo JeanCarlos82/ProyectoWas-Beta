@@ -666,7 +666,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .creator-links{display:flex;justify-content:center;gap:8px;}
 .creator-link{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:8px;background:var(--card2);border:1px solid var(--border);text-decoration:none;color:var(--muted2);font-family:'DM Mono',monospace;font-size:10px;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
 .creator-link:active{opacity:0.7;transform:scale(0.96);}
-.creator-link svg{width:14px;height:14px;flex-shrink:0;color:var(--green);}
+.creator-link svg{width:14px;height:14px;flex-shrink:0;color:var(--accent);}
 
 /* ── GYM GUIDE ── */
 .guide-cat{margin-bottom:20px;}
