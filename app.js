@@ -800,6 +800,7 @@ function updateIMC(){
       </div>
     </div>
     <div class="imc-bar">${bars}</div>
+    <div class="health-disclaimer">Estos valores son aproximaciones orientativas. No sustituyen una valoración médica profesional.</div>
     <div class="health-activity">
       <div class="act-header">
         <span class="act-header-ico">${_s}<path d="M3 12h4l3-9 4 18 3-9h4"/></svg></span>

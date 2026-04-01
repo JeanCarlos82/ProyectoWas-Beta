@@ -374,6 +374,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .health-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);margin-top:4px;}
 .imc-bar{display:flex;gap:3px;border-radius:3px;overflow:hidden;height:5px;margin-bottom:10px;}
 .imc-seg{flex:1;}
+.health-disclaimer{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);text-align:center;margin-bottom:8px;opacity:0.6;}
 .health-activity{margin-top:8px;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:12px;}
 .act-header{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
 .act-header-ico{color:var(--accent);flex-shrink:0;}
