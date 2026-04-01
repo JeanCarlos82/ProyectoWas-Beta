@@ -387,8 +387,7 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .bw-addbtn:active{transform:scale(0.93);}
 .bw-chart-box{background:var(--card2);border-radius:12px;padding:12px;margin-bottom:10px;}
 .bw-chart-empty{display:flex;align-items:center;justify-content:center;height:100px;color:var(--muted2);font-family:'DM Mono',monospace;font-size:11px;}
-.bw-hist{display:flex;flex-direction:column;gap:4px;max-height:140px;overflow-y:auto;scrollbar-width:none;}
-.bw-hist::-webkit-scrollbar{display:none;}
+.bw-hist{display:flex;flex-direction:column;gap:4px;}
 .bw-hrow{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card2);border-radius:10px;border:1px solid var(--border);}
 .bw-hdate{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);}
 .bw-hval{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);}
