@@ -135,63 +135,85 @@ function adaptExercises(routine,{age,weight,height,experience,sex,goal,activityL
   // ═══════════════════════════════════════════
   const swaps=[];
 
-  // === SENTADILLA ===
-  if(isBeginner&&(isOlder||isVeryHeavy))swaps.push(['Sentadilla','Prensa de pierna']);
-  else if(isBeginner&&isHeavy)swaps.push(['Sentadilla','Sentadilla goblet']);
-  else if(isTall&&isBeginner)swaps.push(['Sentadilla','Prensa de pierna']);
-  else if(isYoung&&isBeginner)swaps.push(['Sentadilla','Sentadilla goblet']);
-  // Intermedio mayor → mantiene sentadilla pero con variante más segura
-  else if(isIntermediate&&isOlder)swaps.push(['Sentadilla frontal','Sentadilla goblet']);
+  // === ADAPTACIONES POR PERFIL FÍSICO (aplican a todos los niveles) ===
 
-  if(isBeginner&&(isOlder||isVeryHeavy)){
-    swaps.push(['Sentadilla frontal','Prensa de pierna']);
-    swaps.push(['Sentadilla búlgara','Zancadas']);
-  }
+  // Sentadilla: mayor/pesado → prensa siempre (independiente de experiencia)
+  if(isOlder||isVeryHeavy)swaps.push(['Sentadilla','Prensa de pierna']);
+  else if(isHeavy)swaps.push(['Sentadilla','Sentadilla en máquina Smith']);
+  else if(isTall&&!isAdvanced)swaps.push(['Sentadilla','Sentadilla en multipower']);
 
-  // === PESO MUERTO ===
-  if(isSenior&&isBeginner)swaps.push(['Peso muerto rumano','Puente de glúteo']);
-  else if(isVeryHeavy&&isBeginner)swaps.push(['Peso muerto rumano','Puente de glúteo']);
-  else if(isOlder&&isBeginner)swaps.push(['Peso muerto','Peso muerto rumano']);
-  // Intermedio senior → peso muerto rumano más seguro que convencional
-  else if(isIntermediate&&isSenior)swaps.push(['Peso muerto','Peso muerto rumano']);
-  if((isOlder||isVeryHeavy)&&isBeginner)swaps.push(['Peso muerto sumo','Hip thrust']);
+  // Peso muerto: senior → puente, mayor → rumano más seguro
+  if(isSenior)swaps.push(['Peso muerto rumano','Puente de glúteo']);
+  else if(isVeryHeavy)swaps.push(['Peso muerto rumano','Puente de glúteo']);
+  if(isIntermediate&&isSenior)swaps.push(['Peso muerto','Peso muerto rumano']);
 
-  // === PRESS BANCA ===
-  if(isSenior&&isBeginner)swaps.push(['Press banca','Press en máquina']);
-  else if(isOlder&&isBeginner)swaps.push(['Press banca','Press con mancuernas']);
-  if(isYoung&&isBeginner)swaps.push(['Press banca','Press con mancuernas']);
-
-  // === PRESS MILITAR ===
-  if(isOlder&&isBeginner)swaps.push(['Press militar','Press con mancuernas hombro']);
-  // Senior intermedio también protege hombros
-  if(isSenior&&isIntermediate)swaps.push(['Press militar','Press con mancuernas hombro']);
-
-  // === REMO CON BARRA ===
-  if((isOlder||isHeavy)&&isBeginner)swaps.push(['Remo con barra','Remo en máquina']);
-  if(isTall&&isBeginner)swaps.push(['Remo con barra','Remo en máquina']);
-
-  // === DOMINADAS ===
-  if(isBeginner||isHeavy)swaps.push(['Dominadas','Jalón al pecho']);
-
-  // === FONDOS ===
-  if(isOlder||isHeavy)swaps.push(['Fondos en paralelas','Tríceps en polea']);
-  if(isOlder&&isBeginner)swaps.push(['Fondos en banco','Tríceps en polea']);
-
-  // === CARDIO ===
+  // Cardio: sobrepeso/mayor → bajo impacto
   if(isHeavy||isOlder)swaps.push(['Correr','Elíptica']);
   if(isVeryHeavy)swaps.push(['Stairmaster','Bicicleta estática']);
 
-  // === PRINCIPIANTE: versiones más simples y máquinas guiadas ===
+  // Fondos: mayor/pesado → polea (articulaciones)
+  if(isOlder||isHeavy)swaps.push(['Fondos en paralelas','Tríceps en polea']);
+
+  // === PRINCIPIANTE: máquinas guiadas y versiones más simples ===
+  // Un principiante no sabe hacer ejercicios con barra libre de forma
+  // segura. Las máquinas guiadas tienen recorrido fijo, reducen riesgo
+  // de lesión y permiten enfocarse en el músculo sin preocuparse por
+  // estabilización. Se progresa a peso libre cuando hay base.
   if(isBeginner){
     swaps.push(['Sentadilla frontal','Sentadilla goblet']);
     swaps.push(['Hack squat','Prensa de pierna']);
-    // Senior principiante → máquinas guiadas para seguridad
-    if(isSenior){
-      swaps.push(['Hip thrust','Hip thrust en máquina']);
-      swaps.push(['Patada de glúteo','Patada de glúteo en máquina']);
-      swaps.push(['Curl femoral','Curl femoral sentado']);
+
+    // Pecho: press en máquina es más seguro que barra (no necesita spotter)
+    swaps.push(['Press banca','Press en máquina']);
+    swaps.push(['Press inclinado','Press inclinado en máquina']);
+    swaps.push(['Press declinado','Press en máquina']);
+    swaps.push(['Aperturas mancuernas','Contractor de pecho']);
+    swaps.push(['Fondos en paralelas','Flexiones']);
+
+    // Espalda: máquinas guiadas evitan errores de postura en espalda baja
+    swaps.push(['Remo con barra','Remo en máquina']);
+    swaps.push(['Remo con mancuerna','Remo en máquina']);
+    swaps.push(['Dominadas','Pulldown en máquina']);
+    swaps.push(['Remo T-bar','Remo en máquina']);
+
+    // Hombros: máquina de press protege articulación del hombro
+    swaps.push(['Press militar','Press de hombro en máquina']);
+    swaps.push(['Press Arnold','Press de hombro en máquina']);
+    swaps.push(['Elevaciones laterales','Elevaciones laterales en máquina']);
+
+    // Brazos: polea/máquina es más controlable para principiantes
+    swaps.push(['Curl con barra','Curl en máquina']);
+    swaps.push(['Curl con barra Z','Curl en máquina']);
+    swaps.push(['Press francés','Tríceps en máquina']);
+    swaps.push(['Fondos en banco','Tríceps en máquina']);
+
+    // Piernas: máquinas guiadas para movimientos complejos
+    swaps.push(['Peso muerto sumo','Hip thrust en máquina']);
+    swaps.push(['Sentadilla búlgara','Prensa de pierna']);
+    swaps.push(['Curl femoral','Curl femoral sentado']);
+    swaps.push(['Patada de glúteo','Patada de glúteo en máquina']);
+    swaps.push(['Hip thrust','Hip thrust en máquina']);
+
+    // Core: máquina de crunch tiene resistencia guiada
+    swaps.push(['Crunch en polea','Crunch en máquina']);
+
+    // Sedentario principiante → aún más básico
+    if(isSedentary){
+      swaps.push(['Sentadilla','Sentadilla en máquina Smith']);
+      swaps.push(['Sentadilla goblet','Sentadilla en máquina Smith']);
+      swaps.push(['Zancadas','Prensa de pierna']);
+    }
+  }
+
+  // === INTERMEDIO: transición a peso libre pero mantener máquinas en algunos ===
+  if(isIntermediate){
+    // Ya puede usar mancuernas y algunos ejercicios con barra
+    // Pero mantiene máquinas en ejercicios de mayor riesgo técnico
+    swaps.push(['Dominadas','Jalón al pecho']); // Dominadas requieren fuerza avanzada
+    swaps.push(['Hack squat','Prensa de pierna']);
+    if(isOlder){
       swaps.push(['Press militar','Press de hombro en máquina']);
-      swaps.push(['Crunch','Crunch en máquina']);
+      swaps.push(['Fondos en paralelas','Tríceps en polea']);
     }
   }
 
