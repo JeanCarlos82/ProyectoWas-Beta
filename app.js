@@ -1187,6 +1187,63 @@ function installPWA(){
   deferredPrompt.userChoice.then(r=>{if(r.outcome==='accepted')toast('App instalada ✓');deferredPrompt=null;document.getElementById('install-btn').style.display='none';});
 }
 
+// ── GYM GUIDE ──
+const GUIDE_DATA=[
+  {cat:'MEDIDAS DE FUERZA',color:'var(--accent)',items:[
+    {ico:'🏆',term:'1RM',name:'1 Rep Max',desc:'El peso máximo que puedes levantar en una sola repetición. Es la referencia universal de fuerza.',example:'Si haces 80kg × 5 reps en press banca, tu 1RM estimado es ~93kg. No necesitas intentar tu máximo real — la app lo calcula por ti.'},
+    {ico:'⭐',term:'PR',name:'Personal Record',desc:'Tu récord personal — el mejor rendimiento que has logrado en un ejercicio.',example:'Si antes tu máximo en sentadilla era 100kg y hoy levantas 105kg, ¡ese es tu nuevo PR!'},
+    {ico:'⚖️',term:'Peso máximo',name:'Max Weight',desc:'El peso más alto que usaste en tus sets de trabajo (sin contar calentamiento) durante una sesión.',example:'Si hiciste 3 series de press banca: 60kg, 70kg y 75kg — tu peso máximo es 75kg.'},
+  ]},
+  {cat:'VOLUMEN Y CARGA',color:'var(--orange)',items:[
+    {ico:'📊',term:'Volumen',name:'Total Volume',desc:'La cantidad total de peso que moviste. Se calcula: peso × repeticiones, sumado en todas las series.',example:'3 series de 80kg × 10 reps = 2,400kg de volumen. Más volumen = más estímulo muscular.'},
+    {ico:'🔁',term:'Series (Sets)',name:'Working Sets',desc:'Cada grupo de repeticiones que haces de un ejercicio. Las series "de trabajo" son las que cuentan — no el calentamiento.',example:'Si haces 4 × 10 en curl de bíceps, son 4 series de 10 repeticiones cada una.'},
+    {ico:'🔢',term:'Reps',name:'Repeticiones',desc:'El número de veces que repites un movimiento dentro de una serie.',example:'Si subes y bajas la barra 10 veces en press banca, hiciste 10 reps.'},
+    {ico:'🌡️',term:'Calentamiento',name:'Warm-up Set',desc:'Series ligeras que haces antes de tus sets de trabajo para preparar músculos y articulaciones. No cuentan en los cálculos.',example:'Antes de hacer sentadilla con 100kg, haces 1 serie con 40kg y otra con 70kg. Esas son de calentamiento.'},
+  ]},
+  {cat:'PROGRESO',color:'var(--blue)',items:[
+    {ico:'📈',term:'Sobrecarga progresiva',name:'Progressive Overload',desc:'El principio fundamental del gym: aumentar gradualmente la dificultad (peso, reps o series) para que tus músculos sigan creciendo.',example:'Semana 1: 60kg × 8 reps. Semana 2: 60kg × 10 reps. Semana 3: 62.5kg × 8 reps. Eso es sobrecarga progresiva.'},
+    {ico:'🧱',term:'Plateau',name:'Estancamiento',desc:'Cuando dejas de progresar durante varias semanas. Es normal y tiene solución: cambiar ejercicios, volumen o descanso.',example:'Si llevas 3 semanas haciendo press banca con 70kg × 8 y no logras subir, estás en un plateau.'},
+    {ico:'🔥',term:'Streak de constancia',name:'Consistency Streak',desc:'Días consecutivos que has entrenado según tu rutina. Mide tu disciplina.',example:'Si tu rutina es Lun-Mié-Vie y entrenas los 3 días durante 4 semanas sin fallar, tu streak crece.'},
+    {ico:'⚡',term:'Streak de progreso',name:'Progress Streak',desc:'Sesiones consecutivas donde mejoraste vs. la sesión anterior (más peso, más reps o más volumen).',example:'Si cada sesión de pecho superas algo de la anterior, tu streak de progreso sube.'},
+  ]},
+  {cat:'CUERPO',color:'var(--green)',items:[
+    {ico:'📐',term:'IMC',name:'Índice de Masa Corporal',desc:'Una medida básica que relaciona tu peso y altura. Útil como referencia general, pero no distingue entre músculo y grasa.',example:'Peso 75kg, mido 1.75m → IMC = 75 ÷ (1.75²) = 24.5 (normal). Un fisicoculturista de 95kg puede tener IMC "alto" pero poca grasa.'},
+    {ico:'💪',term:'Hipertrofia',name:'Muscle Growth',desc:'El objetivo de aumentar el tamaño muscular. Se logra con 8-12 reps por serie y descansos de 60-90 segundos.',example:'Si tu objetivo es que los músculos se vean más grandes, entrenas en rango de hipertrofia.'},
+    {ico:'🦾',term:'Fuerza',name:'Strength',desc:'El objetivo de levantar el máximo peso posible. Se entrena con 1-5 reps por serie con pesos altos y descansos largos (3-5 min).',example:'Un powerlifter entrena fuerza: pocas reps, mucho peso, mucho descanso entre series.'},
+    {ico:'🫀',term:'Resistencia',name:'Endurance',desc:'La capacidad de mantener el esfuerzo por más tiempo. Se entrena con 15+ reps, poco peso y descansos cortos.',example:'Hacer 20 reps de sentadilla con peso ligero entrena resistencia muscular.'},
+  ]},
+];
+
+function openGuide(){
+  const el=document.getElementById('guide-content');
+  el.innerHTML=GUIDE_DATA.map(cat=>`
+    <div class="guide-cat">
+      <div class="guide-cat-hdr" style="--cat-color:${cat.color}">${cat.cat}</div>
+      ${cat.items.map(item=>`
+        <div class="guide-card" onclick="this.classList.toggle('expanded')">
+          <div class="guide-card-top">
+            <span class="guide-card-ico">${item.ico}</span>
+            <div class="guide-card-info">
+              <div class="guide-card-term">${item.term}</div>
+              <div class="guide-card-name">${item.name}</div>
+            </div>
+            <span class="guide-card-arrow">›</span>
+          </div>
+          <div class="guide-card-body">
+            <p class="guide-card-desc">${item.desc}</p>
+            <div class="guide-card-example">
+              <div class="guide-card-ex-label">EJEMPLO</div>
+              <p>${item.example}</p>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  document.getElementById('guide-overlay').classList.add('open');
+}
+function closeGuide(ev){if(ev.target.id==='guide-overlay')document.getElementById('guide-overlay').classList.remove('open');}
+
 // ── Service Worker Registration ──
 if('serviceWorker' in navigator){
   navigator.serviceWorker.register('sw.js').catch(()=>{});

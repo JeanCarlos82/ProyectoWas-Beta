@@ -154,6 +154,18 @@
         </div>
       </div>
 
+      <!-- Guía del Gym -->
+      <div class="psec">
+        <button class="guide-btn" onclick="openGuide()">
+          <span class="guide-btn-ico">📖</span>
+          <div class="guide-btn-text">
+            <div class="guide-btn-title">GUÍA DEL GYM</div>
+            <div class="guide-btn-sub">Aprende qué significa cada término</div>
+          </div>
+          <span class="guide-btn-arrow">›</span>
+        </button>
+      </div>
+
       <!-- App (dropdown) -->
       <div class="psec drop-card">
         <div class="drop-header" onclick="toggleDrop('app-section')">
@@ -256,6 +268,16 @@
     <button class="dbtn" id="dbtn" onclick="deleteEntry()" style="display:none">BORRAR REGISTRO</button>
   </div>
 </div>
+<!-- GUÍA DEL GYM -->
+<div class="overlay" id="guide-overlay" onclick="closeGuide(event)">
+  <div class="modal" style="max-height:90dvh">
+    <div class="mhandle"></div>
+    <div class="mtitle">GUÍA DEL GYM</div>
+    <div class="msub">Todo lo que necesitas saber para empezar</div>
+    <div id="guide-content"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="exercises-db.js?v=55"></script>
