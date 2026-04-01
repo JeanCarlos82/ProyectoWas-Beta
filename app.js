@@ -280,15 +280,10 @@ function renderHoy(){
     const entry=ts?.entries?.find(e=>e.exercise===ex.name),logged=!!entry,prev=prevEntry(ex.name);
     const sn=ex.name.replace(/'/g,"\\'");
     if(reorderMode){
-      const isSel=reorderSelected===exIdx;
-      const isTarget=reorderSelected!==null&&!isSel;
-      h+=`<div class="ex-card reorder ${isSel?'reorder-sel':''}${isTarget?' reorder-target':''}" onclick="event.stopPropagation();selectReorderEx(${exIdx})">
+      h+=`<div class="ex-card reorder" data-idx="${exIdx}">
+        <span class="reorder-grip" data-idx="${exIdx}">${_s}<line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="18" x2="16" y2="18"/></svg></span>
         <span class="reorder-num">${exIdx+1}</span>
-        <div class="reorder-info">
-          <div class="reorder-name">${ex.name}</div>
-          <div class="reorder-hint">${isSel?'Toca donde moverlo':isTarget?'Posición ${exIdx+1} · Toca para colocar aquí':'Toca para seleccionar'}</div>
-        </div>
-        ${isSel?`<span class="reorder-badge">${_s}<polyline points="5 9 2 12 5 15"/><polyline points="19 9 22 12 19 15"/></svg></span>`:`<span class="reorder-pos">#${exIdx+1}</span>`}
+        <div class="reorder-info"><div class="reorder-name">${ex.name}</div></div>
       </div>`;
       return;
     }
@@ -338,31 +333,84 @@ function renderHoy(){
 }
 
 let reorderMode=false;
-let reorderSelected=null;
 function toggleReorder(){
   reorderMode=!reorderMode;
-  reorderSelected=null;
   renderHoy();
+  if(reorderMode)initDragDrop();
 }
-function selectReorderEx(idx){
-  if(reorderSelected===null){
-    // Primer tap: seleccionar
-    reorderSelected=idx;
-    renderHoy();
-  } else if(reorderSelected===idx){
-    // Mismo: deseleccionar
-    reorderSelected=null;
-    renderHoy();
-  } else {
-    // Segundo tap: mover a esta posición
-    const dk=todayDK(),exs=db.routine[dk].exercises;
-    const [moved]=exs.splice(reorderSelected,1);
-    exs.splice(idx,0,moved);
-    ps('gym_routine',db.routine);
-    reorderSelected=null;
-    renderHoy();
-    toast('Movido ✓');
-  }
+
+function initDragDrop(){
+  const list=document.querySelector('.ex-list');
+  if(!list)return;
+  let dragEl=null,dragIdx=-1,startY=0,currentY=0,items=[],rects=[];
+
+  function getItems(){return[...list.querySelectorAll('.ex-card.reorder')];}
+
+  list.addEventListener('touchstart',e=>{
+    const grip=e.target.closest('.reorder-grip');
+    if(!grip)return;
+    e.preventDefault();
+    dragIdx=parseInt(grip.dataset.idx);
+    dragEl=list.querySelectorAll('.ex-card.reorder')[dragIdx];
+    if(!dragEl)return;
+    items=getItems();
+    rects=items.map(el=>el.getBoundingClientRect());
+    startY=e.touches[0].clientY;
+    currentY=startY;
+    dragEl.classList.add('dragging');
+    document.body.style.overflow='hidden';
+  },{passive:false});
+
+  list.addEventListener('touchmove',e=>{
+    if(!dragEl)return;
+    e.preventDefault();
+    currentY=e.touches[0].clientY;
+    const dy=currentY-startY;
+    dragEl.style.transform=`translateY(${dy}px) scale(1.03)`;
+    dragEl.style.zIndex='10';
+
+    // Detectar nueva posición
+    items.forEach((item,i)=>{
+      if(i===dragIdx)return;
+      const rect=rects[i];
+      const mid=rect.top+rect.height/2;
+      if(i<dragIdx&&currentY<mid){
+        item.style.transform=`translateY(${rects[dragIdx].height+6}px)`;
+      } else if(i>dragIdx&&currentY>mid){
+        item.style.transform=`translateY(-${rects[dragIdx].height+6}px)`;
+      } else {
+        item.style.transform='';
+      }
+    });
+  },{passive:false});
+
+  list.addEventListener('touchend',()=>{
+    if(!dragEl)return;
+    document.body.style.overflow='';
+    // Calcular nueva posición
+    let newIdx=dragIdx;
+    items.forEach((item,i)=>{
+      if(i===dragIdx)return;
+      const rect=rects[i];
+      const mid=rect.top+rect.height/2;
+      if(i<dragIdx&&currentY<mid)newIdx=Math.min(newIdx,i);
+      else if(i>dragIdx&&currentY>mid)newIdx=Math.max(newIdx,i);
+    });
+
+    // Reset estilos
+    items.forEach(item=>{item.style.transform='';item.style.zIndex='';});
+    dragEl.classList.remove('dragging');
+    dragEl=null;
+
+    if(newIdx!==dragIdx){
+      const dk=todayDK(),exs=db.routine[dk].exercises;
+      const [moved]=exs.splice(dragIdx,1);
+      exs.splice(newIdx,0,moved);
+      ps('gym_routine',db.routine);
+      renderHoy();
+      if(reorderMode)initDragDrop();
+    }
+  });
 }
 
 function getWeekRange(dateStr){
