@@ -145,13 +145,13 @@ const WIZARD_STEPS=5;
 let wizardStep=1;
 let wizardData={name:'',age:'',sex:'H',height:'',weight:'',activityLevel:2,goal:null,experience:null,selectedDays:[]};
 
-const _s='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
+const _svg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">';
 const ACTIVITY_OPTS=[
-  {i:0,l:'Sedentario',d:'Trabajo de oficina, sin ejercicio',ico:_s+'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'},
-  {i:1,l:'Ligero',d:'Caminas a diario o 1-2 días de gym',ico:_s+'<path d="M13 4v16"/><path d="M17 4v16"/><rect x="5" y="8" width="14" height="8" rx="1" fill="none"/></svg>'},
-  {i:2,l:'Moderado',d:'3-4 días de gym por semana',ico:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>'},
-  {i:3,l:'Activo',d:'5-6 días de gym o deporte frecuente',ico:_s+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'},
-  {i:4,l:'Muy activo',d:'Entrenas 2 veces al día o trabajo físico',ico:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>'}
+  {i:0,l:'Sedentario',d:'Trabajo de oficina, sin ejercicio',ico:_svg+'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'},
+  {i:1,l:'Ligero',d:'Caminas a diario o 1-2 días de gym',ico:_svg+'<path d="M13 4v16"/><path d="M17 4v16"/><rect x="5" y="8" width="14" height="8" rx="1" fill="none"/></svg>'},
+  {i:2,l:'Moderado',d:'3-4 días de gym por semana',ico:_svg+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>'},
+  {i:3,l:'Activo',d:'5-6 días de gym o deporte frecuente',ico:_svg+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'},
+  {i:4,l:'Muy activo',d:'Entrenas 2 veces al día o trabajo físico',ico:_svg+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>'}
 ];
 
 function showWizard(){
@@ -215,7 +215,7 @@ function renderWizardStep(){
       {key:'grasa',title:'Perder grasa',desc:'Resistencia + cardio · 3 series × 12-15 reps'},
       {key:'general',title:'Estar en forma',desc:'General · 3 series × 8-12 reps'},
     ];
-    const goalIcons={musculo:_s+'<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>',fuerza:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',grasa:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/></svg>',general:_s+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'};
+    const goalIcons={musculo:_svg+'<path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>',fuerza:_svg+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',grasa:_svg+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/></svg>',general:_svg+'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>'};
     container.innerHTML=`
       <div class="wiz-title">¿Cuál es tu objetivo?</div>
       <div class="wiz-subtitle">Adaptamos ejercicios, series y repeticiones</div>
@@ -233,15 +233,15 @@ function renderWizardStep(){
       <div class="wiz-subtitle">Esto define la complejidad de tu rutina</div>
       <div class="wiz-options">
         <div class="wiz-opt ${wizardData.experience==='principiante'?'active':''}" onclick="wizSelect('experience','principiante')">
-          <span class="wiz-emoji wiz-svg-ico">${_s}<circle cx="12" cy="12" r="3"/><path d="M12 3v3"/><path d="M12 18v3"/></svg></span>
+          <span class="wiz-emoji wiz-svg-ico">${_svg}<circle cx="12" cy="12" r="3"/><path d="M12 3v3"/><path d="M12 18v3"/></svg></span>
           <div><span class="wiz-opt-title">Nunca he entrenado</span><span class="wiz-opt-desc">Empezamos con lo básico — ejercicios compuestos</span></div>
         </div>
         <div class="wiz-opt ${wizardData.experience==='intermedio'?'active':''}" onclick="wizSelect('experience','intermedio')">
-          <span class="wiz-emoji wiz-svg-ico">${_s}<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
+          <span class="wiz-emoji wiz-svg-ico">${_svg}<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>
           <div><span class="wiz-opt-title">Menos de 1 año</span><span class="wiz-opt-desc">Ya conoces los ejercicios — más variedad y volumen</span></div>
         </div>
         <div class="wiz-opt ${wizardData.experience==='avanzado'?'active':''}" onclick="wizSelect('experience','avanzado')">
-          <span class="wiz-emoji wiz-svg-ico">${_s}<path d="M6 9H3a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4h0"/><path d="M18 9h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4h0"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg></span>
+          <span class="wiz-emoji wiz-svg-ico">${_svg}<path d="M6 9H3a1 1 0 0 0-1 1v1a4 4 0 0 0 4 4h0"/><path d="M18 9h3a1 1 0 0 1 1 1v1a4 4 0 0 1-4 4h0"/><path d="M7 4h10v7a5 5 0 0 1-10 0V4z"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/></svg></span>
           <div><span class="wiz-opt-title">Más de 1 año</span><span class="wiz-opt-desc">Rutinas avanzadas — mayor frecuencia y especificidad</span></div>
         </div>
       </div>`;
