@@ -713,10 +713,10 @@ function renderProfileHeader(){
   const streak=calcStreak();
 
   const _phi={
-    bw:_s+'<path d="M12 3v4"/><circle cx="12" cy="3" r="1"/><path d="M6.5 10L12 7l5.5 3"/><rect x="4" y="14" width="16" height="4" rx="2"/></svg>',
-    sess:_s+'<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+    bw:_s+'<path d="M12 3v4"/><circle cx="12" cy="3" r="1"/><path d="M6.5 10L12 7l5.5 3"/><rect x="4" y="14" width="16" height="4" rx="2"/><line x1="8" y1="18" x2="8" y2="20"/><line x1="16" y1="18" x2="16" y2="20"/></svg>',
+    sess:_s+'<polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
     ex:_s+'<line x1="4" y1="12" x2="20" y2="12"/><rect x="2" y="9" width="4" height="6" rx="1.5"/><rect x="18" y="9" width="4" height="6" rx="1.5"/></svg>',
-    fire:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/></svg>',
+    fire:_s+'<path d="M12 22c4.97 0 7-3.58 7-7.5 0-4.05-3.5-7.5-7-10.5-3.5 3-7 6.45-7 10.5C5 18.42 7.03 22 12 22z"/><path d="M12 22c2 0 3.5-1.5 3.5-4 0-2.5-1.75-4-3.5-5.5C10.25 14 8.5 15.5 8.5 18c0 2.5 1.5 4 3.5 4z"/></svg>',
   };
   el.innerHTML=`
     <div class="ph-greeting">Hola, <span class="ph-name">${name}</span></div>
