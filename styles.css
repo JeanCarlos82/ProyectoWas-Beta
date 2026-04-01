@@ -109,8 +109,8 @@ input,textarea{-webkit-user-select:text;user-select:text;}
   flex-shrink:0;display:flex;align-items:center;
   background:var(--card);
   border-radius:999px;
-  margin:0 var(--margin) 14px;
-  margin-bottom:calc(14px + var(--safe-bottom));
+  margin:0 var(--margin) 6px;
+  margin-bottom:calc(6px + var(--safe-bottom));
   padding:5px;
   height:56px;
   gap:2px;
