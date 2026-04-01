@@ -181,10 +181,18 @@ function adaptExercises(routine,{age,weight,height,experience,sex,goal,activityL
   if(isHeavy||isOlder)swaps.push(['Correr','Elíptica']);
   if(isVeryHeavy)swaps.push(['Stairmaster','Bicicleta estática']);
 
-  // === PRINCIPIANTE: versiones más simples ===
+  // === PRINCIPIANTE: versiones más simples y máquinas guiadas ===
   if(isBeginner){
     swaps.push(['Sentadilla frontal','Sentadilla goblet']);
     swaps.push(['Hack squat','Prensa de pierna']);
+    // Senior principiante → máquinas guiadas para seguridad
+    if(isSenior){
+      swaps.push(['Hip thrust','Hip thrust en máquina']);
+      swaps.push(['Patada de glúteo','Patada de glúteo en máquina']);
+      swaps.push(['Curl femoral','Curl femoral sentado']);
+      swaps.push(['Press militar','Press de hombro en máquina']);
+      swaps.push(['Crunch','Crunch en máquina']);
+    }
   }
 
   // Aplicar sustituciones

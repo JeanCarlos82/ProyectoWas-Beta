@@ -68,7 +68,7 @@ function entrySummaryText(e){
     return`${parts.join('+')} series · ${mx}${e.unit||'kg'} máx`;
   }
   if(e.weight)return`${e.weight} ${e.unit||'kg'}`;
-  if(e.type==='cardio')return`${e.min||0}min${e.km?' · '+e.km+'km':''}`;
+  if(e.type==='cardio'){const parts=[`${e.min||0}min`];if(e.intensity&&e.intensity!=='media')parts.push(e.intensity);if(e.km)parts.push(e.km+'km');if(e.cal)parts.push(e.cal+'kcal');return parts.join(' · ');}
   return '';
 }
 
@@ -1071,6 +1071,8 @@ function openModal(name,type){
   curEx=name;curType=type;currentSets=[];
   document.getElementById('mtitle').textContent=name;
   document.getElementById('nval').value='';document.getElementById('c-min').value='';document.getElementById('c-km').value='';
+  const calEl=document.getElementById('c-cal');if(calEl)calEl.value='';
+  setCardioIntensity('media');
   document.getElementById('m-wsec').style.display=type==='cardio'?'none':'';
   document.getElementById('m-csec').style.display=type==='cardio'?'':'none';
   document.getElementById('msub').textContent=type==='cardio'?'REGISTRA TU CARDIO':'REGISTRA TU ENTRENAMIENTO';
@@ -1121,9 +1123,12 @@ function openModal(name,type){
     renderSets();
   }
   document.getElementById('mhints').innerHTML=hints;
-  if(entry){if(type==='cardio'){document.getElementById('c-min').value=entry.min||'';document.getElementById('c-km').value=entry.km||'';}document.getElementById('nval').value=entry.notes||'';del.style.display='';}
+  if(entry){if(type==='cardio'){document.getElementById('c-min').value=entry.min||'';document.getElementById('c-km').value=entry.km||'';const calEl=document.getElementById('c-cal');if(calEl)calEl.value=entry.cal||'';if(entry.intensity)setCardioIntensity(entry.intensity);}document.getElementById('nval').value=entry.notes||'';del.style.display='';}
   else del.style.display='none';
   document.getElementById('overlay').classList.add('open');
+}
+function setCardioIntensity(val){
+  document.querySelectorAll('.c-int-opt').forEach(el=>{el.classList.toggle('active',el.dataset.val===val);});
 }
 function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))return;document.getElementById('overlay').classList.remove('open');}
 
@@ -1171,7 +1176,7 @@ function closeModal(e){if(e&&e.target!==document.getElementById('overlay'))retur
 })();
 function saveEntry(){
   const t=today(),dk=todayDK();let entry;
-  if(curType==='cardio'){entry={exercise:curEx,type:'cardio',min:parseFloat(document.getElementById('c-min').value)||0,km:parseFloat(document.getElementById('c-km').value)||0,notes:document.getElementById('nval').value.trim()};}
+  if(curType==='cardio'){const calEl=document.getElementById('c-cal');entry={exercise:curEx,type:'cardio',min:parseFloat(document.getElementById('c-min').value)||0,intensity:document.querySelector('.c-int-opt.active')?.dataset.val||'media',km:parseFloat(document.getElementById('c-km').value)||0,cal:calEl?parseFloat(calEl.value)||0:0,notes:document.getElementById('nval').value.trim()};}
   else{const valid=currentSets.filter(s=>s.w!==''&&s.r!=='');if(!valid.length){toast('Agrega al menos una serie');return;}entry={exercise:curEx,type:'pesas',sets:valid.map(s=>({w:parseFloat(s.w),r:parseInt(s.r),warmup:!!s.warmup})),unit:curUnit,notes:document.getElementById('nval').value.trim()};}
   let sess=db.sessions.find(s=>s.date===t);
   const isNew=!sess;
