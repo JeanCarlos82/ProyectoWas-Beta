@@ -704,6 +704,8 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .wiz-import-tip p{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted2);line-height:1.7;margin:0;}
 .wiz-import-tip b{color:var(--text);}
 .wiz-import-tip i{color:var(--accent);font-style:normal;}
+.wiz-copy-prompt{background:var(--accent);color:#000;border:none;border-radius:6px;padding:5px 12px;font-family:'DM Mono',monospace;font-size:9px;font-weight:600;letter-spacing:1px;cursor:pointer;margin-top:8px;-webkit-tap-highlight-color:transparent;}
+.wiz-copy-prompt:active{opacity:0.7;}
 
 /* ── RESPONSIVE: small Android (360px) ── */
 @media(max-width:374px){

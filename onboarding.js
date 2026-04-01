@@ -543,7 +543,10 @@ function renderWizardStep(){
       </div>
       <div class="wiz-import-tip">
         ${_svg}<circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <p>¿Ya tienes una rutina escrita? Cópiala en <b>ChatGPT</b> y dile: <i>"Convierte mi rutina a JSON con este formato"</i> junto con un export de ejemplo de esta app. Luego impórtala aquí.</p>
+        <div>
+          <p>¿Ya tienes una rutina? Copia el prompt, pégalo en <b>ChatGPT</b> junto con tu rutina y te devolverá un JSON para importar.</p>
+          <button class="wiz-copy-prompt" onclick="copyImportPrompt()">COPIAR PROMPT</button>
+        </div>
       </div>`;
 
   } else if(wizardStep===3){

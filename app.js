@@ -1300,6 +1300,38 @@ function deleteEntry(){
   ps('gym_sessions',db.sessions);document.getElementById('overlay').classList.remove('open');renderHoy();
 }
 
+function copyImportPrompt(){
+  const prompt=`Convierte mi rutina de gym al siguiente formato JSON. Responde SOLO con el JSON, sin explicaciones.
+
+El formato es:
+{
+  "routine": {
+    "lunes": { "label": "Nombre del día", "rest": false, "exercises": [{"name": "Nombre ejercicio", "type": "pesas"}] },
+    "martes": { "label": "Descanso", "rest": true, "exercises": [] },
+    "miercoles": { "label": "...", "rest": false, "exercises": [...] },
+    "jueves": { "label": "...", "rest": false, "exercises": [...] },
+    "viernes": { "label": "...", "rest": false, "exercises": [...] },
+    "sabado": { "label": "Descanso", "rest": true, "exercises": [] },
+    "domingo": { "label": "Descanso", "rest": true, "exercises": [] }
+  },
+  "sessions": [],
+  "profile": { "name": "", "age": "", "sex": "H", "height": "", "weight": "" },
+  "objective": "hipertrofia",
+  "bw": []
+}
+
+Reglas:
+- Los días siempre son: lunes, martes, miercoles, jueves, viernes, sabado, domingo (sin tildes)
+- "type" es "pesas" para ejercicios con peso y "cardio" para cardio
+- "rest": true para días de descanso, false para días de entrenamiento
+- "label" es el nombre del tipo de entrenamiento (ej: "Push", "Pull", "Legs", "Full Body")
+- "objective" puede ser: "hipertrofia", "fuerza" o "resistencia"
+
+Mi rutina es:
+`;
+  navigator.clipboard.writeText(prompt).then(()=>toast('Prompt copiado ✓')).catch(()=>toast('No se pudo copiar'));
+}
+
 function exportData(){
   const blob=new Blob([JSON.stringify({routine:db.routine,sessions:db.sessions,profile:db.profile,objective:db.objective,bw:db.bw,exported:new Date().toISOString()},null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`gym-backup-${today()}.json`;document.body.appendChild(a);a.click();document.body.removeChild(a);toast('Backup exportado ✓');
