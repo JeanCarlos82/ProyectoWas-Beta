@@ -225,8 +225,9 @@ input,textarea{-webkit-user-select:text;user-select:text;}
 .vol-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
 .vol-val{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);line-height:1;}
 
-.note-expand{max-height:0;overflow:hidden;transition:max-height 0.25s ease,margin 0.25s ease;margin:0;}
-.note-expand.open{max-height:100px;margin-bottom:10px;}
+.note-expand{position:relative;height:0;overflow:visible;}
+.note-expand .ninput{position:absolute;bottom:0;left:0;right:0;opacity:0;transform:translateY(10px);pointer-events:none;transition:all 0.2s ease;box-shadow:0 -4px 16px rgba(0,0,0,0.3);}
+.note-expand.open .ninput{opacity:1;transform:translateY(-8px);pointer-events:all;}
 .ninput{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:9px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:11px 14px;resize:none;outline:none;min-height:52px;}
 .ninput:focus{border-color:var(--accent);}
 .ninput::placeholder{color:var(--muted);}
